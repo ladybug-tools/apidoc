@@ -5,7 +5,7 @@ import codecs
 import pdoc
 sys.path.append(r'C:\Users\Mostapha\Documents\code\ladybug-tools\ladybug')
 import ladybug
-import honeybee
+from ladybug import *
 
 
 def listdir(path):
@@ -37,7 +37,7 @@ def html_out(m, html_dir, html=True):
             if not html:
                 out = m.text()
             else:
-                out = m.html(source=True, top_module='honeybee')
+                out = m.html(source=True, top_module='ladybug')
             w.write(out)
             # print(out, file=w)
     except Exception:
@@ -52,11 +52,10 @@ def html_out(m, html_dir, html=True):
         html_out(submodule, html_dir, html)
 
 
-# root = os.path.dirname(honeybee.__file__)
+root = os.path.dirname(ladybug.__file__)
 # with open(os.path.join(root, '__init__.py'), 'wb') as init:
-# init.write('__all__ = ["config"]')
-# init.write('__all__ = [%s]' % ','.join(listdir(root)))
-
-html_dir = r'C:\Users\Mostapha\Documents\code\ladybug-tools\honeybee\doc'
-module = pdoc.Module(honeybee, docfilter=None, allsubmodules=True)
+#     init.write('__all__ = [%s]' % ','.join(listdir(root)))
+os.chdir(root)
+html_dir = r'C:\Users\Mostapha\Documents\code\ladybug-tools\apidoc'
+module = pdoc.Module(ladybug, docfilter=None, allsubmodules=True)
 html_out(module, html_dir)
