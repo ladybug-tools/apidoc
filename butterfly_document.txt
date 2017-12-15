@@ -1,0 +1,3 @@
+:: remove *.rst inside rst/butterfly folder except for modules.rst and index.rst
+sphinx-apidoc -o ./rst/butterfly ../butterfly/butterfly ../butterfly/butterfly/stl
+sphinx-build -b html ./rst/butterfly ./butterfly

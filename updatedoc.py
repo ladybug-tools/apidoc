@@ -3,9 +3,6 @@ import os
 import os.path as path
 import codecs
 import pdoc
-sys.path.append(r'C:\Users\Mostapha\Documents\code\ladybug-tools\ladybug')
-import ladybug
-from ladybug import *
 
 
 def listdir(path):
@@ -48,14 +45,24 @@ def html_out(m, html_dir, html=True):
         raise
 
     for submodule in m.submodules():
-        # print submodule.name
+        print(submodule.name)
         html_out(submodule, html_dir, html)
 
 
-root = os.path.dirname(ladybug.__file__)
-# with open(os.path.join(root, '__init__.py'), 'wb') as init:
-#     init.write('__all__ = [%s]' % ','.join(listdir(root)))
-os.chdir(root)
-html_dir = r'C:\Users\Mostapha\Documents\code\ladybug-tools\apidoc'
-module = pdoc.Module(ladybug, docfilter=None, allsubmodules=True)
-html_out(module, html_dir)
+if __name__ == '__main__':
+    sys.path.append(r'C:\Users\Mostapha\Documents\code\ladybug-tools\ladybug')
+    sys.path.append(r'C:\Users\Mostapha\Documents\code\ladybug-tools\honeybee')
+    sys.path.append(r'C:\Users\Mostapha\Documents\code\ladybug-tools\butterfly')
+    import ladybug
+    # from ladybug import *
+    import honeybee
+    from honeybee import *
+    # import butterfly
+    # from butterfly import *
+    html_dir = r'C:\Users\Mostapha\Documents\code\ladybug-tools\apidoc'
+    root = os.path.dirname(honeybee.__file__)
+    os.chdir(root)
+    # with open(os.path.join(root, '__init__.py'), 'wb') as init:
+    #     init.write('__all__ = [%s]' % ','.join(listdir(root)))
+    module = pdoc.Module(honeybee, docfilter=None, allsubmodules=True)
+    html_out(module, html_dir)
