@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>honeybee.radiance.analysispoint &#8212; Honeybee 0.0.1 documentation</title>
+    <title>honeybee.radiance.analysispoint &#8212; Honeybee 0.0.04 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.0.1',
+        VERSION:     '0.0.04',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -169,13 +169,16 @@
             <span class="n">sid</span><span class="p">,</span> <span class="n">stateid</span> <span class="o">=</span> <span class="n">_cls</span><span class="o">.</span><span class="n">_create_data_structure</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">hoys</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">state_res</span> <span class="o">=</span> <span class="n">ap_json</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">state_res</span> <span class="o">=</span> <span class="n">ap_json</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="n">state_res</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">state_res</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
                     <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
                     <span class="n">hoys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
             <span class="c1"># set the values</span>
-            <span class="n">_cls</span><span class="o">.</span><span class="n">setCoupledValues</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">_cls</span><span class="o">.</span><span class="n">set_coupled_values</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_cls</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.from_raw_values"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.from_raw_values">[docs]</a>    <span class="nd">@classmethod</span>
@@ -985,6 +988,41 @@
             <span class="mi">100</span> <span class="o">*</span> <span class="n">udi</span> <span class="o">/</span> <span class="n">total_hour_count</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">udi_l</span> <span class="o">/</span> <span class="n">total_hour_count</span><span class="p">,</span> \
             <span class="mi">100</span> <span class="o">*</span> <span class="n">udi_m</span> <span class="o">/</span> <span class="n">total_hour_count</span>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_calculate_daylight_autonomy</span><span class="p">(</span>
+            <span class="n">values</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">da_threshhold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">occ_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate daylight autonomy and continious daylight autonomy.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            da_threshhold: Threshhold for daylight autonomy in lux (default: 300).</span>
+<span class="sd">            blinds_state_ids: List of state ids for all the sources for input hoys. If</span>
+<span class="sd">                you want a source to be removed set the state to -1.</span>
+<span class="sd">            occ_schedule: An annual occupancy schedule.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Daylight autonomy, Continious daylight autonomy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">da_threshhold</span> <span class="o">=</span> <span class="n">da_threshhold</span> <span class="ow">or</span> <span class="mi">300</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="n">hoys</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span>
+        <span class="n">DA</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">cda</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_hour_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">h</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schedule</span><span class="p">:</span>
+                <span class="n">total_hour_count</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="n">da_threshhold</span><span class="p">:</span>
+                <span class="n">DA</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">cda</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cda</span> <span class="o">+=</span> <span class="n">v</span> <span class="o">/</span> <span class="n">da_threshhold</span>
+
+        <span class="k">if</span> <span class="n">total_hour_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;There is 0 hours available in the schedule.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">DA</span> <span class="o">/</span> <span class="n">total_hour_count</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">cda</span> <span class="o">/</span> <span class="n">total_hour_count</span>
+
 <div class="viewcode-block" id="AnalysisPoint.parse_blind_states"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.parse_blind_states">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">parse_blind_states</span><span class="p">(</span><span class="n">blinds_state_ids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse input blind states.</span>
@@ -1052,7 +1090,7 @@
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2017, Ladybug Tools.
+      &copy;2018, Ladybug Tools.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>

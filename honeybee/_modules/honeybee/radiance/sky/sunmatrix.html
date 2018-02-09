@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>honeybee.radiance.sky.sunmatrix &#8212; Honeybee 0.0.1 documentation</title>
+    <title>honeybee.radiance.sky.sunmatrix &#8212; Honeybee 0.0.04 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.0.1',
+        VERSION:     '0.0.04',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -279,7 +279,6 @@
                 <span class="nb">int</span><span class="p">(</span><span class="n">wea</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">[</span><span class="n">timeStamp</span><span class="o">.</span><span class="n">int_hoy</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">dnr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">sun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">calculate_sun</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">sun</span><span class="o">.</span><span class="n">altitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -287,6 +286,7 @@
             <span class="n">solarradiance</span> <span class="o">=</span> \
                 <span class="nb">int</span><span class="p">(</span><span class="n">gendaylit</span><span class="p">(</span><span class="n">sun</span><span class="o">.</span><span class="n">altitude</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">dnr</span><span class="p">,</span> <span class="n">dhr</span><span class="p">,</span> <span class="n">output_type</span><span class="p">))</span>
             <span class="n">cur_sun_definition</span> <span class="o">=</span> <span class="n">solarstring</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">solarradiance</span><span class="p">,</span> <span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="n">z</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># keep track of number of suns above the horizon for naming</span>
             <span class="n">solarradiances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">solarradiance</span><span class="p">)</span>
             <span class="n">sun_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_sun_definition</span><span class="p">)</span>
             <span class="c1"># keep the number of hour relative to hoys in this sun matrix</span>
@@ -307,7 +307,7 @@
         <span class="c1"># create list of suns.</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">lfp</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sunlist</span><span class="p">:</span>
             <span class="n">sunlist</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">&quot;solar</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">sun_count</span><span class="p">)))</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">&quot;solar</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">sun_count</span><span class="p">)))</span>
             <span class="p">)</span>
             <span class="n">sunlist</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
@@ -358,7 +358,7 @@
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2017, Ladybug Tools.
+      &copy;2018, Ladybug Tools.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>

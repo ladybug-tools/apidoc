@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>honeybee.radiance.sky.gendaylit &#8212; Honeybee 0.0.1 documentation</title>
+    <title>honeybee.radiance.sky.gendaylit &#8212; Honeybee 0.0.04 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.0.1',
+        VERSION:     '0.0.04',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -118,9 +118,19 @@
 
 <div class="viewcode-block" id="gendaylit"><a class="viewcode-back" href="../../../../honeybee.radiance.sky.html#honeybee.radiance.sky.gendaylit.gendaylit">[docs]</a><span class="k">def</span> <span class="nf">gendaylit</span><span class="p">(</span><span class="n">altitude</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">directirradiance</span><span class="p">,</span> <span class="n">diffuseirradiance</span><span class="p">,</span>
               <span class="n">output_type</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get sun position and RGB values for sky.</span>
+    <span class="sd">&quot;&quot;&quot;Get solar irradiance.</span>
 
-<span class="sd">    altitude: Sun altitude in degrees.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        altitude: Sun altitude in degrees.</span>
+<span class="sd">        month: A value for month between 1-12.</span>
+<span class="sd">        day: A value for day between 1-31.</span>
+<span class="sd">        hour: A value for hour between 0-23.</span>
+<span class="sd">        directirradiance: Direct irradiance value.</span>
+<span class="sd">        diffuseirradiance: Diffuse irradiance value.</span>
+<span class="sd">        output_type: An integer between 0-2. 0=output in W/m^2/sr visible,</span>
+<span class="sd">            1=output in W/m^2/sr solar, 2=output in candela/m^2 (default: 0).</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        solarradiance: solar irradiance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#</span>
     <span class="n">coeff_perez</span> <span class="o">=</span> <span class="p">[</span>
@@ -177,7 +187,7 @@
 
     <span class="c1"># altitude correction if too close to zenith</span>
     <span class="k">if</span> <span class="n">altitude</span> <span class="o">&gt;</span> <span class="mf">87.0</span><span class="p">:</span>
-        <span class="c1"># print &quot;warning - sun too close to zenith, reducing altitude to 87 degrees.&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;warning - sun too close to zenith, reducing altitude to 87 degrees.&quot;</span><span class="p">)</span>
         <span class="n">altitude</span> <span class="o">=</span> <span class="mf">87.0</span>
 
     <span class="n">sunzenith</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">-</span> <span class="n">altitude</span>
@@ -517,6 +527,9 @@
     <span class="k">if</span> <span class="n">directilluminance</span> <span class="o">&gt;</span> <span class="n">solar_constant_l</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Warning: direct illuminance exceeds solar constant</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">directilluminance</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">diffuseilluminance</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">diffuseilluminance</span> <span class="o">=</span> <span class="mf">0.00000001</span>
+
     <span class="k">return</span> <span class="n">directilluminance</span><span class="p">,</span> <span class="n">diffuseilluminance</span></div>
 
 
@@ -568,7 +581,7 @@
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2017, Ladybug Tools.
+      &copy;2018, Ladybug Tools.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>

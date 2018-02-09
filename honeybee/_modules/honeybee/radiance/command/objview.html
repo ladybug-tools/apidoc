@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>honeybee.radiance.command.objview &#8212; Honeybee 0.0.1 documentation</title>
+    <title>honeybee.radiance.command.objview &#8212; Honeybee 0.0.04 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.0.1',
+        VERSION:     '0.0.04',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -99,12 +99,12 @@
             
   <h1>Source code for honeybee.radiance.command.objview</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding=utf-8</span>
-<span class="kn">from</span> <span class="nn">_commandbase</span> <span class="k">import</span> <span class="n">RadianceCommand</span>
+<span class="kn">from</span> <span class="nn">._commandbase</span> <span class="k">import</span> <span class="n">RadianceCommand</span>
 <span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceBoolFlag</span><span class="p">,</span> <span class="n">RadianceValue</span>
 <span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceNumber</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">pyRad</span> <span class="k">import</span> <span class="n">objview</span>
+<span class="kn">from</span> <span class="nn">.pyRad</span> <span class="k">import</span> <span class="n">objview</span>
 
 
 <div class="viewcode-block" id="Objview"><a class="viewcode-back" href="../../../../honeybee.radiance.command.html#honeybee.radiance.command.objview.Objview">[docs]</a><span class="k">class</span> <span class="nc">Objview</span><span class="p">(</span><span class="n">RadianceCommand</span><span class="p">):</span>
@@ -213,7 +213,7 @@
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2017, Ladybug Tools.
+      &copy;2018, Ladybug Tools.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>

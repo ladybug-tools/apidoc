@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>honeybee.radiance.sky package &#8212; Honeybee 0.0.1 documentation</title>
+    <title>honeybee.radiance.sky package &#8212; Honeybee 0.0.04 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.1',
+        VERSION:     '0.0.04',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -532,8 +532,31 @@ Centre de Valbonne, 500 route des Lucioles, 06565 Sophia Antipolis Cedex, France
 <dl class="function">
 <dt id="honeybee.radiance.sky.gendaylit.gendaylit">
 <code class="descclassname">honeybee.radiance.sky.gendaylit.</code><code class="descname">gendaylit</code><span class="sig-paren">(</span><em>altitude</em>, <em>month</em>, <em>day</em>, <em>hour</em>, <em>directirradiance</em>, <em>diffuseirradiance</em>, <em>output_type=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/gendaylit.html#gendaylit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.gendaylit.gendaylit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get sun position and RGB values for sky.</p>
-<p>altitude: Sun altitude in degrees.</p>
+<dd><p>Get solar irradiance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>altitude</strong> – Sun altitude in degrees.</li>
+<li><strong>month</strong> – A value for month between 1-12.</li>
+<li><strong>day</strong> – A value for day between 1-31.</li>
+<li><strong>hour</strong> – A value for hour between 0-23.</li>
+<li><strong>directirradiance</strong> – Direct irradiance value.</li>
+<li><strong>diffuseirradiance</strong> – Diffuse irradiance value.</li>
+<li><strong>output_type</strong> – An integer between 0-2. 0=output in W/m^2/sr visible,
+1=output in W/m^2/sr solar, 2=output in candela/m^2 (default: 0).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">solar irradiance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">solarradiance</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -1082,7 +1105,7 @@ analemma, sunlist, sunmtxfile = sunmtx.execute(‘c:/ladybug’)</div></blockquo
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2017, Ladybug Tools.
+      &copy;2018, Ladybug Tools.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>

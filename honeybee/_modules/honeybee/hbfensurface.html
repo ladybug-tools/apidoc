@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>honeybee.hbfensurface &#8212; Honeybee 0.0.1 documentation</title>
+    <title>honeybee.hbfensurface &#8212; Honeybee 0.0.04 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.0.1',
+        VERSION:     '0.0.04',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -214,7 +214,7 @@
 
         <span class="n">namescount</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
-        <span class="n">srf_data</span> <span class="o">=</span> <span class="n">plus</span><span class="o">.</span><span class="n">extractGeometryPoints</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="n">srf_data</span> <span class="o">=</span> <span class="n">plus</span><span class="o">.</span><span class="n">extract_geometry_points</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">_isCreatedFromGeo</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">group</span><span class="p">:</span>
@@ -303,7 +303,7 @@
         <span class="k">assert</span> <span class="n">honeybee</span><span class="o">.</span><span class="n">isplus</span><span class="p">,</span> \
             <span class="s1">&#39;&quot;profile&quot; property can only be used in [+] libraries.&#39;</span>
         <span class="k">return</span> <span class="n">plus</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span>
-            <span class="nb">tuple</span><span class="p">(</span><span class="n">plus</span><span class="o">.</span><span class="n">xyzToGeometricalPoints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolute_points</span><span class="p">))</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">plus</span><span class="o">.</span><span class="n">xyz_to_geometrical_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolute_points</span><span class="p">))</span>
         <span class="p">)</span></div>
 </pre></div>
 
@@ -313,7 +313,7 @@
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2017, Ladybug Tools.
+      &copy;2018, Ladybug Tools.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>

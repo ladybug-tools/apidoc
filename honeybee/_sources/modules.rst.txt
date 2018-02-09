@@ -1,5 +1,5 @@
 honeybee
-=======
+========
 
 .. toctree::
    :maxdepth: 4
