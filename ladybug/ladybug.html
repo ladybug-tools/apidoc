@@ -6,8 +6,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>ladybug package &#8212; Ladybug 0.0.1 documentation</title>
-    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
@@ -18,14 +18,14 @@
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
-    <script type="text/javascript" src="static/jquery.js"></script>
-    <script type="text/javascript" src="static/underscore.js"></script>
-    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Welcome to ladybug’s documentation!" href="index.html" />
    
-  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -38,7 +38,7 @@
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="index.html">
-    <img class="logo" src="static/ladybug.png" alt="Logo"/>
+    <img class="logo" src="_static/ladybug.png" alt="Logo"/>
     
   </a>
 </p>
@@ -69,12 +69,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.datatype">ladybug.datatype module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.dt">ladybug.dt module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.epw">ladybug.epw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ladybug-geometry-module">ladybug.geometry module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.header">ladybug.header module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.legendparameters">ladybug.legendparameters module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.listoperations">ladybug.listoperations module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.location">ladybug.location module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ladybug-output-module">ladybug.output module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.psychrometrics">ladybug.psychrometrics module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.sunpath">ladybug.sunpath module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ladybug-sunpathplus-module">ladybug.sunpathplus module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug.wea">ladybug.wea module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ladybug">Module contents</a></li>
 </ul>
@@ -124,7 +127,7 @@
 <p>Ladybug analysis period class.</p>
 <dl class="class">
 <dt id="ladybug.analysisperiod.AnalysisPeriod">
-<em class="property">class </em><code class="descclassname">ladybug.analysisperiod.</code><code class="descname">AnalysisPeriod</code><span class="sig-paren">(</span><em>st_month=1</em>, <em>st_day=1</em>, <em>st_hour=0</em>, <em>end_month=12</em>, <em>end_day=31</em>, <em>end_hour=23</em>, <em>timestep=1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/analysisperiod.html#AnalysisPeriod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.analysisperiod.</code><code class="descname">AnalysisPeriod</code><span class="sig-paren">(</span><em>st_month=1</em>, <em>st_day=1</em>, <em>st_hour=0</em>, <em>end_month=12</em>, <em>end_day=31</em>, <em>end_hour=23</em>, <em>timestep=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/analysisperiod.html#AnalysisPeriod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Ladybug Analysis Period.</p>
 <p>A continuous analysis period between two days of the year between certain hours.</p>
@@ -203,7 +206,7 @@ is_overnight: If an analysis perido is not overnight each segments of hours</p>
 
 <dl class="method">
 <dt id="ladybug.analysisperiod.AnalysisPeriod.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/analysisperiod.html#AnalysisPeriod.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/analysisperiod.html#AnalysisPeriod.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET representation.</p>
 </dd></dl>
 
@@ -218,16 +221,34 @@ is_overnight: If an analysis perido is not overnight each segments of hours</p>
 <dd><p>A sorted list of datetimes in this analysis period.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">end_day</code></dt>
+<dd><p>Start day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_hour</code></dt>
+<dd><p>Start hour.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_month</code></dt>
+<dd><p>Start month.</p>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="ladybug.analysisperiod.AnalysisPeriod.from_analysis_period">
-<em class="property">classmethod </em><code class="descname">from_analysis_period</code><span class="sig-paren">(</span><em>analysis_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/analysisperiod.html#AnalysisPeriod.from_analysis_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.from_analysis_period" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_analysis_period</code><span class="sig-paren">(</span><em>analysis_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/analysisperiod.html#AnalysisPeriod.from_analysis_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.from_analysis_period" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create and AnalysisPeriod from an analysis period.</p>
 <p>This method is useful to be called from inside Grasshopper or Dynamo</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.analysisperiod.AnalysisPeriod.from_string">
-<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>analysis_period_string</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/analysisperiod.html#AnalysisPeriod.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.from_string" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>analysis_period_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/analysisperiod.html#AnalysisPeriod.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.from_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an Analysis Period object from an analysis period string.</p>
 <p>%s/%s to %s/%s between %s to %s &#64;%s</p>
 </dd></dl>
@@ -266,7 +287,7 @@ will be in two different days (e.g. from 9pm to 2am).</p>
 
 <dl class="method">
 <dt id="ladybug.analysisperiod.AnalysisPeriod.is_possible_hour">
-<code class="descname">is_possible_hour</code><span class="sig-paren">(</span><em>hour</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/analysisperiod.html#AnalysisPeriod.is_possible_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.is_possible_hour" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_possible_hour</code><span class="sig-paren">(</span><em>hour</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/analysisperiod.html#AnalysisPeriod.is_possible_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.is_possible_hour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a float hour is a possible hour for this analysis period.</p>
 </dd></dl>
 
@@ -280,7 +301,7 @@ ending month (e.g DEC to JUN).</p>
 
 <dl class="method">
 <dt id="ladybug.analysisperiod.AnalysisPeriod.is_time_included">
-<code class="descname">is_time_included</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/analysisperiod.html#AnalysisPeriod.is_time_included"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.is_time_included" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_time_included</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/analysisperiod.html#AnalysisPeriod.is_time_included"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.analysisperiod.AnalysisPeriod.is_time_included" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if time is included in analysis period.</p>
 <p>Return True if time is inside this analysis period,
 otherwise return False</p>
@@ -296,6 +317,24 @@ otherwise return False</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">st_day</code></dt>
+<dd><p>Start day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">st_hour</code></dt>
+<dd><p>Start hour.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">st_month</code></dt>
+<dd><p>Start month.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -304,7 +343,7 @@ otherwise return False</p>
 <p>Ladybug color, colorsets and colorrange.</p>
 <dl class="class">
 <dt id="ladybug.color.Color">
-<em class="property">class </em><code class="descclassname">ladybug.color.</code><code class="descname">Color</code><span class="sig-paren">(</span><em>r</em>, <em>g</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Color" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.color.</code><code class="descname">Color</code><span class="sig-paren">(</span><em>r</em>, <em>g</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Ladybug RGB color.</p>
 <dl class="attribute">
@@ -327,7 +366,7 @@ otherwise return False</p>
 
 <dl class="method">
 <dt id="ladybug.color.Color.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Color.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Color.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Color.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Color.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET ToString.</p>
 </dd></dl>
 
@@ -353,7 +392,7 @@ otherwise return False</p>
 
 <dl class="class">
 <dt id="ladybug.color.ColorRange">
-<em class="property">class </em><code class="descclassname">ladybug.color.</code><code class="descname">ColorRange</code><span class="sig-paren">(</span><em>colors=None</em>, <em>domain=None</em>, <em>chart_type=0</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#ColorRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.ColorRange" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.color.</code><code class="descname">ColorRange</code><span class="sig-paren">(</span><em>colors=None</em>, <em>domain=None</em>, <em>chart_type=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#ColorRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.ColorRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Ladybug Color-range repository.</p>
 <p>A list of default Ladybug colorRanges</p>
@@ -383,10 +422,10 @@ colorRange.domain = [100, 2000]
 colorRange.colors = [Color(75, 107, 169), Color(245, 239, 103),</p>
 <blockquote>
 <div>Color(234, 38, 0)]</div></blockquote>
-<p>print colorRange.color(99)
-print colorRange.color(100)
-print colorRange.color(2000)
-print colorRange.color(2001)
+<p>print(colorRange.color(99))
+print(colorRange.color(100))
+print(colorRange.color(2000))
+print(colorRange.color(2001))
 &gt;&gt; &lt;R:75, G:107, B:169&gt;
 &gt;&gt; &lt;R:245, G:239, B:103&gt;
 &gt;&gt; &lt;R:245, G:239, B:103&gt;
@@ -411,7 +450,7 @@ colorRange.colors = [Color(75, 107, 169), Color(245, 239, 103),</p>
 </dl>
 <dl class="method">
 <dt id="ladybug.color.ColorRange.color">
-<code class="descname">color</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#ColorRange.color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.ColorRange.color" title="Permalink to this definition">¶</a></dt>
+<code class="descname">color</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#ColorRange.color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.ColorRange.color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return color for an input value.</p>
 </dd></dl>
 
@@ -443,7 +482,7 @@ colorRange.colors = [Color(75, 107, 169), Color(245, 239, 103),</p>
 
 <dl class="class">
 <dt id="ladybug.color.Colorset">
-<em class="property">class </em><code class="descclassname">ladybug.color.</code><code class="descname">Colorset</code><a class="reference internal" href="modules/ladybug/color.html#Colorset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.color.</code><code class="descname">Colorset</code><a class="reference internal" href="_modules/ladybug/color.html#Colorset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Ladybug Color-range repository.</p>
 <dl class="docutils">
@@ -475,7 +514,7 @@ colorRange.colors = [Color(75, 107, 169), Color(245, 239, 103),</p>
 <blockquote>
 <div><p># initiare colorsets
 cs = Colorset()
-print cs[0]
+print(cs[0])
 &gt;&gt; [&lt;R:75, G:107, B:169&gt;, &lt;R:115, G:147, B:202&gt;, &lt;R:170, G:200, B:247&gt;,</p>
 <blockquote>
 <div>&lt;R:193, G:213, B:208&gt;, &lt;R:245, G:239, B:103&gt;, &lt;R:252, G:230, B:74&gt;,
@@ -484,133 +523,133 @@ print cs[0]
 </div></blockquote>
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.black_to_white">
-<em class="property">classmethod </em><code class="descname">black_to_white</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.black_to_white"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.black_to_white" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">black_to_white</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.black_to_white"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.black_to_white" title="Permalink to this definition">¶</a></dt>
 <dd><p>Black to white colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.cfd_colors_1">
-<em class="property">classmethod </em><code class="descname">cfd_colors_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.cfd_colors_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.cfd_colors_1" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">cfd_colors_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.cfd_colors_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.cfd_colors_1" title="Permalink to this definition">¶</a></dt>
 <dd><p>CFD colors 1.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.cfd_colors_2">
-<em class="property">classmethod </em><code class="descname">cfd_colors_2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.cfd_colors_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.cfd_colors_2" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">cfd_colors_2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.cfd_colors_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.cfd_colors_2" title="Permalink to this definition">¶</a></dt>
 <dd><p>CFD colors 2.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.cloud_cover">
-<em class="property">classmethod </em><code class="descname">cloud_cover</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.cloud_cover"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.cloud_cover" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">cloud_cover</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.cloud_cover"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.cloud_cover" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cloud Cover colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.cold_hours">
-<em class="property">classmethod </em><code class="descname">cold_hours</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.cold_hours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.cold_hours" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">cold_hours</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.cold_hours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.cold_hours" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cold Hours.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.ecotect">
-<em class="property">classmethod </em><code class="descname">ecotect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.ecotect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.ecotect" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">ecotect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.ecotect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.ecotect" title="Permalink to this definition">¶</a></dt>
 <dd><p>ecotect colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.energy_balance">
-<em class="property">classmethod </em><code class="descname">energy_balance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.energy_balance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.energy_balance" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">energy_balance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.energy_balance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.energy_balance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Energy Balance colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.hot_hours">
-<em class="property">classmethod </em><code class="descname">hot_hours</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.hot_hours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.hot_hours" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">hot_hours</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.hot_hours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.hot_hours" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hot Hours.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.multi_colored">
-<em class="property">classmethod </em><code class="descname">multi_colored</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.multi_colored"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.multi_colored" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">multi_colored</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.multi_colored"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.multi_colored" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multi-colored legend.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.nuanced">
-<em class="property">classmethod </em><code class="descname">nuanced</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.nuanced"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.nuanced" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">nuanced</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.nuanced"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.nuanced" title="Permalink to this definition">¶</a></dt>
 <dd><p>nuanced Ladybug colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.original">
-<em class="property">classmethod </em><code class="descname">original</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.original"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.original" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">original</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.original"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.original" title="Permalink to this definition">¶</a></dt>
 <dd><p>original Ladybug colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.shade_benefit">
-<em class="property">classmethod </em><code class="descname">shade_benefit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.shade_benefit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.shade_benefit" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">shade_benefit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.shade_benefit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.shade_benefit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shade Benefit colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.shade_benefit_harm">
-<em class="property">classmethod </em><code class="descname">shade_benefit_harm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.shade_benefit_harm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.shade_benefit_harm" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">shade_benefit_harm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.shade_benefit_harm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.shade_benefit_harm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shade Benefit Harm colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.shade_harm">
-<em class="property">classmethod </em><code class="descname">shade_harm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.shade_harm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.shade_harm" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">shade_harm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.shade_harm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.shade_harm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shade Harm colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.sunlight_hours">
-<em class="property">classmethod </em><code class="descname">sunlight_hours</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.sunlight_hours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.sunlight_hours" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">sunlight_hours</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.sunlight_hours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.sunlight_hours" title="Permalink to this definition">¶</a></dt>
 <dd><p>sunlight_hours colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.therm">
-<em class="property">classmethod </em><code class="descname">therm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.therm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.therm" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">therm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.therm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.therm" title="Permalink to this definition">¶</a></dt>
 <dd><p>THERM colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.thermal_comfort">
-<em class="property">classmethod </em><code class="descname">thermal_comfort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.thermal_comfort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.thermal_comfort" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">thermal_comfort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.thermal_comfort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.thermal_comfort" title="Permalink to this definition">¶</a></dt>
 <dd><p>thermal Comfort colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.thermal_comfort_percentage">
-<em class="property">classmethod </em><code class="descname">thermal_comfort_percentage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.thermal_comfort_percentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.thermal_comfort_percentage" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">thermal_comfort_percentage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.thermal_comfort_percentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.thermal_comfort_percentage" title="Permalink to this definition">¶</a></dt>
 <dd><p>thermal Comfort percentage.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.thermal_comfort_utci_1">
-<em class="property">classmethod </em><code class="descname">thermal_comfort_utci_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.thermal_comfort_utci_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.thermal_comfort_utci_1" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">thermal_comfort_utci_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.thermal_comfort_utci_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.thermal_comfort_utci_1" title="Permalink to this definition">¶</a></dt>
 <dd><p>thermal Comfort UTCI 1.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.thermal_comfort_utci_2">
-<em class="property">classmethod </em><code class="descname">thermal_comfort_utci_2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.thermal_comfort_utci_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.thermal_comfort_utci_2" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">thermal_comfort_utci_2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.thermal_comfort_utci_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.thermal_comfort_utci_2" title="Permalink to this definition">¶</a></dt>
 <dd><p>thermal Comfort UTCI 2.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.view_analysis1">
-<em class="property">classmethod </em><code class="descname">view_analysis1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.view_analysis1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.view_analysis1" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">view_analysis1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.view_analysis1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.view_analysis1" title="Permalink to this definition">¶</a></dt>
 <dd><p>View analysis colors.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.color.Colorset.view_analysis2">
-<em class="property">classmethod </em><code class="descname">view_analysis2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/color.html#Colorset.view_analysis2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.view_analysis2" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">view_analysis2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/color.html#Colorset.view_analysis2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.color.Colorset.view_analysis2" title="Permalink to this definition">¶</a></dt>
 <dd><p>View Analysis 2 colors.</p>
 </dd></dl>
 
@@ -622,49 +661,49 @@ print cs[0]
 <p>Ladybug data collection.</p>
 <dl class="class">
 <dt id="ladybug.datacollection.DataCollection">
-<em class="property">class </em><code class="descclassname">ladybug.datacollection.</code><code class="descname">DataCollection</code><span class="sig-paren">(</span><em>data=None</em>, <em>header=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datacollection.</code><code class="descname">DataCollection</code><span class="sig-paren">(</span><em>data=None</em>, <em>header=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>A list of data with a header.</p>
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET ToString method.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.append">
-<code class="descname">append</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.append" title="Permalink to this definition">¶</a></dt>
+<code class="descname">append</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.append" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append a single item to the list.</p>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="ladybug.datacollection.DataCollection.average">
-<em class="property">static </em><code class="descname">average</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.average"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">average</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.average"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return average value for a list of ladybug data.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.average_data_monthly">
-<code class="descname">average_data_monthly</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.average_data_monthly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average_data_monthly" title="Permalink to this definition">¶</a></dt>
+<code class="descname">average_data_monthly</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.average_data_monthly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average_data_monthly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dictionary of values for average values for available months.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.average_data_monthly_for_each_hour">
-<code class="descname">average_data_monthly_for_each_hour</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.average_data_monthly_for_each_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average_data_monthly_for_each_hour" title="Permalink to this definition">¶</a></dt>
+<code class="descname">average_data_monthly_for_each_hour</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.average_data_monthly_for_each_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average_data_monthly_for_each_hour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate average value for each hour during each month.</p>
 <p>This method returns a dictionary with nested dictionaries for each hour</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.average_monthly">
-<code class="descname">average_monthly</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.average_monthly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average_monthly" title="Permalink to this definition">¶</a></dt>
+<code class="descname">average_monthly</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.average_monthly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average_monthly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dictionary of values for average values for available months.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.average_monthly_for_each_hour">
-<code class="descname">average_monthly_for_each_hour</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.average_monthly_for_each_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average_monthly_for_each_hour" title="Permalink to this definition">¶</a></dt>
+<code class="descname">average_monthly_for_each_hour</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.average_monthly_for_each_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.average_monthly_for_each_hour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate average value for each hour during each month.</p>
 <p>This method returns a dictionary with nested dictionaries for each hour</p>
 </dd></dl>
@@ -677,19 +716,19 @@ print cs[0]
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.duplicate">
-<code class="descname">duplicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.duplicate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">duplicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.duplicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Duplicate current data list.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.extend">
-<code class="descname">extend</code><span class="sig-paren">(</span><em>new_data</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.extend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.extend" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extend</code><span class="sig-paren">(</span><em>new_data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.extend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.extend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extend a number of items to the end of items.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.filter_by_analysis_period">
-<code class="descname">filter_by_analysis_period</code><span class="sig-paren">(</span><em>analysis_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.filter_by_analysis_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_analysis_period" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_by_analysis_period</code><span class="sig-paren">(</span><em>analysis_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.filter_by_analysis_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_analysis_period" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter a list based on an analysis period.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -712,7 +751,7 @@ filteredDBT = DBT.filter_by_analysis_period(analysis_period)</div></blockquote>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.filter_by_conditional_statement">
-<code class="descname">filter_by_conditional_statement</code><span class="sig-paren">(</span><em>statement</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.filter_by_conditional_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_conditional_statement" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_by_conditional_statement</code><span class="sig-paren">(</span><em>statement</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.filter_by_conditional_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_conditional_statement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the list based on an analysis period.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -730,14 +769,14 @@ The variable should always be named as x</td>
 <div>epw = EPW(“c:/ladybug/weatherdata.epw”)
 DBT = epw.dry_bulb_temperature
 # filter data for when dry bulb temperature is more then 25
-filteredDBT = DBT.filter_by_conditional_statement(‘x &gt; 25’)
+filtered_DBT = DBT.filter_by_conditional_statement(‘x &gt; 25’)
 # get the list of time stamps that meet the conditional statement
-print filteredDBT.timeStamps</div></blockquote>
+print(filtered_DBT.time_stamps)</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.filter_by_hoys">
-<code class="descname">filter_by_hoys</code><span class="sig-paren">(</span><em>hoys</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.filter_by_hoys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_hoys" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_by_hoys</code><span class="sig-paren">(</span><em>hoys</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.filter_by_hoys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_hoys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the list based on an analysis period.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -759,7 +798,7 @@ filteredDBT = DBT.filter_by_hoys(hoys)</div></blockquote>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.filter_by_moys">
-<code class="descname">filter_by_moys</code><span class="sig-paren">(</span><em>moys</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.filter_by_moys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_moys" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_by_moys</code><span class="sig-paren">(</span><em>moys</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.filter_by_moys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_moys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the list based on a list of minutes of the year.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -781,7 +820,7 @@ filteredDBT = DBT.filter_bymoys(moys)</div></blockquote>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.filter_by_pattern">
-<code class="descname">filter_by_pattern</code><span class="sig-paren">(</span><em>pattern</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.filter_by_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_pattern" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filter_by_pattern</code><span class="sig-paren">(</span><em>pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.filter_by_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.filter_by_pattern" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the list based on a list of Boolean.</p>
 <p>Length of Boolean should be equal to length of values in _dataList</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -798,19 +837,19 @@ filteredDBT = DBT.filter_bymoys(moys)</div></blockquote>
 
 <dl class="classmethod">
 <dt id="ladybug.datacollection.DataCollection.from_data_and_analysis_period">
-<em class="property">classmethod </em><code class="descname">from_data_and_analysis_period</code><span class="sig-paren">(</span><em>data</em>, <em>analysis_period</em>, <em>header=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.from_data_and_analysis_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.from_data_and_analysis_period" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_data_and_analysis_period</code><span class="sig-paren">(</span><em>data</em>, <em>analysis_period</em>, <em>header=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.from_data_and_analysis_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.from_data_and_analysis_period" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a list from data and analysis period.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.datacollection.DataCollection.from_data_and_datetimes">
-<em class="property">classmethod </em><code class="descname">from_data_and_datetimes</code><span class="sig-paren">(</span><em>data</em>, <em>datetimes</em>, <em>header=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.from_data_and_datetimes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.from_data_and_datetimes" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_data_and_datetimes</code><span class="sig-paren">(</span><em>data</em>, <em>datetimes</em>, <em>header=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.from_data_and_datetimes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.from_data_and_datetimes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a list from data and dateteimes.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.datacollection.DataCollection.from_list">
-<em class="property">classmethod </em><code class="descname">from_list</code><span class="sig-paren">(</span><em>lst</em>, <em>location=None</em>, <em>data_type=None</em>, <em>unit=None</em>, <em>analysis_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.from_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.from_list" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_list</code><span class="sig-paren">(</span><em>lst</em>, <em>location=None</em>, <em>data_type=None</em>, <em>unit=None</em>, <em>analysis_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.from_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.from_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a data collection from a list.</p>
 <p>lst items can be DataPoint or other values.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -833,7 +872,7 @@ filteredDBT = DBT.filter_bymoys(moys)</div></blockquote>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.group_by_day">
-<code class="descname">group_by_day</code><span class="sig-paren">(</span><em>day_range=xrange(1</em>, <em>366)</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.group_by_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_by_day" title="Permalink to this definition">¶</a></dt>
+<code class="descname">group_by_day</code><span class="sig-paren">(</span><em>day_range=xrange(1</em>, <em>366)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.group_by_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_by_day" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dictionary of values where values are grouped by each day of year.</p>
 <p>Key values are between 1-365</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -852,12 +891,12 @@ filteredDBT = DBT.filter_bymoys(moys)</div></blockquote>
 <blockquote>
 <div>epwfile = EPW(“epw file address”)
 daily_values = epwfile.dry_bulb_temperature.group_by_day(range(1, 30))
-print daily_values[2] # returns values for the second day of year</div></blockquote>
+print(daily_values[2]) # returns values for the second day of year</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.group_by_hour">
-<code class="descname">group_by_hour</code><span class="sig-paren">(</span><em>hour_range=xrange(24)</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.group_by_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_by_hour" title="Permalink to this definition">¶</a></dt>
+<code class="descname">group_by_hour</code><span class="sig-paren">(</span><em>hour_range=xrange(24)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.group_by_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_by_hour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dictionary of values where values are grouped by each hour of day.</p>
 <p>Key values are between 0-23</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -892,7 +931,7 @@ grouped_hourly_data = epwfile.dry_bulb_temperature.group_data_dataBy_hour(</p>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.group_by_month">
-<code class="descname">group_by_month</code><span class="sig-paren">(</span><em>month_range=xrange(1</em>, <em>13)</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.group_by_month"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_by_month" title="Permalink to this definition">¶</a></dt>
+<code class="descname">group_by_month</code><span class="sig-paren">(</span><em>month_range=xrange(1</em>, <em>13)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.group_by_month"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_by_month" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dictionary of values where values are grouped for each month.</p>
 <p>Key values are between 1-12</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -907,12 +946,12 @@ grouped_hourly_data = epwfile.dry_bulb_temperature.group_data_dataBy_hour(</p>
 <blockquote>
 <div>epwfile = EPW(“epw file address”)
 monthly_values = epwfile.dry_bulb_temperature.group_by_month()
-print monthly_values[2] # returns values for the month of March</div></blockquote>
+print(monthly_values[2]) # returns values for the month of March</div></blockquote>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="ladybug.datacollection.DataCollection.group_data_by_day">
-<em class="property">static </em><code class="descname">group_data_by_day</code><span class="sig-paren">(</span><em>data</em>, <em>day_range=xrange(1</em>, <em>366)</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.group_data_by_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_data_by_day" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">group_data_by_day</code><span class="sig-paren">(</span><em>data</em>, <em>day_range=xrange(1</em>, <em>366)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.group_data_by_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_data_by_day" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dictionary of values where values are grouped by each day of year.</p>
 <p>Key values are between 1-365</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -931,7 +970,7 @@ print monthly_values[2] # returns values for the month of March</div></blockquot
 
 <dl class="staticmethod">
 <dt id="ladybug.datacollection.DataCollection.group_data_by_hour">
-<em class="property">static </em><code class="descname">group_data_by_hour</code><span class="sig-paren">(</span><em>data</em>, <em>hour_range=xrange(24)</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.group_data_by_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_data_by_hour" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">group_data_by_hour</code><span class="sig-paren">(</span><em>data</em>, <em>hour_range=xrange(24)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.group_data_by_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_data_by_hour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dictionary of values where values are grouped by each hour of day.</p>
 <p>Key values are between 0-23</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -950,7 +989,7 @@ print monthly_values[2] # returns values for the month of March</div></blockquot
 
 <dl class="staticmethod">
 <dt id="ladybug.datacollection.DataCollection.group_data_by_month">
-<em class="property">static </em><code class="descname">group_data_by_month</code><span class="sig-paren">(</span><em>data</em>, <em>month_range=xrange(1</em>, <em>13)</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.group_data_by_month"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_data_by_month" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">group_data_by_month</code><span class="sig-paren">(</span><em>data</em>, <em>month_range=xrange(1</em>, <em>13)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.group_data_by_month"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.group_data_by_month" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dictionary of values where values are grouped for each month.</p>
 <p>Key values are between 1-12</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -975,7 +1014,7 @@ print monthly_values[2] # returns values for the month of March</div></blockquot
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.interpolate_data">
-<code class="descname">interpolate_data</code><span class="sig-paren">(</span><em>timestep</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.interpolate_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.interpolate_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">interpolate_data</code><span class="sig-paren">(</span><em>timestep</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.interpolate_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.interpolate_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate data for a finer timestep.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -990,7 +1029,7 @@ divisable by current timestep.</td>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.update_data_for_an_hour">
-<code class="descname">update_data_for_an_hour</code><span class="sig-paren">(</span><em>value</em>, <em>hour_of_year</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.update_data_for_an_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.update_data_for_an_hour" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_data_for_an_hour</code><span class="sig-paren">(</span><em>value</em>, <em>hour_of_year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.update_data_for_an_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.update_data_for_an_hour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace current value in data list with a new value for a specific hoy.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1008,7 +1047,7 @@ divisable by current timestep.</td>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.update_data_for_analysis_period">
-<code class="descname">update_data_for_analysis_period</code><span class="sig-paren">(</span><em>values</em>, <em>analysis_period</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.update_data_for_analysis_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.update_data_for_analysis_period" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_data_for_analysis_period</code><span class="sig-paren">(</span><em>values</em>, <em>analysis_period</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.update_data_for_analysis_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.update_data_for_analysis_period" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update values with new set of values for an analysis period.</p>
 <p>Length of values should be equal to number of hours in analysis period.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1028,7 +1067,7 @@ Default is set to the whole year.</li>
 
 <dl class="method">
 <dt id="ladybug.datacollection.DataCollection.update_data_for_hours_of_year">
-<code class="descname">update_data_for_hours_of_year</code><span class="sig-paren">(</span><em>values</em>, <em>hours_of_year</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.update_data_for_hours_of_year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.update_data_for_hours_of_year" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_data_for_hours_of_year</code><span class="sig-paren">(</span><em>values</em>, <em>hours_of_year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.update_data_for_hours_of_year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.update_data_for_hours_of_year" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update values new set of values for a list of hours of the year.</p>
 <p>Length of values should be equal to number of hours in hours of year.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1063,7 +1102,7 @@ Default is set to the whole year.</li>
 
 <dl class="staticmethod">
 <dt id="ladybug.datacollection.DataCollection.xxrange">
-<em class="property">static </em><code class="descname">xxrange</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>step_count</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datacollection.html#DataCollection.xxrange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.xxrange" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">xxrange</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>step_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datacollection.html#DataCollection.xxrange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datacollection.DataCollection.xxrange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate n values between start and end.</p>
 </dd></dl>
 
@@ -1075,7 +1114,7 @@ Default is set to the whole year.</li>
 <p>Ladybug data types.</p>
 <dl class="class">
 <dt id="ladybug.datatype.Angle">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Angle</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Angle" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Angle</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Angle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Angle.</p>
 <dl class="attribute">
@@ -1149,7 +1188,7 @@ Default is set to the whole year.</li>
 
 <dl class="class">
 <dt id="ladybug.datatype.DataPoint">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">DataPoint</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#DataPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataPoint" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">DataPoint</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#DataPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataPoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataTypeBase" title="ladybug.datatype.DataTypeBase"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataTypeBase</span></code></a></p>
 <p>A single Ladybug data point.</p>
 <dl class="attribute">
@@ -1178,7 +1217,7 @@ Default is set to the whole year.</li>
 
 <dl class="classmethod">
 <dt id="ladybug.datatype.DataPoint.from_data">
-<em class="property">classmethod </em><code class="descname">from_data</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#DataPoint.from_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataPoint.from_data" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_data</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#DataPoint.from_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataPoint.from_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Try to create a DataPoint from input data.</p>
 </dd></dl>
 
@@ -1222,7 +1261,7 @@ Default is set to the whole year.</li>
 
 <dl class="class">
 <dt id="ladybug.datatype.DataTypeBase">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">DataTypeBase</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard=None</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#DataTypeBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">DataTypeBase</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard=None</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#DataTypeBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Base type for data.</p>
 <dl class="attribute">
@@ -1251,20 +1290,20 @@ Default is set to the whole year.</li>
 
 <dl class="method">
 <dt id="ladybug.datatype.DataTypeBase.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#DataTypeBase.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#DataTypeBase.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET representation.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datatype.DataTypeBase.convert_to_ip">
-<code class="descname">convert_to_ip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#DataTypeBase.convert_to_ip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase.convert_to_ip" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert_to_ip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#DataTypeBase.convert_to_ip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase.convert_to_ip" title="Permalink to this definition">¶</a></dt>
 <dd><p>change value to IP.</p>
 <p>To only get the value in IP use to_ip property.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.datatype.DataTypeBase.convert_to_si">
-<code class="descname">convert_to_si</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#DataTypeBase.convert_to_si"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase.convert_to_si" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert_to_si</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#DataTypeBase.convert_to_si"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase.convert_to_si" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change value to SI.</p>
 <p>To only get the value in SI use to_si property.</p>
 </dd></dl>
@@ -1276,7 +1315,7 @@ Default is set to the whole year.</li>
 
 <dl class="method">
 <dt id="ladybug.datatype.DataTypeBase.is_in_range">
-<code class="descname">is_in_range</code><span class="sig-paren">(</span><em>value</em>, <em>raise_exception=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#DataTypeBase.is_in_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase.is_in_range" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_in_range</code><span class="sig-paren">(</span><em>value</em>, <em>raise_exception=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#DataTypeBase.is_in_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DataTypeBase.is_in_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>check if the value is in range.</p>
 </dd></dl>
 
@@ -1353,7 +1392,7 @@ Default is set to the whole year.</li>
 
 <dl class="class">
 <dt id="ladybug.datatype.DewPointTemperature">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">DewPointTemperature</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#DewPointTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DewPointTemperature" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">DewPointTemperature</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#DewPointTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DewPointTemperature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.Temperature" title="ladybug.datatype.Temperature"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.Temperature</span></code></a></p>
 <p>Dew point temperature.</p>
 <dl class="attribute">
@@ -1394,7 +1433,7 @@ Default is set to the whole year.</li>
 
 <dl class="class">
 <dt id="ladybug.datatype.Distance">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Distance</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em>, <em>conversion=1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Distance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Distance</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em>, <em>conversion=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Distance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Distance.</p>
 <dl class="attribute">
@@ -1465,7 +1504,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.DryBulbTemperature">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">DryBulbTemperature</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#DryBulbTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DryBulbTemperature" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">DryBulbTemperature</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#DryBulbTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.DryBulbTemperature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.Temperature" title="ladybug.datatype.Temperature"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.Temperature</span></code></a></p>
 <p>Dry bulb temperature.</p>
 <dl class="attribute">
@@ -1506,7 +1545,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.Illuminance">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Illuminance</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Illuminance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Illuminance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Illuminance</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Illuminance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Illuminance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Illuminance.</p>
 <dl class="attribute">
@@ -1575,7 +1614,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.Luminance">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Luminance</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Luminance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Luminance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Luminance</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Luminance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Luminance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.Illuminance" title="ladybug.datatype.Illuminance"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.Illuminance</span></code></a></p>
 <p>Luminance.</p>
 <dl class="attribute">
@@ -1632,7 +1671,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.Pressure">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Pressure</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Pressure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Pressure" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Pressure</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Pressure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Pressure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Atmospheric Pressure.</p>
 <dl class="attribute">
@@ -1700,7 +1739,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.Radiation">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Radiation</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Radiation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Radiation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Radiation</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Radiation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Radiation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Radiation.</p>
 <dl class="attribute">
@@ -1769,7 +1808,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.RelativeHumidity">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">RelativeHumidity</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#RelativeHumidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.RelativeHumidity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">RelativeHumidity</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#RelativeHumidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.RelativeHumidity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Relative humidity.</p>
 <dl class="attribute">
@@ -1837,7 +1876,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.SkyPatch">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">SkyPatch</code><span class="sig-paren">(</span><em>value</em>, <em>vector</em>, <em>id=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#SkyPatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.SkyPatch" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">SkyPatch</code><span class="sig-paren">(</span><em>value</em>, <em>vector</em>, <em>id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#SkyPatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.SkyPatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>SkyPatch.</p>
 <dl class="attribute">
@@ -1894,7 +1933,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.Speed">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Speed</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Speed" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Speed</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Speed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Speed.</p>
 <dl class="attribute">
@@ -1963,7 +2002,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.Temperature">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Temperature</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Temperature" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Temperature</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Temperature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Base type for temperature.</p>
 <dl class="attribute">
@@ -2037,7 +2076,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.Tenth">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Tenth</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Tenth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Tenth" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Tenth</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Tenth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Tenth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Tenth.</p>
 <dl class="attribute">
@@ -2099,7 +2138,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.Thousandths">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Thousandths</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Thousandths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Thousandths" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Thousandths</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Thousandths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Thousandths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Thousandths.</p>
 <dl class="attribute">
@@ -2156,7 +2195,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.Time">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Time</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#Time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Time" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">Time</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#Time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.Time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.DataPoint" title="ladybug.datatype.DataPoint"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.DataPoint</span></code></a></p>
 <p>Time.</p>
 <dl class="attribute">
@@ -2213,7 +2252,7 @@ creating the object.</p>
 
 <dl class="class">
 <dt id="ladybug.datatype.WindSpeed">
-<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">WindSpeed</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/datatype.html#WindSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.WindSpeed" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.datatype.</code><code class="descname">WindSpeed</code><span class="sig-paren">(</span><em>value</em>, <em>datetime=None</em>, <em>standard='SI'</em>, <em>nickname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/datatype.html#WindSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.datatype.WindSpeed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ladybug.datatype.Speed" title="ladybug.datatype.Speed"><code class="xref py py-class docutils literal"><span class="pre">ladybug.datatype.Speed</span></code></a></p>
 <p>Wind Speed.</p>
 <dl class="attribute">
@@ -2253,7 +2292,7 @@ creating the object.</p>
 <p>Ladybug datetime.</p>
 <dl class="class">
 <dt id="ladybug.dt.DateTime">
-<em class="property">class </em><code class="descclassname">ladybug.dt.</code><code class="descname">DateTime</code><a class="reference internal" href="modules/ladybug/dt.html#DateTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.dt.</code><code class="descname">DateTime</code><a class="reference internal" href="_modules/ladybug/dt.html#DateTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></p>
 <p>Create Ladybug Date time.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2272,13 +2311,13 @@ creating the object.</p>
 </table>
 <dl class="method">
 <dt id="ladybug.dt.DateTime.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/dt.html#DateTime.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/dt.html#DateTime.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET ToString.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.dt.DateTime.add_hour">
-<code class="descname">add_hour</code><span class="sig-paren">(</span><em>hour</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/dt.html#DateTime.add_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.add_hour" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_hour</code><span class="sig-paren">(</span><em>hour</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/dt.html#DateTime.add_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.add_hour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new DateTime from this time + timedelta.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2292,7 +2331,7 @@ creating the object.</p>
 
 <dl class="method">
 <dt id="ladybug.dt.DateTime.add_minute">
-<code class="descname">add_minute</code><span class="sig-paren">(</span><em>minute</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/dt.html#DateTime.add_minute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.add_minute" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_minute</code><span class="sig-paren">(</span><em>minute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/dt.html#DateTime.add_minute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.add_minute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new DateTime after the minutes are added.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2318,7 +2357,7 @@ creating the object.</p>
 
 <dl class="classmethod">
 <dt id="ladybug.dt.DateTime.from_date_time_string">
-<em class="property">classmethod </em><code class="descname">from_date_time_string</code><span class="sig-paren">(</span><em>datetime_string</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/dt.html#DateTime.from_date_time_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.from_date_time_string" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_date_time_string</code><span class="sig-paren">(</span><em>datetime_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/dt.html#DateTime.from_date_time_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.from_date_time_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Ladybug DateTime from a DateTime string.</p>
 <p>Usage:</p>
 <blockquote>
@@ -2327,7 +2366,7 @@ creating the object.</p>
 
 <dl class="classmethod">
 <dt id="ladybug.dt.DateTime.from_hoy">
-<em class="property">classmethod </em><code class="descname">from_hoy</code><span class="sig-paren">(</span><em>hoy</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/dt.html#DateTime.from_hoy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.from_hoy" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_hoy</code><span class="sig-paren">(</span><em>hoy</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/dt.html#DateTime.from_hoy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.from_hoy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Ladybug Datetime from an hour of the year.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2341,7 +2380,7 @@ creating the object.</p>
 
 <dl class="classmethod">
 <dt id="ladybug.dt.DateTime.from_moy">
-<em class="property">classmethod </em><code class="descname">from_moy</code><span class="sig-paren">(</span><em>moy</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/dt.html#DateTime.from_moy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.from_moy" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_moy</code><span class="sig-paren">(</span><em>moy</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/dt.html#DateTime.from_moy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.from_moy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Ladybug Datetime from a minute of the year.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2380,7 +2419,7 @@ creating the object.</p>
 
 <dl class="method">
 <dt id="ladybug.dt.DateTime.sub_hour">
-<code class="descname">sub_hour</code><span class="sig-paren">(</span><em>hour</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/dt.html#DateTime.sub_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.sub_hour" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sub_hour</code><span class="sig-paren">(</span><em>hour</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/dt.html#DateTime.sub_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.sub_hour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new DateTime from this time - timedelta.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2394,7 +2433,7 @@ creating the object.</p>
 
 <dl class="method">
 <dt id="ladybug.dt.DateTime.sub_minute">
-<code class="descname">sub_minute</code><span class="sig-paren">(</span><em>minute</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/dt.html#DateTime.sub_minute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.sub_minute" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sub_minute</code><span class="sig-paren">(</span><em>minute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/dt.html#DateTime.sub_minute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.sub_minute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new DateTime after the minutes are subtracted.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2408,7 +2447,7 @@ creating the object.</p>
 
 <dl class="method">
 <dt id="ladybug.dt.DateTime.to_simple_string">
-<code class="descname">to_simple_string</code><span class="sig-paren">(</span><em>separator='_'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/dt.html#DateTime.to_simple_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.to_simple_string" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_simple_string</code><span class="sig-paren">(</span><em>separator='_'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/dt.html#DateTime.to_simple_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.dt.DateTime.to_simple_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a simplified string.</p>
 </dd></dl>
 
@@ -2419,7 +2458,7 @@ creating the object.</p>
 <span id="ladybug-epw-module"></span><h2>ladybug.epw module<a class="headerlink" href="#module-ladybug.epw" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ladybug.epw.EPW">
-<em class="property">class </em><code class="descclassname">ladybug.epw.</code><code class="descname">EPW</code><span class="sig-paren">(</span><em>file_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/epw.html#EPW"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.epw.</code><code class="descname">EPW</code><span class="sig-paren">(</span><em>file_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/epw.html#EPW"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Import epw data from a local epw file.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2465,7 +2504,7 @@ liquid_precipitation_quantity</dd>
 </dl>
 <dl class="method">
 <dt id="ladybug.epw.EPW.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/epw.html#EPW.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/epw.html#EPW.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET ToString.</p>
 </dd></dl>
 
@@ -2709,7 +2748,7 @@ Read more at: <a class="reference external" href="https://energyplus.net/sites/a
 
 <dl class="method">
 <dt id="ladybug.epw.EPW.import_data">
-<code class="descname">import_data</code><span class="sig-paren">(</span><em>import_location_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/epw.html#EPW.import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.import_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">import_data</code><span class="sig-paren">(</span><em>import_location_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/epw.html#EPW.import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.import_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import data from an epw file.</p>
 <p>Hourly data will be saved in self.data and location data
 will be saved in self.location</p>
@@ -2717,7 +2756,7 @@ will be saved in self.location</p>
 
 <dl class="method">
 <dt id="ladybug.epw.EPW.import_data_by_field">
-<code class="descname">import_data_by_field</code><span class="sig-paren">(</span><em>field_number</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/epw.html#EPW.import_data_by_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.import_data_by_field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">import_data_by_field</code><span class="sig-paren">(</span><em>field_number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/epw.html#EPW.import_data_by_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.import_data_by_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return annual values for any field_number in epw file.</p>
 <p>This is a useful method to get the values for fields that Ladybug currently
 doesn’t import by default. You can find list of fields by typing
@@ -2897,7 +2936,7 @@ Read more at: <a class="reference external" href="https://energyplus.net/sites/a
 
 <dl class="method">
 <dt id="ladybug.epw.EPW.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>folder=None</em>, <em>file_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/epw.html#EPW.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.save" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save</code><span class="sig-paren">(</span><em>folder=None</em>, <em>file_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/epw.html#EPW.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save epw object as an epw file.</p>
 </dd></dl>
 
@@ -2916,7 +2955,7 @@ is 999.</p>
 
 <dl class="method">
 <dt id="ladybug.epw.EPW.to_wea">
-<code class="descname">to_wea</code><span class="sig-paren">(</span><em>file_path=None</em>, <em>hoys=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/epw.html#EPW.to_wea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.to_wea" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_wea</code><span class="sig-paren">(</span><em>file_path=None</em>, <em>hoys=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/epw.html#EPW.to_wea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPW.to_wea" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write an wea file from the epw file.</p>
 <p>WEA carries radiation values from epw. Gendaymtx uses these values to
 generate the sky. For an annual analysis it is identical to using epw2wea.</p>
@@ -3011,7 +3050,7 @@ It should have a minimum value of 0; missing value for this field is 9999.</p>
 
 <dl class="class">
 <dt id="ladybug.epw.EPWField">
-<em class="property">class </em><code class="descclassname">ladybug.epw.</code><code class="descname">EPWField</code><span class="sig-paren">(</span><em>field_dict</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/epw.html#EPWField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPWField" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.epw.</code><code class="descname">EPWField</code><span class="sig-paren">(</span><em>field_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/epw.html#EPWField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPWField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>An EPW field.</p>
 <dl class="attribute">
@@ -3036,7 +3075,7 @@ It should have a minimum value of 0; missing value for this field is 9999.</p>
 
 <dl class="class">
 <dt id="ladybug.epw.EPWFields">
-<em class="property">class </em><code class="descclassname">ladybug.epw.</code><code class="descname">EPWFields</code><a class="reference internal" href="modules/ladybug/epw.html#EPWFields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPWFields" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.epw.</code><code class="descname">EPWFields</code><a class="reference internal" href="_modules/ladybug/epw.html#EPWFields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPWFields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>EPW weather file fields.</p>
 <p>Read more at:
@@ -3051,7 +3090,7 @@ It should have a minimum value of 0; missing value for this field is 9999.</p>
 
 <dl class="classmethod">
 <dt id="ladybug.epw.EPWFields.field_by_number">
-<em class="property">classmethod </em><code class="descname">field_by_number</code><span class="sig-paren">(</span><em>field_number</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/epw.html#EPWFields.field_by_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPWFields.field_by_number" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">field_by_number</code><span class="sig-paren">(</span><em>field_number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/epw.html#EPWFields.field_by_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.epw.EPWFields.field_by_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an EPWField based on field number.</p>
 <p>0 Year
 1 Month
@@ -3093,13 +3132,16 @@ It should have a minimum value of 0; missing value for this field is 9999.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="ladybug-geometry-module">
+<h2>ladybug.geometry module<a class="headerlink" href="#ladybug-geometry-module" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="section" id="module-ladybug.header">
 <span id="ladybug-header-module"></span><h2>ladybug.header module<a class="headerlink" href="#module-ladybug.header" title="Permalink to this headline">¶</a></h2>
 <p>Ladybug Header.</p>
 <p>Header is useful for creating list of ladybug data.</p>
 <dl class="class">
 <dt id="ladybug.header.Header">
-<em class="property">class </em><code class="descclassname">ladybug.header.</code><code class="descname">Header</code><span class="sig-paren">(</span><em>location=None</em>, <em>data_type=None</em>, <em>unit=None</em>, <em>analysis_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/header.html#Header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.header.</code><code class="descname">Header</code><span class="sig-paren">(</span><em>location=None</em>, <em>data_type=None</em>, <em>unit=None</em>, <em>analysis_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/header.html#Header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>data collection header.</p>
 <p>Header carries data for location, data type, unit and analysis period</p>
@@ -3130,19 +3172,19 @@ It should have a minimum value of 0; missing value for this field is 9999.</p>
 
 <dl class="method">
 <dt id="ladybug.header.Header.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/header.html#Header.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/header.html#Header.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET ToString.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.header.Header.duplicate">
-<code class="descname">duplicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/header.html#Header.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header.duplicate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">duplicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/header.html#Header.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header.duplicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Duplicate header.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.header.Header.from_header">
-<em class="property">classmethod </em><code class="descname">from_header</code><span class="sig-paren">(</span><em>header</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/header.html#Header.from_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header.from_header" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_header</code><span class="sig-paren">(</span><em>header</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/header.html#Header.from_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header.from_header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Try to generate a header from a header or a header string.</p>
 </dd></dl>
 
@@ -3154,7 +3196,7 @@ It should have a minimum value of 0; missing value for this field is 9999.</p>
 
 <dl class="method">
 <dt id="ladybug.header.Header.to_tuple">
-<code class="descname">to_tuple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/header.html#Header.to_tuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header.to_tuple" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_tuple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/header.html#Header.to_tuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.header.Header.to_tuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return Ladybug header as a list.</p>
 </dd></dl>
 
@@ -3165,7 +3207,7 @@ It should have a minimum value of 0; missing value for this field is 9999.</p>
 <span id="ladybug-legendparameters-module"></span><h2>ladybug.legendparameters module<a class="headerlink" href="#module-ladybug.legendparameters" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ladybug.legendparameters.LegendParameters">
-<em class="property">class </em><code class="descclassname">ladybug.legendparameters.</code><code class="descname">LegendParameters</code><span class="sig-paren">(</span><em>legend_range=None</em>, <em>number_of_segments=11</em>, <em>colors=None</em>, <em>chart_type=0</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/legendparameters.html#LegendParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.legendparameters.</code><code class="descname">LegendParameters</code><span class="sig-paren">(</span><em>legend_range=None</em>, <em>number_of_segments=11</em>, <em>colors=None</em>, <em>chart_type=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/legendparameters.html#LegendParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Ladybug lagend parameters.</p>
 <dl class="attribute">
@@ -3211,7 +3253,7 @@ include “Arial”, “Times New Roman” or “Courier” (all without
 quotations). The text input here can be any font that is on your
 computer but the font must be of an Editable file type (as seen in
 the font folder off of your control panel).  Font files that are
-Print and Preview will not work.  If you wish to use a Bold version
+print and Preview will not work.  If you wish to use a Bold version
 of the font, include a “, Bold” at the end of the font name
 (example: “Arial, Bold”).</p>
 </dd></dl>
@@ -3246,22 +3288,22 @@ XY plane.</p>
 <p>Usage:</p>
 <blockquote>
 <div>lp = LegendParameters(legend_range = [2, 28])
-print lp.color(10)</div></blockquote>
+print(lp.color(10))</div></blockquote>
 <dl class="method">
 <dt id="ladybug.legendparameters.LegendParameters.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/legendparameters.html#LegendParameters.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/legendparameters.html#LegendParameters.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET ToString.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.legendparameters.LegendParameters.calculate_color">
-<code class="descname">calculate_color</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/legendparameters.html#LegendParameters.calculate_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.calculate_color" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_color</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/legendparameters.html#LegendParameters.calculate_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.calculate_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate color for a specific value.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.legendparameters.LegendParameters.calculate_colors">
-<code class="descname">calculate_colors</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/legendparameters.html#LegendParameters.calculate_colors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.calculate_colors" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_colors</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/legendparameters.html#LegendParameters.calculate_colors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.calculate_colors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list (or list of lists) of colors based on input values.</p>
 </dd></dl>
 
@@ -3279,7 +3321,7 @@ print lp.color(10)</div></blockquote>
 
 <dl class="method">
 <dt id="ladybug.legendparameters.LegendParameters.geometry">
-<code class="descname">geometry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/legendparameters.html#LegendParameters.geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.geometry" title="Permalink to this definition">¶</a></dt>
+<code class="descname">geometry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/legendparameters.html#LegendParameters.geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.geometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate legend geometry.</p>
 </dd></dl>
 
@@ -3291,13 +3333,13 @@ print lp.color(10)</div></blockquote>
 
 <dl class="method">
 <dt id="ladybug.legendparameters.LegendParameters.set_domain">
-<code class="descname">set_domain</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/legendparameters.html#LegendParameters.set_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.set_domain" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_domain</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/legendparameters.html#LegendParameters.set_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.set_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set domain of the colors based on min and max of a list of values.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.legendparameters.LegendParameters.text">
-<code class="descname">text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/legendparameters.html#LegendParameters.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.text" title="Permalink to this definition">¶</a></dt>
+<code class="descname">text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/legendparameters.html#LegendParameters.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.legendparameters.LegendParameters.text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return legend text.</p>
 </dd></dl>
 
@@ -3309,7 +3351,7 @@ print lp.color(10)</div></blockquote>
 <p>Useful functions for list operations.</p>
 <dl class="function">
 <dt id="ladybug.listoperations.duplicate">
-<code class="descclassname">ladybug.listoperations.</code><code class="descname">duplicate</code><span class="sig-paren">(</span><em>value</em>, <em>list_length</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/listoperations.html#duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.listoperations.duplicate" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.listoperations.</code><code class="descname">duplicate</code><span class="sig-paren">(</span><em>value</em>, <em>list_length</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/listoperations.html#duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.listoperations.duplicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a single value and duplicate it a certain number of times.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3333,7 +3375,7 @@ duplicate(value, list_length)
 
 <dl class="function">
 <dt id="ladybug.listoperations.flatten">
-<code class="descclassname">ladybug.listoperations.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>input_list</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/listoperations.html#flatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.listoperations.flatten" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.listoperations.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>input_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/listoperations.html#flatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.listoperations.flatten" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a flattened genertor from an input list.</p>
 <p>Usage:</p>
 <blockquote>
@@ -3344,7 +3386,7 @@ list(flatten(input_list))
 
 <dl class="function">
 <dt id="ladybug.listoperations.unflatten">
-<code class="descclassname">ladybug.listoperations.</code><code class="descname">unflatten</code><span class="sig-paren">(</span><em>guide</em>, <em>falttened_input</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/listoperations.html#unflatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.listoperations.unflatten" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.listoperations.</code><code class="descname">unflatten</code><span class="sig-paren">(</span><em>guide</em>, <em>falttened_input</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/listoperations.html#unflatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.listoperations.unflatten" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unflatten a falttened generator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3372,7 +3414,7 @@ unflatten(guide, iter(input_list))
 <p>Ladybug location.</p>
 <dl class="class">
 <dt id="ladybug.location.Location">
-<em class="property">class </em><code class="descclassname">ladybug.location.</code><code class="descname">Location</code><span class="sig-paren">(</span><em>city=None</em>, <em>country=None</em>, <em>latitude=0</em>, <em>longitude=0</em>, <em>time_zone=0</em>, <em>elevation=0</em>, <em>station_id=None</em>, <em>source=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/location.html#Location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.location.</code><code class="descname">Location</code><span class="sig-paren">(</span><em>city=None</em>, <em>country=None</em>, <em>latitude=0</em>, <em>longitude=0</em>, <em>time_zone=0</em>, <em>elevation=0</em>, <em>station_id=None</em>, <em>source=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/location.html#Location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Ladybug Location.</p>
 <dl class="attribute">
@@ -3425,7 +3467,7 @@ unflatten(guide, iter(input_list))
 
 <dl class="method">
 <dt id="ladybug.location.Location.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/location.html#Location.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/location.html#Location.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET ToString.</p>
 </dd></dl>
 
@@ -3441,7 +3483,7 @@ unflatten(guide, iter(input_list))
 
 <dl class="method">
 <dt id="ladybug.location.Location.duplicate">
-<code class="descname">duplicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/location.html#Location.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.duplicate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">duplicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/location.html#Location.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.duplicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Duplicate location.</p>
 </dd></dl>
 
@@ -3459,7 +3501,7 @@ unflatten(guide, iter(input_list))
 
 <dl class="classmethod">
 <dt id="ladybug.location.Location.from_json">
-<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>loc_json</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/location.html#Location.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.from_json" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>loc_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/location.html#Location.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a location from json.
 {</p>
 <blockquote>
@@ -3473,7 +3515,7 @@ unflatten(guide, iter(input_list))
 
 <dl class="classmethod">
 <dt id="ladybug.location.Location.from_location">
-<em class="property">classmethod </em><code class="descname">from_location</code><span class="sig-paren">(</span><em>location</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/location.html#Location.from_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.from_location" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_location</code><span class="sig-paren">(</span><em>location</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/location.html#Location.from_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.from_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Try to create a Ladybug location from a location string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3530,7 +3572,7 @@ unflatten(guide, iter(input_list))
 
 <dl class="method">
 <dt id="ladybug.location.Location.to_json">
-<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/location.html#Location.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.to_json" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/location.html#Location.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.location.Location.to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a location from json.
 {</p>
 <blockquote>
@@ -3545,12 +3587,15 @@ unflatten(guide, iter(input_list))
 </dd></dl>
 
 </div>
+<div class="section" id="ladybug-output-module">
+<h2>ladybug.output module<a class="headerlink" href="#ladybug-output-module" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="section" id="module-ladybug.psychrometrics">
 <span id="ladybug-psychrometrics-module"></span><h2>ladybug.psychrometrics module<a class="headerlink" href="#module-ladybug.psychrometrics" title="Permalink to this headline">¶</a></h2>
 <p>A list of useful functions for psychrometrics</p>
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_air_temp_from_enthalpy">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_air_temp_from_enthalpy</code><span class="sig-paren">(</span><em>enthalpy</em>, <em>abs_humid</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_air_temp_from_enthalpy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_air_temp_from_enthalpy" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_air_temp_from_enthalpy</code><span class="sig-paren">(</span><em>enthalpy</em>, <em>abs_humid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_air_temp_from_enthalpy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_air_temp_from_enthalpy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Air Temperature (C).</p>
 <p>The calculation at Enthalpy enthalpy (kJ/kg) and Humidity Ratio abs_humid
 (kg water/kg air).</p>
@@ -3558,28 +3603,28 @@ unflatten(guide, iter(input_list))
 
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_air_temp_from_wet_bulb">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_air_temp_from_wet_bulb</code><span class="sig-paren">(</span><em>wet_bulb</em>, <em>rel_humid</em>, <em>avg_bar_press=101325</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_air_temp_from_wet_bulb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_air_temp_from_wet_bulb" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_air_temp_from_wet_bulb</code><span class="sig-paren">(</span><em>wet_bulb</em>, <em>rel_humid</em>, <em>avg_bar_press=101325</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_air_temp_from_wet_bulb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_air_temp_from_wet_bulb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Air Temperature (C) at Wet Bulb Temperature wet_bulb (C),
 Relative Humidity rel_humid (%) and Barometric Pressure avg_bar_press (Pa).</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_dew_point">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_dew_point</code><span class="sig-paren">(</span><em>db_temp</em>, <em>rh</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_dew_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_dew_point" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_dew_point</code><span class="sig-paren">(</span><em>db_temp</em>, <em>rh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_dew_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_dew_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Dew Point Temperature (C) at Temperature db_temp (C) and
 Relative Humidity rh (%).</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_enthalpy">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_enthalpy</code><span class="sig-paren">(</span><em>air_temp</em>, <em>humid_ratio</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_enthalpy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_enthalpy" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_enthalpy</code><span class="sig-paren">(</span><em>air_temp</em>, <em>humid_ratio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_enthalpy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_enthalpy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Enthalpy (kJ/kg) at Humidity Ratio humid_ratio (kg water/kg air)
 and at Temperature air_temp (C).</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_humid_ratio">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_humid_ratio</code><span class="sig-paren">(</span><em>air_temp</em>, <em>rel_humid</em>, <em>bar_press=101325</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_humid_ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_humid_ratio" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_humid_ratio</code><span class="sig-paren">(</span><em>air_temp</em>, <em>rel_humid</em>, <em>bar_press=101325</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_humid_ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_humid_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Humidity Ratio (kg water/kg air), Partial Pressure (Pa), and
 saturation_pressure (Pa) at a given
 at Temperature air_temp (C), Relative Humidity rel_humid (%),
@@ -3588,7 +3633,7 @@ and Barometric Pressure bar_press (Pa).</p>
 
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_rel_humid_from_dry_bulb_dew_pt">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_rel_humid_from_dry_bulb_dew_pt</code><span class="sig-paren">(</span><em>air_temp</em>, <em>dew_pt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_rel_humid_from_dry_bulb_dew_pt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_rel_humid_from_dry_bulb_dew_pt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_rel_humid_from_dry_bulb_dew_pt</code><span class="sig-paren">(</span><em>air_temp</em>, <em>dew_pt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_rel_humid_from_dry_bulb_dew_pt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_rel_humid_from_dry_bulb_dew_pt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Relative Humidity (%).</p>
 <p>Relative humidity is calculated at Temperature air_temp (C), and Dew Point dew_pt
 (C).</p>
@@ -3596,14 +3641,14 @@ and Barometric Pressure bar_press (Pa).</p>
 
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_rel_humid_from_humid_ratio">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_rel_humid_from_humid_ratio</code><span class="sig-paren">(</span><em>abs_humid</em>, <em>air_temp</em>, <em>bar_press=101325</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_rel_humid_from_humid_ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_rel_humid_from_humid_ratio" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_rel_humid_from_humid_ratio</code><span class="sig-paren">(</span><em>abs_humid</em>, <em>air_temp</em>, <em>bar_press=101325</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_rel_humid_from_humid_ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_rel_humid_from_humid_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Relative Humidity (%) at Humidity Ratio abs_humid (kg water/kg air),
 Temperature air_temp (C), and Barometric Pressure bar_press (Pa).</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_saturated_vapor_pressure_high_accuracy">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_saturated_vapor_pressure_high_accuracy</code><span class="sig-paren">(</span><em>t_kelvin</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_saturated_vapor_pressure_high_accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_saturated_vapor_pressure_high_accuracy" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_saturated_vapor_pressure_high_accuracy</code><span class="sig-paren">(</span><em>t_kelvin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_saturated_vapor_pressure_high_accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_saturated_vapor_pressure_high_accuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Saturated Vapor Pressure (Pa) at Temperature t_kelvin (K)
 to a high accuracy.  The function accounts for the different behaviour of above
 and below the freezing point of water.</p>
@@ -3611,14 +3656,14 @@ and below the freezing point of water.</p>
 
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_saturated_vapor_pressure_torr">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_saturated_vapor_pressure_torr</code><span class="sig-paren">(</span><em>temperature</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_saturated_vapor_pressure_torr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_saturated_vapor_pressure_torr" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_saturated_vapor_pressure_torr</code><span class="sig-paren">(</span><em>temperature</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_saturated_vapor_pressure_torr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_saturated_vapor_pressure_torr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Saturated Vapor Pressure (Torr) at Temperature T (C)
 Used frequently throughtout the pmv comfort functions.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ladybug.psychrometrics.find_wet_bulb">
-<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_wet_bulb</code><span class="sig-paren">(</span><em>db_temp</em>, <em>rh</em>, <em>psta=101325</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/psychrometrics.html#find_wet_bulb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_wet_bulb" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ladybug.psychrometrics.</code><code class="descname">find_wet_bulb</code><span class="sig-paren">(</span><em>db_temp</em>, <em>rh</em>, <em>psta=101325</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/psychrometrics.html#find_wet_bulb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.psychrometrics.find_wet_bulb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Wet Bulb Temperature (C) at Temperature db_temp (C),
 Relative Humidity rh (%), and Barometric Pressure psta (Pa).</p>
 </dd></dl>
@@ -3628,7 +3673,7 @@ Relative Humidity rh (%), and Barometric Pressure psta (Pa).</p>
 <span id="ladybug-sunpath-module"></span><h2>ladybug.sunpath module<a class="headerlink" href="#module-ladybug.sunpath" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ladybug.sunpath.Sun">
-<em class="property">class </em><code class="descclassname">ladybug.sunpath.</code><code class="descname">Sun</code><span class="sig-paren">(</span><em>datetime</em>, <em>altitude</em>, <em>azimuth</em>, <em>is_solar_time</em>, <em>is_daylight_saving</em>, <em>north_angle</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sun" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.sunpath.</code><code class="descname">Sun</code><span class="sig-paren">(</span><em>datetime</em>, <em>altitude</em>, <em>azimuth</em>, <em>is_solar_time</em>, <em>is_daylight_saving</em>, <em>north_angle</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sun" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Sun.</p>
 <dl class="attribute">
@@ -3677,7 +3722,7 @@ used to calculate the solar vector.</p>
 
 <dl class="method">
 <dt id="ladybug.sunpath.Sun.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sun.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sun.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sun.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sun.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET ToString method.</p>
 </dd></dl>
 
@@ -3758,7 +3803,7 @@ used to calculate the solar vector.</p>
 
 <dl class="class">
 <dt id="ladybug.sunpath.Sunpath">
-<em class="property">class </em><code class="descclassname">ladybug.sunpath.</code><code class="descname">Sunpath</code><span class="sig-paren">(</span><em>latitude=0</em>, <em>longitude=0</em>, <em>time_zone=0</em>, <em>north_angle=0</em>, <em>daylight_saving_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sunpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.sunpath.</code><code class="descname">Sunpath</code><span class="sig-paren">(</span><em>latitude=0</em>, <em>longitude=0</em>, <em>time_zone=0</em>, <em>north_angle=0</em>, <em>daylight_saving_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sunpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Calculates sun path.</p>
 <dl class="attribute">
@@ -3804,7 +3849,7 @@ are to the East of Greenwich and negative values are to the West.</p>
 # initiate sunpath
 sp = sunpath.Sunpath(50)
 sun = sp.calculate_sun(1, 1, 12) # calculate sun data for Jan 1 at noon
-print sun.azimuth, sun.altitude</div></blockquote>
+print(sun.azimuth, sun.altitude)</div></blockquote>
 <dl class="attribute">
 <dt id="ladybug.sunpath.Sunpath.PI">
 <code class="descname">PI</code><em class="property"> = 3.141592653589793</em><a class="headerlink" href="#ladybug.sunpath.Sunpath.PI" title="Permalink to this definition">¶</a></dt>
@@ -3812,7 +3857,7 @@ print sun.azimuth, sun.altitude</div></blockquote>
 
 <dl class="method">
 <dt id="ladybug.sunpath.Sunpath.calculate_sun">
-<code class="descname">calculate_sun</code><span class="sig-paren">(</span><em>month</em>, <em>day</em>, <em>hour</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sunpath.calculate_sun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sun" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_sun</code><span class="sig-paren">(</span><em>month</em>, <em>day</em>, <em>hour</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sunpath.calculate_sun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sun" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Sun data for an hour of the year.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3836,7 +3881,7 @@ print sun.azimuth, sun.altitude</div></blockquote>
 
 <dl class="method">
 <dt id="ladybug.sunpath.Sunpath.calculate_sun_from_data_time">
-<code class="descname">calculate_sun_from_data_time</code><span class="sig-paren">(</span><em>datetime</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sunpath.calculate_sun_from_data_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sun_from_data_time" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_sun_from_data_time</code><span class="sig-paren">(</span><em>datetime</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sunpath.calculate_sun_from_data_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sun_from_data_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Sun for an hour of the year.</p>
 <p>This code is originally written by Trygve Wastvedt          (<a class="reference external" href="mailto:Trygve&#46;Wastvedt&#37;&#52;&#48;gmail&#46;com">Trygve<span>&#46;</span>Wastvedt<span>&#64;</span>gmail<span>&#46;</span>com</a>)
 based on (NOAA) and modified by Chris Mackey and Mostapha Roudsari</p>
@@ -3860,7 +3905,7 @@ based on (NOAA) and modified by Chris Mackey and Mostapha Roudsari</p>
 
 <dl class="method">
 <dt id="ladybug.sunpath.Sunpath.calculate_sun_from_hoy">
-<code class="descname">calculate_sun_from_hoy</code><span class="sig-paren">(</span><em>hoy</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sunpath.calculate_sun_from_hoy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sun_from_hoy" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_sun_from_hoy</code><span class="sig-paren">(</span><em>hoy</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sunpath.calculate_sun_from_hoy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sun_from_hoy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Sun data for an hour of the year.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3882,7 +3927,7 @@ based on (NOAA) and modified by Chris Mackey and Mostapha Roudsari</p>
 
 <dl class="method">
 <dt id="ladybug.sunpath.Sunpath.calculate_sunrise_sunset">
-<code class="descname">calculate_sunrise_sunset</code><span class="sig-paren">(</span><em>month</em>, <em>day</em>, <em>depression=0.833</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sunpath.calculate_sunrise_sunset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sunrise_sunset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_sunrise_sunset</code><span class="sig-paren">(</span><em>month</em>, <em>day</em>, <em>depression=0.833</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sunpath.calculate_sunrise_sunset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sunrise_sunset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate sunrise, noon and sunset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3896,7 +3941,7 @@ based on (NOAA) and modified by Chris Mackey and Mostapha Roudsari</p>
 
 <dl class="method">
 <dt id="ladybug.sunpath.Sunpath.calculate_sunrise_sunset_from_datetime">
-<code class="descname">calculate_sunrise_sunset_from_datetime</code><span class="sig-paren">(</span><em>datetime</em>, <em>depression=0.833</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sunpath.calculate_sunrise_sunset_from_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sunrise_sunset_from_datetime" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_sunrise_sunset_from_datetime</code><span class="sig-paren">(</span><em>datetime</em>, <em>depression=0.833</em>, <em>is_solar_time=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sunpath.calculate_sunrise_sunset_from_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.calculate_sunrise_sunset_from_datetime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate sunrise, sunset and noon for a day of year.</p>
 </dd></dl>
 
@@ -3907,7 +3952,7 @@ based on (NOAA) and modified by Chris Mackey and Mostapha Roudsari</p>
 
 <dl class="method">
 <dt id="ladybug.sunpath.Sunpath.draw_sunpath">
-<code class="descname">draw_sunpath</code><span class="sig-paren">(</span><em>hoys=None</em>, <em>origin=None</em>, <em>scale=1</em>, <em>sun_scale=1</em>, <em>annual=True</em>, <em>rem_night=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sunpath.draw_sunpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.draw_sunpath" title="Permalink to this definition">¶</a></dt>
+<code class="descname">draw_sunpath</code><span class="sig-paren">(</span><em>hoys=None</em>, <em>origin=None</em>, <em>scale=1</em>, <em>sun_scale=1</em>, <em>annual=True</em>, <em>rem_night=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sunpath.draw_sunpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.draw_sunpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create sunpath geometry.         This method should only be used from the + libraries.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3939,13 +3984,13 @@ suns: A list of suns.</p>
 
 <dl class="classmethod">
 <dt id="ladybug.sunpath.Sunpath.from_location">
-<em class="property">classmethod </em><code class="descname">from_location</code><span class="sig-paren">(</span><em>location</em>, <em>north_angle=0</em>, <em>daylight_saving_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sunpath.from_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.from_location" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_location</code><span class="sig-paren">(</span><em>location</em>, <em>north_angle=0</em>, <em>daylight_saving_period=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sunpath.from_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.from_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sun path from a LBlocation.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.sunpath.Sunpath.is_daylight_saving_hour">
-<code class="descname">is_daylight_saving_hour</code><span class="sig-paren">(</span><em>datetime</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/sunpath.html#Sunpath.is_daylight_saving_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.is_daylight_saving_hour" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_daylight_saving_hour</code><span class="sig-paren">(</span><em>datetime</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/sunpath.html#Sunpath.is_daylight_saving_hour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.sunpath.Sunpath.is_daylight_saving_hour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a datetime is a daylight saving time.</p>
 </dd></dl>
 
@@ -3974,35 +4019,46 @@ suns: A list of suns.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="ladybug-sunpathplus-module">
+<h2>ladybug.sunpathplus module<a class="headerlink" href="#ladybug-sunpathplus-module" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="section" id="module-ladybug.wea">
 <span id="ladybug-wea-module"></span><h2>ladybug.wea module<a class="headerlink" href="#module-ladybug.wea" title="Permalink to this headline">¶</a></h2>
 <p>Wea weather file.</p>
 <dl class="class">
 <dt id="ladybug.wea.Wea">
-<em class="property">class </em><code class="descclassname">ladybug.wea.</code><code class="descname">Wea</code><span class="sig-paren">(</span><em>location</em>, <em>direct_normal_radiation</em>, <em>diffuse_horizontal_radiation</em>, <em>timestep=1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/wea.html#Wea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ladybug.wea.</code><code class="descname">Wea</code><span class="sig-paren">(</span><em>location</em>, <em>direct_normal_radiation</em>, <em>diffuse_horizontal_radiation</em>, <em>timestep=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/wea.html#Wea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>An annual WEA data for a location.</p>
 <dl class="method">
 <dt id="ladybug.wea.Wea.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/wea.html#Wea.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.ToString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/wea.html#Wea.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite .NET ToString.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="ladybug.wea.Wea.from_epw_file">
-<em class="property">classmethod </em><code class="descname">from_epw_file</code><span class="sig-paren">(</span><em>epwfile</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/wea.html#Wea.from_epw_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.from_epw_file" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_epw_file</code><span class="sig-paren">(</span><em>epwfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/wea.html#Wea.from_epw_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.from_epw_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a wea object from an epw file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>epwfile</strong> – Full path to epw weather file.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.wea.Wea.get_radiation_values">
-<code class="descname">get_radiation_values</code><span class="sig-paren">(</span><em>month</em>, <em>day</em>, <em>hour</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/wea.html#Wea.get_radiation_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.get_radiation_values" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_radiation_values</code><span class="sig-paren">(</span><em>month</em>, <em>day</em>, <em>hour</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/wea.html#Wea.get_radiation_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.get_radiation_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get direct and diffuse radiation values for a point in time.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ladybug.wea.Wea.get_radiation_values_for_hoy">
-<code class="descname">get_radiation_values_for_hoy</code><span class="sig-paren">(</span><em>hoy</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/wea.html#Wea.get_radiation_values_for_hoy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.get_radiation_values_for_hoy" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_radiation_values_for_hoy</code><span class="sig-paren">(</span><em>hoy</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/wea.html#Wea.get_radiation_values_for_hoy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.get_radiation_values_for_hoy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get direct and diffuse radiation values for an hoy.</p>
 </dd></dl>
 
@@ -4020,7 +4076,7 @@ suns: A list of suns.</p>
 
 <dl class="method">
 <dt id="ladybug.wea.Wea.write">
-<code class="descname">write</code><span class="sig-paren">(</span><em>file_path</em>, <em>hoys=None</em>, <em>write_hours=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ladybug/wea.html#Wea.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.write" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write</code><span class="sig-paren">(</span><em>file_path</em>, <em>hoys=None</em>, <em>write_hours=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ladybug/wea.html#Wea.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ladybug.wea.Wea.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the wea file.</p>
 <p>WEA carries radiation values from epw and is what gendaymtx uses to
 generate the sky.</p>
@@ -4048,7 +4104,7 @@ generate the sky.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="sources/ladybug.rst.txt"
+      <a href="_sources/ladybug.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
