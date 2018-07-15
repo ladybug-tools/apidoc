@@ -1,0 +1,435 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.radiance.runmanager package &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee.radiance.sky package" href="honeybee.radiance.sky.html" />
+    <link rel="prev" title="honeybee.radiance.recipe.threephase package" href="honeybee.radiance.recipe.threephase.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="honeybee-radiance-runmanager-package">
+<h1>honeybee.radiance.runmanager package<a class="headerlink" href="#honeybee-radiance-runmanager-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-honeybee.radiance.runmanager.runmanager">
+<span id="honeybee-radiance-runmanager-runmanager-module"></span><h2>honeybee.radiance.runmanager.runmanager module<a class="headerlink" href="#module-honeybee.radiance.runmanager.runmanager" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Analysis workflows.</p>
+<dl class="class">
+<dt id="honeybee.radiance.runmanager.runmanager.Runner">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.runmanager.runmanager.</code><code class="descname">Runner</code><span class="sig-paren">(</span><em>title</em>, <em>tasks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/runmanager.html#Runner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.runmanager.Runner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Run manager for Radiance tasks.</p>
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.runmanager.Runner.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>cpus=1</em>, <em>cwd=None</em>, <em>env=None</em>, <em>update_freq=5</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/runmanager.html#Runner.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.runmanager.Runner.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute all task groups.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="honeybee.radiance.runmanager.runmanager.TaskGroup">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.runmanager.runmanager.</code><code class="descname">TaskGroup</code><span class="sig-paren">(</span><em>tasks=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/runmanager.html#TaskGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.runmanager.TaskGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A group of radiance tasks which will be executed in parallel.</p>
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.runmanager.TaskGroup.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>cpus=1</em>, <em>cwd=None</em>, <em>env=None</em>, <em>update_freq=5</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/runmanager.html#TaskGroup.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.runmanager.TaskGroup.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute tasks in this task group in parallel.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.runmanager.TaskGroup.is_finished">
+<code class="descname">is_finished</code><a class="headerlink" href="#honeybee.radiance.runmanager.runmanager.TaskGroup.is_finished" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.runmanager.TaskGroup.progress">
+<code class="descname">progress</code><a class="headerlink" href="#honeybee.radiance.runmanager.runmanager.TaskGroup.progress" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.runmanager.TaskGroup.terminate">
+<code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/runmanager.html#TaskGroup.terminate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.runmanager.TaskGroup.terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate task group.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.runmanager.task">
+<span id="honeybee-radiance-runmanager-task-module"></span><h2>honeybee.radiance.runmanager.task module<a class="headerlink" href="#module-honeybee.radiance.runmanager.task" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Task.</p>
+<p>A task is a series of command that will be executed one after each other.</p>
+<dl class="class">
+<dt id="honeybee.radiance.runmanager.task.SubTask">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.runmanager.task.</code><code class="descname">SubTask</code><span class="sig-paren">(</span><em>title</em>, <em>command</em>, <em>output_file=None</em>, <em>expected_output_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#SubTask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.SubTask.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#SubTask.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.command">
+<code class="descname">command</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.command" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of command for this task.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.cpu_demand">
+<code class="descname">cpu_demand</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.cpu_demand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of cpus that this task will be using.</p>
+<p>This number will always be 1 on Windows as radiance doesn’t support
+multi-processor calculation on Windows.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.SubTask.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>cwd=None</em>, <em>env=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#SubTask.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute command one after each other.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.runmanager.task.SubTask.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>task_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#SubTask.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a task from a dictionary.</p>
+<p>{‘title’: self._title, ‘command’: self.command}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.is_finished">
+<code class="descname">is_finished</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.is_finished" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.is_running">
+<code class="descname">is_running</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.is_running" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.is_started">
+<code class="descname">is_started</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.is_started" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.is_succeed">
+<code class="descname">is_succeed</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.is_succeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.progress">
+<code class="descname">progress</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Progress as a percentage.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.progress_report">
+<code class="descname">progress_report</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.progress_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Human readable progress report.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.stderr">
+<code class="descname">stderr</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.stderr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return standard errors if any.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.stdout">
+<code class="descname">stdout</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.stdout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return standard output if any.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.SubTask.terminate">
+<code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#SubTask.terminate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate subtask.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.SubTask.title">
+<code class="descname">title</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>SubTask title.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.SubTask.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#SubTask.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.SubTask.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Task as a dictionary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="honeybee.radiance.runmanager.task.Task">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.runmanager.task.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>title</em>, <em>subtasks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A collection of subtasks to be executed one after each other.</p>
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.Task.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#Task.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.Task.count">
+<code class="descname">count</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Length of subtasks.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.Task.cpu_demand">
+<code class="descname">cpu_demand</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.cpu_demand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of cpus that this task will be using.</p>
+<p>This number will always be 1 on Windows as radiance doesn’t support
+multi-processor calculation on Windows.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.Task.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>cwd=None</em>, <em>env=None</em>, <em>verbose=True</em>, <em>update_freq=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#Task.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute this taskself.</p>
+<p>This method is blocking and will wait until the execution is finished.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.Task.execute_next">
+<code class="descname">execute_next</code><span class="sig-paren">(</span><em>cwd=None</em>, <em>env=None</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#Task.execute_next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.execute_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute next task in line.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.Task.execute_subtask">
+<code class="descname">execute_subtask</code><span class="sig-paren">(</span><em>task_index</em>, <em>cwd=None</em>, <em>env=None</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#Task.execute_subtask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.execute_subtask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.runmanager.task.Task.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>task_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#Task.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a task from a dictionary.</p>
+<p>{‘title’: self._title, ‘subtasks’: [{}, {}]}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.Task.is_finished">
+<code class="descname">is_finished</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.is_finished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the execution of this task is finished.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.Task.is_running">
+<code class="descname">is_running</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.is_running" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.Task.is_succeed">
+<code class="descname">is_succeed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#Task.is_succeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.is_succeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if all subtasks are executed successfully.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.Task.progress_report">
+<code class="descname">progress_report</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.progress_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return human readable progress of subtasks.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.Task.subtasks">
+<code class="descname">subtasks</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.subtasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of subtasks.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.Task.terminate">
+<code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#Task.terminate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate subtask.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.runmanager.task.Task.title">
+<code class="descname">title</code><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>SubTask title.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.runmanager.task.Task.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager/task.html#Task.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.task.Task.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Task as a dictionary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.runmanager">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-honeybee.radiance.runmanager" title="Permalink to this headline">¶</a></h2>
+<p>Run manager for Radiance studies.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee.html">honeybee package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee.energyplus.html">honeybee.energyplus package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee.radiance.html">honeybee.radiance package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="honeybee.radiance.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysisgrid">honeybee.radiance.analysisgrid module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysispoint">honeybee.radiance.analysispoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.datatype">honeybee.radiance.datatype module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.factory">honeybee.radiance.factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.imagecollection">honeybee.radiance.imagecollection module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.primitive">honeybee.radiance.primitive module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.properties">honeybee.radiance.properties module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radfile">honeybee.radiance.radfile module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radparser">honeybee.radiance.radparser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.scene">honeybee.radiance.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.staticscene">honeybee.radiance.staticscene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.view">honeybee.radiance.view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.server.html">honeybee.server package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.vectormath.html">honeybee.vectormath package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.config">honeybee.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.dataoperation">honeybee.dataoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.futil">honeybee.futil module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.geometryoperation">honeybee.geometryoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbdynamicsurface">honeybee.hbdynamicsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbfensurface">honeybee.hbfensurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbobject">honeybee.hbobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.plus">honeybee.plus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfacetype">honeybee.surfacetype module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.utilcol">honeybee.utilcol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="honeybee.html">honeybee package</a><ul>
+  <li><a href="honeybee.radiance.html">honeybee.radiance package</a><ul>
+      <li>Previous: <a href="honeybee.radiance.recipe.threephase.html" title="previous chapter">honeybee.radiance.recipe.threephase package</a></li>
+      <li>Next: <a href="honeybee.radiance.sky.html" title="next chapter">honeybee.radiance.sky package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/honeybee.radiance.runmanager.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -33,8 +33,81 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="honeybee-energyplus-package">
+<h1>honeybee.energyplus package<a class="headerlink" href="#honeybee-energyplus-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-honeybee.energyplus.filemanager">
+<span id="honeybee-energyplus-filemanager-module"></span><h2>honeybee.energyplus.filemanager module<a class="headerlink" href="#module-honeybee.energyplus.filemanager" title="Permalink to this headline">¶</a></h2>
+<p>A collection of auxiliary funtions for working with radiance files and objects.</p>
+<dl class="function">
+<dt id="honeybee.energyplus.filemanager.get_energy_plus_objects_from_file">
+<code class="descclassname">honeybee.energyplus.filemanager.</code><code class="descname">get_energy_plus_objects_from_file</code><span class="sig-paren">(</span><em>ep_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/energyplus/filemanager.html#get_energy_plus_objects_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.energyplus.filemanager.get_energy_plus_objects_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse EnergyPlus file and return a list of radiance objects as separate strings.</p>
+<p>TODO: Create a class for each EnergyPlus object and return Python objects
+instead of strings</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ep_file_path</strong> – Path to EnergyPlus file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of strings. Each string represents a differnt Radiance Object</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Usage:</dt>
+<dd>get_energy_plus_objects_from_file(r”C:/ladybug/21MAR900/energySimulation/21MAR900.rad”)</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="honeybee.energyplus.filemanager.get_energy_plus_objects_from_string">
+<code class="descclassname">honeybee.energyplus.filemanager.</code><code class="descname">get_energy_plus_objects_from_string</code><span class="sig-paren">(</span><em>ep_file_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/energyplus/filemanager.html#get_energy_plus_objects_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.energyplus.filemanager.get_energy_plus_objects_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse idf file string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ep_file_string</strong> – EnergyPlus data as a single string. The string can be multiline</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of strings. Each string represents a differnt Radiance Object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.energyplus.geometryrules">
+<span id="honeybee-energyplus-geometryrules-module"></span><h2>honeybee.energyplus.geometryrules module<a class="headerlink" href="#module-honeybee.energyplus.geometryrules" title="Permalink to this headline">¶</a></h2>
+<p>EnergyPlus Global Geometry Rules.</p>
+<dl class="class">
+<dt id="honeybee.energyplus.geometryrules.GlobalGeometryRules">
+<em class="property">class </em><code class="descclassname">honeybee.energyplus.geometryrules.</code><code class="descname">GlobalGeometryRules</code><span class="sig-paren">(</span><em>starting_corner='LowerLeftCorner'</em>, <em>direction='CounterClockWise'</em>, <em>system='Absolute'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/energyplus/geometryrules.html#GlobalGeometryRules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.energyplus.geometryrules.GlobalGeometryRules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Global Geometry Rules.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.energyplus">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-honeybee.energyplus" title="Permalink to this headline">¶</a></h2>
+<p>Honeybee EnergyPlus libraries.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -87,6 +160,7 @@
 <li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.plus">honeybee.plus module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
@@ -129,80 +203,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="honeybee-energyplus-package">
-<h1>honeybee.energyplus package<a class="headerlink" href="#honeybee-energyplus-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-honeybee.energyplus.filemanager">
-<span id="honeybee-energyplus-filemanager-module"></span><h2>honeybee.energyplus.filemanager module<a class="headerlink" href="#module-honeybee.energyplus.filemanager" title="Permalink to this headline">¶</a></h2>
-<p>A collection of auxiliary funtions for working with radiance files and objects.</p>
-<dl class="function">
-<dt id="honeybee.energyplus.filemanager.get_energy_plus_objects_from_file">
-<code class="descclassname">honeybee.energyplus.filemanager.</code><code class="descname">get_energy_plus_objects_from_file</code><span class="sig-paren">(</span><em>ep_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/energyplus/filemanager.html#get_energy_plus_objects_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.energyplus.filemanager.get_energy_plus_objects_from_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse EnergyPlus file and return a list of radiance objects as separate strings.</p>
-<p>TODO: Create a class for each EnergyPlus object and return Python objects
-instead of strings</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ep_file_path</strong> – Path to EnergyPlus file</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of strings. Each string represents a differnt Rdiance Object</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Usage:</dt>
-<dd>get_energy_plus_objects_from_file(r”C:/ladybug/21MAR900/energySimulation/21MAR900.rad”)</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="honeybee.energyplus.filemanager.get_energy_plus_objects_from_string">
-<code class="descclassname">honeybee.energyplus.filemanager.</code><code class="descname">get_energy_plus_objects_from_string</code><span class="sig-paren">(</span><em>ep_file_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/energyplus/filemanager.html#get_energy_plus_objects_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.energyplus.filemanager.get_energy_plus_objects_from_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse idf file string.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ep_file_string</strong> – EnergyPlus data as a single string. The string can be multiline</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of strings. Each string represents a differnt Rdiance Object</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</div>
-<div class="section" id="module-honeybee.energyplus.geometryrules">
-<span id="honeybee-energyplus-geometryrules-module"></span><h2>honeybee.energyplus.geometryrules module<a class="headerlink" href="#module-honeybee.energyplus.geometryrules" title="Permalink to this headline">¶</a></h2>
-<p>EnergyPlus Global Geometry Rules.</p>
-<dl class="class">
-<dt id="honeybee.energyplus.geometryrules.GlobalGeometryRules">
-<em class="property">class </em><code class="descclassname">honeybee.energyplus.geometryrules.</code><code class="descname">GlobalGeometryRules</code><span class="sig-paren">(</span><em>starting_corner='LowerLeftCorner'</em>, <em>direction='CounterClockWise'</em>, <em>system='Absolute'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/energyplus/geometryrules.html#GlobalGeometryRules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.energyplus.geometryrules.GlobalGeometryRules" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Global Geometry Rules.</p>
-</dd></dl>
-
-</div>
-<div class="section" id="module-honeybee.energyplus">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-honeybee.energyplus" title="Permalink to this headline">¶</a></h2>
-<p>Honeybee EnergyPlus libraries.</p>
-</div>
-</div>
-
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

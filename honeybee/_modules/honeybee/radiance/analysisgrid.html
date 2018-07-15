@@ -31,68 +31,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../../index.html">
-    <img class="logo" src="../../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -166,7 +107,8 @@
         <span class="sd">&quot;&quot;&quot;Create an analysis grid from json objects.&quot;&quot;&quot;</span>
         <span class="n">analysis_points</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">AnalysisPoint</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
                                 <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">ag_json</span><span class="p">[</span><span class="s2">&quot;analysis_points&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">analysis_points</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">analysis_points</span><span class="o">=</span><span class="n">analysis_points</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">ag_json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                   <span class="n">window_groups</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AnalysisGrid.from_points_and_vectors"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysisgrid.AnalysisGrid.from_points_and_vectors">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points_and_vectors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">vectors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -293,8 +235,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_totalFiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inf</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AnalysisGrid.set_values"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysisgrid.AnalysisGrid.set_values">[docs]</a>    <span class="k">def</span> <span class="nf">set_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_direct</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
-        <span class="k">pass</span>
         <span class="c1"># assign the values to points</span>
         <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">hourlyValues</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">analysis_points</span><span class="p">[</span><span class="n">count</span><span class="p">]</span><span class="o">.</span><span class="n">set_values</span><span class="p">(</span>
@@ -303,7 +243,7 @@
 <div class="viewcode-block" id="AnalysisGrid.parse_header"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysisgrid.AnalysisGrid.parse_header">[docs]</a>    <span class="k">def</span> <span class="nf">parse_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inf</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">check_point_count</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse radiance matrix header.&quot;&quot;&quot;</span>
         <span class="c1"># read the header</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">40</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">inf</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;FORMAT&#39;</span><span class="p">:</span>
                 <span class="n">inf</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>  <span class="c1"># pass empty line</span>
@@ -356,7 +296,7 @@
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inf</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">header</span><span class="p">:</span>
-                <span class="n">inf</span><span class="p">,</span> <span class="n">hoys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_header</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">check_point_count</span><span class="p">)</span>
+                <span class="n">inf</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_header</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">check_point_count</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">add_result_files</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">is_direct</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
 
@@ -408,8 +348,8 @@
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">total_file_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inf</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">direct_file_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dinf</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">header</span><span class="p">:</span>
-                <span class="n">inf</span><span class="p">,</span> <span class="n">hoys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_header</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">check_point_count</span><span class="p">)</span>
-                <span class="n">dinf</span><span class="p">,</span> <span class="n">hoys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_header</span><span class="p">(</span><span class="n">dinf</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">check_point_count</span><span class="p">)</span>
+                <span class="n">inf</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_header</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">check_point_count</span><span class="p">)</span>
+                <span class="n">dinf</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_header</span><span class="p">(</span><span class="n">dinf</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">check_point_count</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">add_result_files</span><span class="p">(</span><span class="n">total_file_path</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_result_files</span><span class="p">(</span><span class="n">direct_file_path</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
@@ -444,7 +384,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">analysis_points</span><span class="p">[</span><span class="n">count</span><span class="p">]</span><span class="o">.</span><span class="n">set_coupled_values</span><span class="p">(</span>
                     <span class="n">hourlyValues</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AnalysisGrid.combined_value_by_id"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysisgrid.AnalysisGrid.combined_value_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">combined_value_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="AnalysisGrid.combined_value_by_id"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysisgrid.AnalysisGrid.combined_value_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">combined_value_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get combined value from all sources based on state_id.</span>
 
 <span class="sd">        Args:</span>
@@ -457,6 +397,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">digit_sign</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">load_values_from_files</span><span class="p">()</span>
+
+        <span class="n">hoy</span> <span class="o">=</span> <span class="n">hoy</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">combined_value_by_id</span><span class="p">(</span><span class="n">hoy</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span></div>
 
@@ -546,7 +488,7 @@
         <span class="n">da_threshhold</span> <span class="o">=</span> <span class="n">da_threshhold</span> <span class="ow">or</span> <span class="mf">300.0</span>
         <span class="n">udi_min_max</span> <span class="o">=</span> <span class="n">udi_min_max</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
         <span class="n">hoys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
-        <span class="n">occ_schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">from_workday_hours</span><span class="p">()</span>
+        <span class="n">occ_schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">eight_am_to_six_pm</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">results_loaded</span><span class="p">:</span>
             <span class="n">blinds_state_ids</span> <span class="o">=</span> <span class="n">blinds_state_ids</span> <span class="ow">or</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">hoys</span><span class="p">)</span>
@@ -635,7 +577,7 @@
         <span class="n">da_threshhold</span> <span class="o">=</span> <span class="n">da_threshhold</span> <span class="ow">or</span> <span class="mf">300.0</span>
         <span class="n">target_da</span> <span class="o">=</span> <span class="n">target_da</span> <span class="ow">or</span> <span class="mf">50.0</span>
         <span class="n">hoys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
-        <span class="n">occ_schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">from_workday_hours</span><span class="p">()</span>
+        <span class="n">occ_schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">eight_am_to_six_pm</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">results_loaded</span><span class="p">:</span>
             <span class="n">blinds_state_ids</span> <span class="o">=</span> <span class="n">blinds_state_ids</span> <span class="ow">or</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">hoys</span><span class="p">)</span>
@@ -699,8 +641,8 @@
 
         <span class="k">return</span> <span class="n">sda</span><span class="p">,</span> <span class="n">daylight_autonomy</span><span class="p">,</span> <span class="n">problematic_points</span></div>
 
-<div class="viewcode-block" id="AnalysisGrid.annual_solar_exposure"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysisgrid.AnalysisGrid.annual_solar_exposure">[docs]</a>    <span class="k">def</span> <span class="nf">annual_solar_exposure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshhold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                              <span class="n">occ_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_hours</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="AnalysisGrid.annual_sunlight_exposure"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysisgrid.AnalysisGrid.annual_sunlight_exposure">[docs]</a>    <span class="k">def</span> <span class="nf">annual_sunlight_exposure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshhold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">occ_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_hours</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Annual Solar Exposure (ASE)</span>
 
 <span class="sd">        As per IES-LM-83-12 ase is the percent of sensors that are</span>
@@ -750,19 +692,19 @@
             <span class="n">blinds_state_ids</span> <span class="o">=</span> <span class="n">blinds_state_ids</span> <span class="ow">or</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">hoys</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">sensor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_points</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">annual_solar_exposure</span><span class="p">(</span><span class="n">threshhold</span><span class="p">,</span>
-                                                                   <span class="n">blinds_state_ids</span><span class="p">,</span>
-                                                                   <span class="n">occ_schedule</span><span class="p">,</span>
-                                                                   <span class="n">target_hours</span>
-                                                                   <span class="p">)):</span>
+                <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">annual_sunlight_exposure</span><span class="p">(</span><span class="n">threshhold</span><span class="p">,</span>
+                                                                      <span class="n">blinds_state_ids</span><span class="p">,</span>
+                                                                      <span class="n">occ_schedule</span><span class="p">,</span>
+                                                                      <span class="n">target_hours</span>
+                                                                      <span class="p">)):</span>
                     <span class="n">res</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># This is a method for annual recipe to load the results line by line</span>
             <span class="c1"># which unlike the other method doesn&#39;t load all the values to the memory</span>
             <span class="c1"># at once.</span>
             <span class="n">blinds_state_ids</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">hoys</span><span class="p">)</span>
-            <span class="n">calculate_annual_solar_exposure</span> <span class="o">=</span> \
-                <span class="bp">self</span><span class="o">.</span><span class="n">analysis_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_calculate_annual_solar_exposure</span>
+            <span class="n">calculate_annual_sunlight_exposure</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">analysis_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_calculate_annual_sunlight_exposure</span>
 
             <span class="k">for</span> <span class="n">file_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_files</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="n">file_path</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">file_data</span>
@@ -791,7 +733,7 @@
                     <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">end</span><span class="p">):</span>
                         <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">inf</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
                         <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
-                            <span class="n">calculate_annual_solar_exposure</span><span class="p">(</span>
+                            <span class="n">calculate_annual_sunlight_exposure</span><span class="p">(</span>
                                 <span class="n">values</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">threshhold</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="p">,</span> <span class="n">occ_schedule</span><span class="p">,</span>
                                 <span class="n">target_hours</span><span class="p">)):</span>
 
@@ -908,9 +850,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AnalysisGrid.to_json"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysisgrid.AnalysisGrid.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an analysis grid from json objects.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create json object from analysisGrid.&quot;&quot;&quot;</span>
         <span class="n">analysis_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">ap</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">ap</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_points</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;analysis_points&quot;</span><span class="p">:</span> <span class="n">analysis_points</span><span class="p">}</span></div>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
+            <span class="s2">&quot;analysis_points&quot;</span><span class="p">:</span> <span class="n">analysis_points</span>
+        <span class="p">}</span></div>
 
     <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add two analysis grids and create a new one.</span>
@@ -997,8 +942,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

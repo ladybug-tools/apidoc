@@ -1,0 +1,335 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.radiance.mixture package &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee.radiance.parameters package" href="honeybee.radiance.parameters.html" />
+    <link rel="prev" title="honeybee.radiance.material package" href="honeybee.radiance.material.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="honeybee-radiance-mixture-package">
+<h1>honeybee.radiance.mixture package<a class="headerlink" href="#honeybee-radiance-mixture-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-honeybee.radiance.mixture.mixdata">
+<span id="honeybee-radiance-mixture-mixdata-module"></span><h2>honeybee.radiance.mixture.mixdata module<a class="headerlink" href="#module-honeybee.radiance.mixture.mixdata" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Mixdata Mixture.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Mixdata">http://radsite.lbl.gov/radiance/refer/ray.html#Mixdata</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.mixture.mixdata.Mixdata">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.mixture.mixdata.</code><code class="descname">Mixdata</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/mixture/mixdata.html#Mixdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.mixture.mixdata.Mixdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.mixture.mixturebase.RadianceMixture" title="honeybee.radiance.mixture.mixturebase.RadianceMixture"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.mixture.mixturebase.RadianceMixture</span></code></a></p>
+<p>Radiance Mixdata Material.</p>
+<p>Mixdata combines two modifiers using an auxiliary data file:</p>
+<blockquote>
+<div><p>mod mixdata id
+5+n+</p>
+<blockquote>
+<div>foreground background func datafile
+funcfile x1 x2 .. xn transform</div></blockquote>
+<p>0
+m A1 A2 .. Am</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.mixture.mixfunc">
+<span id="honeybee-radiance-mixture-mixfunc-module"></span><h2>honeybee.radiance.mixture.mixfunc module<a class="headerlink" href="#module-honeybee.radiance.mixture.mixfunc" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Mixfunc Mixture.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Mixfunc">http://radsite.lbl.gov/radiance/refer/ray.html#Mixfunc</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.mixture.mixfunc.Mixfunc">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.mixture.mixfunc.</code><code class="descname">Mixfunc</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/mixture/mixfunc.html#Mixfunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.mixture.mixfunc.Mixfunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.mixture.mixturebase.RadianceMixture" title="honeybee.radiance.mixture.mixturebase.RadianceMixture"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.mixture.mixturebase.RadianceMixture</span></code></a></p>
+<p>Radiance Mixfunc Material.</p>
+<p>A mixfunc mixes two modifiers procedurally. It is specified as follows:</p>
+<blockquote>
+<div>mod mixfunc id
+4+ foreground background vname funcfile transform
+0
+n A1 A2 .. An</div></blockquote>
+<p>Foreground and background are modifier names that must be defined earlier in the
+scene description. If one of these is a material, then the modifier of the mixfunc
+must be “void”. (Either the foreground or background modifier may be “void”, which
+serves as a form of opacity control when used with a material.) Vname is the
+coefficient defined in funcfile that determines the influence of foreground. The
+background coefficient is always (1-vname).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.mixture.mixpict">
+<span id="honeybee-radiance-mixture-mixpict-module"></span><h2>honeybee.radiance.mixture.mixpict module<a class="headerlink" href="#module-honeybee.radiance.mixture.mixpict" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Mixpict Mixture.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Mixpict">http://radsite.lbl.gov/radiance/refer/ray.html#Mixpict</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.mixture.mixpict.Mixpict">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.mixture.mixpict.</code><code class="descname">Mixpict</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/mixture/mixpict.html#Mixpict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.mixture.mixpict.Mixpict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.mixture.mixturebase.RadianceMixture" title="honeybee.radiance.mixture.mixturebase.RadianceMixture"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.mixture.mixturebase.RadianceMixture</span></code></a></p>
+<p>Radiance Mixpict Material.</p>
+<p>Mixpict combines two modifiers based on a picture:</p>
+<blockquote>
+<div><p>mod mixpict id
+7+</p>
+<blockquote>
+<div>foreground background func pictfile
+funcfile u v transform</div></blockquote>
+<p>0
+m A1 A2 .. Am</p>
+</div></blockquote>
+<p>The mixing coefficient function “func” takes three arguments, the red, green and
+blue values corresponding to the pixel at (u,v).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.mixture.mixtext">
+<span id="honeybee-radiance-mixture-mixtext-module"></span><h2>honeybee.radiance.mixture.mixtext module<a class="headerlink" href="#module-honeybee.radiance.mixture.mixtext" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Mixtext Mixture.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Mixtext">http://radsite.lbl.gov/radiance/refer/ray.html#Mixtext</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.mixture.mixtext.Mixtext">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.mixture.mixtext.</code><code class="descname">Mixtext</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/mixture/mixtext.html#Mixtext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.mixture.mixtext.Mixtext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.mixture.mixturebase.RadianceMixture" title="honeybee.radiance.mixture.mixturebase.RadianceMixture"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.mixture.mixturebase.RadianceMixture</span></code></a></p>
+<p>Radiance Mixtext Material.</p>
+<p>Mixtext uses one modifier for the text foreground, and one for the background:</p>
+<blockquote>
+<div><p>mod mixtext id
+4 foreground background fontfile textfile
+0
+9+</p>
+<blockquote>
+<div>Ox Oy Oz
+Rx Ry Rz
+Dx Dy Dz
+[spacing]</div></blockquote>
+</div></blockquote>
+<p>or:</p>
+<blockquote>
+<div><p>mod mixtext id
+4+N</p>
+<blockquote>
+<div>foreground background fontfile .
+This is a line with N words …</div></blockquote>
+<p>0
+9+</p>
+<blockquote>
+<div>Ox Oy Oz
+Rx Ry Rz
+Dx Dy Dz
+[spacing]</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.mixture.mixturebase">
+<span id="honeybee-radiance-mixture-mixturebase-module"></span><h2>honeybee.radiance.mixture.mixturebase module<a class="headerlink" href="#module-honeybee.radiance.mixture.mixturebase" title="Permalink to this headline">¶</a></h2>
+<p>Base Radiance Mixtures class.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Mixtures">http://radsite.lbl.gov/radiance/refer/ray.html#Mixtures</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.mixture.mixturebase.RadianceMixture">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.mixture.mixturebase.</code><code class="descname">RadianceMixture</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/mixture/mixturebase.html#RadianceMixture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.mixture.mixturebase.RadianceMixture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="honeybee.radiance.html#honeybee.radiance.primitive.Primitive" title="honeybee.radiance.primitive.Primitive"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.primitive.Primitive</span></code></a></p>
+<p>Base class for Radiance mixtures.</p>
+<p>A mixture is a blend of one or more materials or textures and patterns. Blended
+materials should not be light source types or virtual source types.</p>
+<dl class="attribute">
+<dt id="honeybee.radiance.mixture.mixturebase.RadianceMixture.name">
+<code class="descname">name</code><a class="headerlink" href="#honeybee.radiance.mixture.mixturebase.RadianceMixture.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Primitive name as a string. Do not use white space and special character.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.mixture.mixturebase.RadianceMixture.modifier">
+<code class="descname">modifier</code><a class="headerlink" href="#honeybee.radiance.mixture.mixturebase.RadianceMixture.modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifier. It can be primitive, mixture, texture or pattern.
+(Default: “void”).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.mixture.mixturebase.RadianceMixture.values">
+<code class="descname">values</code><a class="headerlink" href="#honeybee.radiance.mixture.mixturebase.RadianceMixture.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary of primitive data. key is line number and item is the list
+of values {0: [], 1: [], 2: [‘0.500’, ‘0.500’, ‘0.500’, ‘0.000’, ‘0.050’]}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.mixture.mixturebase.RadianceMixture.isRadianceMixture">
+<code class="descname">isRadianceMixture</code><a class="headerlink" href="#honeybee.radiance.mixture.mixturebase.RadianceMixture.isRadianceMixture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate that this object is a Radiance Material.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.mixture">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-honeybee.radiance.mixture" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Mixtures.</p>
+<p>A mixture is a blend of one or more materials or textures and patterns. Blended materials
+should not be light source types or virtual source types.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee.html">honeybee package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee.energyplus.html">honeybee.energyplus package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee.radiance.html">honeybee.radiance package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="honeybee.radiance.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysisgrid">honeybee.radiance.analysisgrid module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysispoint">honeybee.radiance.analysispoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.datatype">honeybee.radiance.datatype module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.factory">honeybee.radiance.factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.imagecollection">honeybee.radiance.imagecollection module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.primitive">honeybee.radiance.primitive module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.properties">honeybee.radiance.properties module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radfile">honeybee.radiance.radfile module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radparser">honeybee.radiance.radparser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.scene">honeybee.radiance.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.staticscene">honeybee.radiance.staticscene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.view">honeybee.radiance.view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.server.html">honeybee.server package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.vectormath.html">honeybee.vectormath package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.config">honeybee.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.dataoperation">honeybee.dataoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.futil">honeybee.futil module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.geometryoperation">honeybee.geometryoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbdynamicsurface">honeybee.hbdynamicsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbfensurface">honeybee.hbfensurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbobject">honeybee.hbobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.plus">honeybee.plus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfacetype">honeybee.surfacetype module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.utilcol">honeybee.utilcol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="honeybee.html">honeybee package</a><ul>
+  <li><a href="honeybee.radiance.html">honeybee.radiance package</a><ul>
+      <li>Previous: <a href="honeybee.radiance.material.html" title="previous chapter">honeybee.radiance.material package</a></li>
+      <li>Next: <a href="honeybee.radiance.parameters.html" title="next chapter">honeybee.radiance.parameters package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/honeybee.radiance.mixture.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

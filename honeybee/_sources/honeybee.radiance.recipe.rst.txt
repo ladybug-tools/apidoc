@@ -9,6 +9,7 @@ Subpackages
     honeybee.radiance.recipe.annual
     honeybee.radiance.recipe.daylightcoeff
     honeybee.radiance.recipe.daylightfactor
+    honeybee.radiance.recipe.directreflection
     honeybee.radiance.recipe.fivephase
     honeybee.radiance.recipe.pointintime
     honeybee.radiance.recipe.radiation

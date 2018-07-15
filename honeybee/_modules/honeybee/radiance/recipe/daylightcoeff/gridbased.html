@@ -31,68 +31,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../../../../index.html">
-    <img class="logo" src="../../../../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -107,6 +48,9 @@
 <span class="kn">from</span> <span class="nn">..parameters</span> <span class="k">import</span> <span class="n">get_radiance_parameters_grid_based</span>
 <span class="kn">from</span> <span class="nn">...sky.skymatrix</span> <span class="k">import</span> <span class="n">SkyMatrix</span>
 <span class="kn">from</span> <span class="nn">....futil</span> <span class="k">import</span> <span class="n">write_to_file</span>
+<span class="kn">from</span> <span class="nn">...analysisgrid</span> <span class="k">import</span> <span class="n">AnalysisGrid</span>
+<span class="kn">from</span> <span class="nn">...parameters.rfluxmtx</span> <span class="k">import</span> <span class="n">RfluxmtxParameters</span>
+<span class="kn">from</span> <span class="nn">....hbsurface</span> <span class="k">import</span> <span class="n">HBSurface</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -165,6 +109,30 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reuse_daylight_mtx</span> <span class="o">=</span> <span class="n">reuse_daylight_mtx</span>
+
+<div class="viewcode-block" id="DaylightCoeffGridBased.from_json"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.daylightcoeff.html#honeybee.radiance.recipe.daylightcoeff.gridbased.DaylightCoeffGridBased.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create daylight coefficient recipe from JSON file</span>
+<span class="sd">            {</span>
+<span class="sd">            &quot;id&quot;: &quot;daylight_coeff&quot;,</span>
+<span class="sd">            &quot;type&quot;: &quot;gridbased&quot;,</span>
+<span class="sd">            &quot;sky_mtx&quot;: {}, // sky matrix json file</span>
+<span class="sd">            &quot;analysis_grids&quot;: [], // list of analysis grids</span>
+<span class="sd">            &quot;surfaces&quot;: [], // list of honeybee surfaces</span>
+<span class="sd">            &quot;simulation_type&quot;: int // value between 0-2</span>
+<span class="sd">            &quot;rad_parameters&quot;: {} // radiance gridbased parameters json file</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sky_mtx</span> <span class="o">=</span> <span class="n">SkyMatrix</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;sky_mtx&quot;</span><span class="p">])</span>
+        <span class="n">analysis_grids</span> <span class="o">=</span> \
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">AnalysisGrid</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">ag</span><span class="p">)</span> <span class="k">for</span> <span class="n">ag</span> <span class="ow">in</span> <span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;analysis_grids&quot;</span><span class="p">])</span>
+        <span class="n">hb_objects</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">HBSurface</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">srf</span><span class="p">)</span> <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;surfaces&quot;</span><span class="p">])</span>
+        <span class="n">rad_parameters</span> <span class="o">=</span> <span class="n">RfluxmtxParameters</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;rad_parameters&quot;</span><span class="p">])</span>
+        <span class="n">simulation_type</span> <span class="o">=</span> <span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;simulation_type&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">sky_mtx</span><span class="o">=</span><span class="n">sky_mtx</span><span class="p">,</span> <span class="n">analysis_grids</span><span class="o">=</span><span class="n">analysis_grids</span><span class="p">,</span>
+                   <span class="n">radiance_parameters</span><span class="o">=</span><span class="n">rad_parameters</span><span class="p">,</span> <span class="n">hb_objects</span><span class="o">=</span><span class="n">hb_objects</span><span class="p">,</span>
+                   <span class="n">simulation_type</span><span class="o">=</span><span class="n">simulation_type</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DaylightCoeffGridBased.from_weather_file_points_and_vectors"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.daylightcoeff.html#honeybee.radiance.recipe.daylightcoeff.gridbased.DaylightCoeffGridBased.from_weather_file_points_and_vectors">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_weather_file_points_and_vectors</span><span class="p">(</span>
@@ -319,7 +287,30 @@
             <span class="c1"># matrices multiplication needs to be recalculated.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">commands</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DaylightCoeffGridBased.write"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.daylightcoeff.html#honeybee.radiance.recipe.daylightcoeff.gridbased.DaylightCoeffGridBased.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="s1">&#39;untitled&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="DaylightCoeffGridBased.to_json"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.daylightcoeff.html#honeybee.radiance.recipe.daylightcoeff.gridbased.DaylightCoeffGridBased.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create daylight coefficient JSON file</span>
+<span class="sd">            {</span>
+<span class="sd">            &quot;id&quot;: &quot;daylight_coeff&quot;,</span>
+<span class="sd">            &quot;type&quot;: &quot;gridbased&quot;,</span>
+<span class="sd">            &quot;sky_mtx&quot;: {}, // sky matrix json file</span>
+<span class="sd">            &quot;analysis_grids&quot;: [], // list of analysis grids</span>
+<span class="sd">            &quot;surfaces&quot;: [], // list of honeybee surfaces</span>
+<span class="sd">            &quot;simulation_type&quot;: int // value between 0-2</span>
+<span class="sd">            &quot;rad_parameters&quot;: {} // radiance gridbased parameters json file</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;daylight_coeff&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;gridbased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sky_mtx&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s2">&quot;analysis_grids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ag</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">ag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_grids</span><span class="p">],</span>
+            <span class="s2">&quot;surfaces&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">srf</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hb_objects</span><span class="p">],</span>
+            <span class="s2">&quot;simulation_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation_type</span><span class="p">,</span>
+            <span class="s2">&quot;rad_parameters&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_parameters</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="DaylightCoeffGridBased.write"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.daylightcoeff.html#honeybee.radiance.recipe.daylightcoeff.gridbased.DaylightCoeffGridBased.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="s1">&#39;untitled&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write analysis files to target folder.</span>
 
 <span class="sd">        Args:</span>
@@ -344,7 +335,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">glazing_rad_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_groups_rad_files</span>
         <span class="p">)</span>
         <span class="c1"># additional radiance files added to the recipe as scene</span>
-        <span class="n">extrafiles</span> <span class="o">=</span> <span class="n">write_extra_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">,</span> <span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/scene&#39;</span><span class="p">)</span>
+        <span class="n">extrafiles</span> <span class="o">=</span> <span class="n">write_extra_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">,</span> <span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/scene&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># 0.write points</span>
         <span class="n">points_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_analysis_grids</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="n">project_name</span><span class="p">)</span>
@@ -366,7 +357,7 @@
         <span class="n">commands</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">get_commands_scene_daylight_coeff</span><span class="p">(</span>
             <span class="n">project_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">sky_density</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">,</span> <span class="n">skyfiles</span><span class="p">,</span>
             <span class="n">inputfiles</span><span class="p">,</span> <span class="n">points_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_point_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_parameters</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reuse_daylight_mtx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_runs_count</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reuse_daylight_mtx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_runs_count</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="n">transpose</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_result_files</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">))</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span>
@@ -380,7 +371,7 @@
                 <span class="n">project_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">sky_density</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">window_groups</span><span class="p">,</span> <span class="n">skyfiles</span><span class="p">,</span> <span class="n">inputfiles</span><span class="p">,</span> <span class="n">points_file</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">total_point_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_parameters</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">reuse_daylight_mtx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_runs_count</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reuse_daylight_mtx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_runs_count</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="n">transpose</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_commands</span><span class="p">(</span><span class="n">skycommands</span><span class="p">,</span> <span class="n">commands</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_result_files</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
@@ -446,8 +437,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../../../index.html">
+    <img class="logo" src="../../../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

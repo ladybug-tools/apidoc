@@ -1,0 +1,268 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.radiance.texture package &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee.server package" href="honeybee.server.html" />
+    <link rel="prev" title="honeybee.radiance.sky package" href="honeybee.radiance.sky.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="honeybee-radiance-texture-package">
+<h1>honeybee.radiance.texture package<a class="headerlink" href="#honeybee-radiance-texture-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-honeybee.radiance.texture.texdata">
+<span id="honeybee-radiance-texture-texdata-module"></span><h2>honeybee.radiance.texture.texdata module<a class="headerlink" href="#module-honeybee.radiance.texture.texdata" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Texdata Texture.</p>
+<p>A texture is a perturbation of the surface normal, and is given by either a function or
+data.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Texdata">http://radsite.lbl.gov/radiance/refer/ray.html#Texdata</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.texture.texdata.Texdata">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.texture.texdata.</code><code class="descname">Texdata</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/texture/texdata.html#Texdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.texture.texdata.Texdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.texture.texturebase.RadianceTexture" title="honeybee.radiance.texture.texturebase.RadianceTexture"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.texture.texturebase.RadianceTexture</span></code></a></p>
+<p>Radiance Texdata Material.</p>
+<p>A texdata texture uses three data files to get the surface normal perturbations. The
+variables xfunc, yfunc and zfunc take three arguments each from the interpolated
+values in xdfname, ydfname and zdfname.</p>
+<blockquote>
+<div>mod texdata id
+8+ xfunc yfunc zfunc xdfname ydfname zdfname vfname x0 x1 .. xf
+0
+n A1 A2 .. An</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.texture.texfunc">
+<span id="honeybee-radiance-texture-texfunc-module"></span><h2>honeybee.radiance.texture.texfunc module<a class="headerlink" href="#module-honeybee.radiance.texture.texfunc" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Texfunc Texture.</p>
+<p>A texture is a perturbation of the surface normal, and is given by either a function or
+data.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Texfunc">http://radsite.lbl.gov/radiance/refer/ray.html#Texfunc</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.texture.texfunc.Texfunc">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.texture.texfunc.</code><code class="descname">Texfunc</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/texture/texfunc.html#Texfunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.texture.texfunc.Texfunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.texture.texturebase.RadianceTexture" title="honeybee.radiance.texture.texturebase.RadianceTexture"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.texture.texturebase.RadianceTexture</span></code></a></p>
+<p>Radiance Texfunc Material.</p>
+<p>A texfunc uses an auxiliary function file to specify a procedural texture:</p>
+<blockquote>
+<div>mod texfunc id
+4+ xpert ypert zpert funcfile transform
+0
+n A1 A2 .. An</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.texture.texturebase">
+<span id="honeybee-radiance-texture-texturebase-module"></span><h2>honeybee.radiance.texture.texturebase module<a class="headerlink" href="#module-honeybee.radiance.texture.texturebase" title="Permalink to this headline">¶</a></h2>
+<p>Base Radiance Texture class (Texfunc, Texdata).</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Textures">http://radsite.lbl.gov/radiance/refer/ray.html#Textures</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.texture.texturebase.RadianceTexture">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.texture.texturebase.</code><code class="descname">RadianceTexture</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/texture/texturebase.html#RadianceTexture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.texture.texturebase.RadianceTexture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="honeybee.radiance.html#honeybee.radiance.primitive.Primitive" title="honeybee.radiance.primitive.Primitive"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.primitive.Primitive</span></code></a></p>
+<p>Base class for Radiance texture (Texfunc, Texdata).</p>
+<p>A texture is a perturbation of the surface normal, and is given by either a function
+or data.</p>
+<dl class="attribute">
+<dt id="honeybee.radiance.texture.texturebase.RadianceTexture.name">
+<code class="descname">name</code><a class="headerlink" href="#honeybee.radiance.texture.texturebase.RadianceTexture.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Primitive name as a string. Do not use white space and special character.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.texture.texturebase.RadianceTexture.modifier">
+<code class="descname">modifier</code><a class="headerlink" href="#honeybee.radiance.texture.texturebase.RadianceTexture.modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifier. It can be primitive, mixture, texture or pattern.
+(Default: “void”).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.texture.texturebase.RadianceTexture.values">
+<code class="descname">values</code><a class="headerlink" href="#honeybee.radiance.texture.texturebase.RadianceTexture.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary of primitive data. key is line number and item is the list
+of values {0: [], 1: [], 2: [‘0.500’, ‘0.500’, ‘0.500’, ‘0.000’, ‘0.050’]}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.texture.texturebase.RadianceTexture.isRadianceTexture">
+<code class="descname">isRadianceTexture</code><a class="headerlink" href="#honeybee.radiance.texture.texturebase.RadianceTexture.isRadianceTexture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate that this object is a Radiance Material.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.texture">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-honeybee.radiance.texture" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Textures.</p>
+<p>A texture is a perturbation of the surface normal, and is given by either a function or
+data.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee.html">honeybee package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee.energyplus.html">honeybee.energyplus package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee.radiance.html">honeybee.radiance package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="honeybee.radiance.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysisgrid">honeybee.radiance.analysisgrid module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysispoint">honeybee.radiance.analysispoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.datatype">honeybee.radiance.datatype module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.factory">honeybee.radiance.factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.imagecollection">honeybee.radiance.imagecollection module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.primitive">honeybee.radiance.primitive module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.properties">honeybee.radiance.properties module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radfile">honeybee.radiance.radfile module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radparser">honeybee.radiance.radparser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.scene">honeybee.radiance.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.staticscene">honeybee.radiance.staticscene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.view">honeybee.radiance.view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.server.html">honeybee.server package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.vectormath.html">honeybee.vectormath package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.config">honeybee.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.dataoperation">honeybee.dataoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.futil">honeybee.futil module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.geometryoperation">honeybee.geometryoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbdynamicsurface">honeybee.hbdynamicsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbfensurface">honeybee.hbfensurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbobject">honeybee.hbobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.plus">honeybee.plus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfacetype">honeybee.surfacetype module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.utilcol">honeybee.utilcol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="honeybee.html">honeybee package</a><ul>
+  <li><a href="honeybee.radiance.html">honeybee.radiance package</a><ul>
+      <li>Previous: <a href="honeybee.radiance.sky.html" title="previous chapter">honeybee.radiance.sky package</a></li>
+      <li>Next: <a href="honeybee.server.html" title="next chapter">honeybee.server package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/honeybee.radiance.texture.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

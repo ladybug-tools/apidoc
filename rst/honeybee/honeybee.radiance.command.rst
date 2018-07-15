@@ -91,6 +91,14 @@ honeybee\.radiance\.command\.getinfo module
     :undoc-members:
     :show-inheritance:
 
+honeybee\.radiance\.command\.mkpmap module
+------------------------------------------
+
+.. automodule:: honeybee.radiance.command.mkpmap
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 honeybee\.radiance\.command\.objview module
 -------------------------------------------
 

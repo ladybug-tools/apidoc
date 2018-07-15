@@ -31,68 +31,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../../index.html">
-    <img class="logo" src="../../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -283,7 +224,7 @@
         <span class="k">if</span> <span class="n">hoy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">sid</span><span class="p">,</span> <span class="n">stateid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_data_structure</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)][</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span></div>
 
 <div class="viewcode-block" id="ImageCollection.add_image_files"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.imagecollection.ImageCollection.add_image_files">[docs]</a>    <span class="k">def</span> <span class="nf">add_image_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_paths</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set values for several hours of the year.</span>
@@ -312,7 +253,7 @@
             <span class="k">if</span> <span class="n">hoy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)][</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s1">&#39;Failed to load </span><span class="si">{}</span><span class="s1"> results for window_group [</span><span class="si">{}</span><span class="s1">], state[</span><span class="si">{}</span><span class="s1">]&#39;</span>
@@ -344,7 +285,7 @@
             <span class="k">if</span> <span class="n">hoy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span> <span class="o">=</span> \
                     <span class="n">filepathCol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">filepathCol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">filepathCol</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -363,11 +304,11 @@
         <span class="c1"># find the state id</span>
         <span class="n">stateid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blind_state_id</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span></div>
 
 <div class="viewcode-block" id="ImageCollection.get_images"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.imagecollection.ImageCollection.get_images">[docs]</a>    <span class="k">def</span> <span class="nf">get_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get list of images for an hour in the year.&quot;&quot;&quot;</span>
@@ -376,28 +317,28 @@
         <span class="n">stateid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blind_state_id</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ImageCollection.get_image_by_id"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.imagecollection.ImageCollection.get_image_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_image_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stateid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get list of images for an hour in the year.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span></div>
 
 <div class="viewcode-block" id="ImageCollection.get_images_by_id"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.imagecollection.ImageCollection.get_images_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_images_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">sid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stateid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get list of images for an hour in the year.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ImageCollection.generate_image"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.imagecollection.ImageCollection.generate_image">[docs]</a>    <span class="k">def</span> <span class="nf">generate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate the image for an hour of the year for input blindStates.&quot;&quot;&quot;</span>
@@ -523,9 +464,6 @@
             <span class="k">if</span> <span class="n">stateid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                 <span class="k">pass</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
                 <span class="n">image_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image_by_id</span><span class="p">(</span><span class="n">hoy</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">stateid</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="p">:</span>
@@ -586,9 +524,6 @@
                 <span class="k">if</span> <span class="n">stateid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                         <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
                     <span class="n">image_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image_by_id</span><span class="p">(</span><span class="n">hoy</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">stateid</span><span class="p">))</span>
             <span class="k">assert</span> <span class="n">image_col</span><span class="p">,</span> \
                 <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All the state ids cannot be -1.&#39;</span><span class="p">)</span>
@@ -662,8 +597,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

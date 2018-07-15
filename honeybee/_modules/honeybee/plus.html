@@ -1,0 +1,333 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.plus &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.plus</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Collection of methods for Honeybee geometry operations in Grasshopper.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">Rhino</span> <span class="k">as</span> <span class="nn">rc</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># ------------------------- Required functions -----------------------------------------</span>
+<span class="c1">#  In order to create a plus library you must overwrite these three methods.</span>
+<span class="c1">#  The structure of arguments and returns should stay the same.</span>
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># TODO(someone!): Implement triangulate</span>
+<div class="viewcode-block" id="extract_geometry_points"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.extract_geometry_points">[docs]</a><span class="k">def</span> <span class="nf">extract_geometry_points</span><span class="p">(</span><span class="n">geometries</span><span class="p">,</span> <span class="n">meshing_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate list of points for a Grasshopper geometry.</span>
+
+<span class="sd">    For planar surfaces the length of the list will be only 1. For non-planar</span>
+<span class="sd">    surfaces or surfaces with internal edges it will be a number of lists.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        geometries: List of meshes or Breps</span>
+<span class="sd">        meshing_parameters: Optional Rhino meshing_parameters. This will only be used if</span>
+<span class="sd">            the surface is non-planar or has an internal edge and needs to be meshed.</span>
+<span class="sd">            Default:</span>
+<span class="sd">                Rhino.Geometry.meshing_parameters.Coarse; SimplePlanes = True for planar</span>
+<span class="sd">                surfaces; Rhino.Geometry.meshing_parameters.Smooth for non-planar</span>
+<span class="sd">                surfaces</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        A Collection of (geometry, points) in which each geometry is coupled by points.</span>
+<span class="sd">        For planar surfaces the length of the points list will be only 1. For</span>
+<span class="sd">        non-planar surfaces, meshes or surfaces with internal edges it will be multiple</span>
+<span class="sd">        lists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">geometries</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">):</span>
+        <span class="n">geometries</span> <span class="o">=</span> <span class="p">(</span><span class="n">geometries</span><span class="p">,)</span>
+
+    <span class="k">for</span> <span class="n">geometry</span> <span class="ow">in</span> <span class="n">geometries</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Mesh</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">extract_mesh_points</span><span class="p">((</span><span class="n">geometry</span><span class="p">,))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Brep</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">extract_brep_points</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">meshing_parameters</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s1">&#39;Input surface should be a Mesh or a Brep not </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">geometry</span><span class="p">))</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="xyz_to_geometrical_points"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.xyz_to_geometrical_points">[docs]</a><span class="k">def</span> <span class="nf">xyz_to_geometrical_points</span><span class="p">(</span><span class="n">xyz_points</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;convert a sequence of (x, y, z) values to Grasshopper points.</span>
+
+<span class="sd">    Input should be list of lists of points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">xyz_list</span> <span class="ow">in</span> <span class="n">xyz_points</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">xyz_list</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Point3d</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="polygon"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.polygon">[docs]</a><span class="k">def</span> <span class="nf">polygon</span><span class="p">(</span><span class="n">point_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a polygon from points.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Polyline</span><span class="p">(</span><span class="n">point_list</span><span class="p">)</span><span class="o">.</span><span class="n">ToNurbsCurve</span><span class="p">()</span></div>
+
+
+<span class="c1"># ------------------------- End of honeybee[+] methods -----------------------------</span>
+<span class="c1"># ------------------------------ Utilities -----------------------------------------</span>
+<div class="viewcode-block" id="is_planar"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.is_planar">[docs]</a><span class="k">def</span> <span class="nf">is_planar</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if a surface in planar.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">IsPlanar</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="extract_brep_points"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.extract_brep_points">[docs]</a><span class="k">def</span> <span class="nf">extract_brep_points</span><span class="p">(</span><span class="n">brep</span><span class="p">,</span> <span class="n">meshing_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract points from Brep.&quot;&quot;&quot;</span>
+    <span class="n">meshing_parameters</span> <span class="o">=</span> <span class="n">meshing_parameters</span> <span class="ow">or</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">MeshingParameters</span><span class="o">.</span><span class="n">Coarse</span>
+    <span class="k">for</span> <span class="n">fid</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">brep</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">Count</span><span class="p">):</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">brep</span><span class="o">.</span><span class="n">Faces</span><span class="p">[</span><span class="n">fid</span><span class="p">]</span><span class="o">.</span><span class="n">DuplicateFace</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">brep</span><span class="o">.</span><span class="n">Faces</span><span class="p">[</span><span class="n">fid</span><span class="p">]</span><span class="o">.</span><span class="n">IsPlanar</span><span class="p">(</span><span class="n">tol</span><span class="p">):</span>
+            <span class="n">meshes</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">CreateFromBrep</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">meshing_parameters</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="nb">next</span><span class="p">(</span><span class="n">extract_mesh_points</span><span class="p">(</span><span class="n">meshes</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># planar surface</span>
+            <span class="n">pts</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">DuplicateVertices</span><span class="p">()</span>
+            <span class="c1"># sort points anti clockwise</span>
+            <span class="c1"># this is only important for energy simulation and won&#39;t make a difference</span>
+            <span class="c1"># for Radiance</span>
+
+            <span class="c1"># To sort the points we find border of the surface and evaluate points</span>
+            <span class="c1"># on border and use the parameter value to sort them</span>
+            <span class="n">border</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Curve</span><span class="o">.</span><span class="n">JoinCurves</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">DuplicateEdgeCurves</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">border</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># mesh the surface</span>
+                <span class="n">meshing_parameters</span><span class="o">.</span><span class="n">SimplePlanes</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">meshes</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">CreateFromBrep</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">meshing_parameters</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="nb">next</span><span class="p">(</span><span class="n">extract_mesh_points</span><span class="p">(</span><span class="n">meshes</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># In some strange cases Rhino returns a single point for the surface</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">pts</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">Location</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">border</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Points</span><span class="p">)</span>
+
+                <span class="n">points_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">pt</span><span class="p">:</span> <span class="n">border</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ClosestPoint</span><span class="p">(</span><span class="n">pt</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="c1"># make sure points are anti clockwise</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_points_sorted_anticlockwise</span><span class="p">(</span>
+                        <span class="n">points_sorted</span><span class="p">,</span>
+                        <span class="n">get_surface_center_pt_and_normal</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span><span class="o">.</span><span class="n">normal_vector</span><span class="p">):</span>
+                    <span class="n">points_sorted</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+                <span class="c1"># return sorted points</span>
+                <span class="c1"># Wrap in a list as Honeybee accepts list of list of points</span>
+                <span class="k">yield</span> <span class="n">geometry</span><span class="p">,</span> <span class="p">(</span><span class="n">points_sorted</span><span class="p">,)</span></div>
+
+
+<div class="viewcode-block" id="extract_mesh_points"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.extract_mesh_points">[docs]</a><span class="k">def</span> <span class="nf">extract_mesh_points</span><span class="p">(</span><span class="n">meshes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract points from a mesh.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">meshes</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">mesh</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">IsQuad</span> <span class="k">else</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="vectors_cross_product"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.vectors_cross_product">[docs]</a><span class="k">def</span> <span class="nf">vectors_cross_product</span><span class="p">(</span><span class="n">vector1</span><span class="p">,</span> <span class="n">vector2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate cross product of two vectors.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">vector1</span><span class="o">.</span><span class="n">X</span> <span class="o">*</span> <span class="n">vector2</span><span class="o">.</span><span class="n">X</span> <span class="o">+</span> \
+        <span class="n">vector1</span><span class="o">.</span><span class="n">Y</span> <span class="o">*</span> <span class="n">vector2</span><span class="o">.</span><span class="n">Y</span> <span class="o">+</span> <span class="n">vector1</span><span class="o">.</span><span class="n">Z</span> <span class="o">*</span> <span class="n">vector2</span><span class="o">.</span><span class="n">Z</span></div>
+
+
+<div class="viewcode-block" id="is_points_sorted_anticlockwise"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.is_points_sorted_anticlockwise">[docs]</a><span class="k">def</span> <span class="nf">is_points_sorted_anticlockwise</span><span class="p">(</span><span class="n">sorted_points</span><span class="p">,</span> <span class="n">normal</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if an ordered list of points are anti-clockwise.&quot;&quot;&quot;</span>
+    <span class="n">vector0</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Vector3d</span><span class="p">(</span><span class="n">sorted_points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">sorted_points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">vector1</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Vector3d</span><span class="p">(</span><span class="n">sorted_points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">sorted_points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">pts_normal</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Vector3d</span><span class="o">.</span><span class="n">CrossProduct</span><span class="p">(</span><span class="n">vector0</span><span class="p">,</span> <span class="n">vector1</span><span class="p">)</span>
+
+    <span class="c1"># in case points are anti-clockwise then normals should be parallel</span>
+    <span class="k">if</span> <span class="n">vectors_cross_product</span><span class="p">(</span><span class="n">pts_normal</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="get_surface_center_pt_and_normal"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.get_surface_center_pt_and_normal">[docs]</a><span class="k">def</span> <span class="nf">get_surface_center_pt_and_normal</span><span class="p">(</span><span class="n">geometry</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate center point and normal for a hb_surface.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hb_surface: A Honeybee surface</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Returns a tuple as (center_pt, normal_vector)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">brep_face</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">brep_face</span><span class="o">.</span><span class="n">IsPlanar</span> <span class="ow">and</span> <span class="n">brep_face</span><span class="o">.</span><span class="n">IsSurface</span><span class="p">:</span>
+        <span class="n">u_domain</span> <span class="o">=</span> <span class="n">brep_face</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">v_domain</span> <span class="o">=</span> <span class="n">brep_face</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">center_u</span> <span class="o">=</span> <span class="p">(</span><span class="n">u_domain</span><span class="o">.</span><span class="n">Min</span> <span class="o">+</span> <span class="n">u_domain</span><span class="o">.</span><span class="n">Max</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">center_v</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_domain</span><span class="o">.</span><span class="n">Min</span> <span class="o">+</span> <span class="n">v_domain</span><span class="o">.</span><span class="n">Max</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="n">center_pt</span> <span class="o">=</span> <span class="n">brep_face</span><span class="o">.</span><span class="n">PointAt</span><span class="p">(</span><span class="n">center_u</span><span class="p">,</span> <span class="n">center_v</span><span class="p">)</span>
+        <span class="n">normal_vector</span> <span class="o">=</span> <span class="n">brep_face</span><span class="o">.</span><span class="n">NormalAt</span><span class="p">(</span><span class="n">center_u</span><span class="p">,</span> <span class="n">center_v</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">centroid</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">AreaMassProperties</span><span class="o">.</span><span class="n">Compute</span><span class="p">(</span><span class="n">brep_face</span><span class="p">)</span><span class="o">.</span><span class="n">Centroid</span>
+        <span class="n">uv</span> <span class="o">=</span> <span class="n">brep_face</span><span class="o">.</span><span class="n">ClosestPoint</span><span class="p">(</span><span class="n">centroid</span><span class="p">)</span>
+        <span class="n">center_pt</span> <span class="o">=</span> <span class="n">brep_face</span><span class="o">.</span><span class="n">PointAt</span><span class="p">(</span><span class="n">uv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">uv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">normal_vector</span> <span class="o">=</span> <span class="n">brep_face</span><span class="o">.</span><span class="n">NormalAt</span><span class="p">(</span><span class="n">uv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">uv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="n">SurfaceData</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;SurfaceData&#39;</span><span class="p">,</span> <span class="s1">&#39;center_pt normal_vector&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">SurfaceData</span><span class="p">(</span><span class="n">center_pt</span><span class="p">,</span> <span class="n">normal_vector</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_planarity"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.check_planarity">[docs]</a><span class="k">def</span> <span class="nf">check_planarity</span><span class="p">(</span><span class="n">hb_surface</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check planarity of a hb_surface.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hb_surface: A Honeybee surface</span>
+<span class="sd">        tolerance: A float number as tolerance (Default: 1e-3)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True is the surface is planar, otherwise return False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">hb_surface</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">is_planar</span><span class="p">(</span><span class="n">tolerance</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input is not a hb_surface: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_for_internal_edge"><a class="viewcode-back" href="../../honeybee.html#honeybee.plus.check_for_internal_edge">[docs]</a><span class="k">def</span> <span class="nf">check_for_internal_edge</span><span class="p">(</span><span class="n">hb_surface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if the surface has an internal edge.</span>
+
+<span class="sd">    For surfaces with internal edge surfaces needs to be meshed to extract the points.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hb_surface: A Honeybee surface</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True is the surface has an internal edge, otherwise return False.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># I believe there should be a direct method in RhinoCommon to indicate if a</span>
+    <span class="c1"># surface is an open brep but since I couldn&#39;t find it I&#39;m using this method</span>
+    <span class="c1"># if Surface has no intenal edges the length of joined border is 1</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">hb_surface</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">DuplicateEdgeCurves</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input is not a hb_surface: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">border</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Curve</span><span class="o">.</span><span class="n">JoinCurves</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">border</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,437 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.radiance.pattern package &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee.radiance.recipe package" href="honeybee.radiance.recipe.html" />
+    <link rel="prev" title="honeybee.radiance.parameters package" href="honeybee.radiance.parameters.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="honeybee-radiance-pattern-package">
+<h1>honeybee.radiance.pattern package<a class="headerlink" href="#honeybee-radiance-pattern-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-honeybee.radiance.pattern.brightdata">
+<span id="honeybee-radiance-pattern-brightdata-module"></span><h2>honeybee.radiance.pattern.brightdata module<a class="headerlink" href="#module-honeybee.radiance.pattern.brightdata" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Brightdata Texture.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Brightdata">http://radsite.lbl.gov/radiance/refer/ray.html#Brightdata</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.pattern.brightdata.Brightdata">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.pattern.brightdata.</code><code class="descname">Brightdata</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/pattern/brightdata.html#Brightdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.pattern.brightdata.Brightdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.pattern.patternbase.RadiancePattern" title="honeybee.radiance.pattern.patternbase.RadiancePattern"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.pattern.patternbase.RadiancePattern</span></code></a></p>
+<p>Radiance Brightdata Material.</p>
+<p>Brightdata is like colordata, except monochromatic.</p>
+<blockquote>
+<div><p>mod brightdata id
+3+n+</p>
+<blockquote>
+<div>func datafile
+funcfile x1 x2 .. xn transform</div></blockquote>
+<p>0
+m A1 A2 .. Am</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.pattern.brightfunc">
+<span id="honeybee-radiance-pattern-brightfunc-module"></span><h2>honeybee.radiance.pattern.brightfunc module<a class="headerlink" href="#module-honeybee.radiance.pattern.brightfunc" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Brightfunc Pattern.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Brightfunc">http://radsite.lbl.gov/radiance/refer/ray.html#Brightfunc</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.pattern.brightfunc.Brightfunc">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.pattern.brightfunc.</code><code class="descname">Brightfunc</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/pattern/brightfunc.html#Brightfunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.pattern.brightfunc.Brightfunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.pattern.patternbase.RadiancePattern" title="honeybee.radiance.pattern.patternbase.RadiancePattern"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.pattern.patternbase.RadiancePattern</span></code></a></p>
+<p>Radiance Brightfunc Material.</p>
+<p>A brightfunc is the same as a colorfunc, except it is monochromatic.</p>
+<blockquote>
+<div>mod brightfunc id
+2+ refl funcfile transform
+0
+n A1 A2 .. An</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.pattern.brighttext">
+<span id="honeybee-radiance-pattern-brighttext-module"></span><h2>honeybee.radiance.pattern.brighttext module<a class="headerlink" href="#module-honeybee.radiance.pattern.brighttext" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Brighttext Pattern.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Brighttext">http://radsite.lbl.gov/radiance/refer/ray.html#Brighttext</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.pattern.brighttext.Brighttext">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.pattern.brighttext.</code><code class="descname">Brighttext</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/pattern/brighttext.html#Brighttext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.pattern.brighttext.Brighttext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.pattern.patternbase.RadiancePattern" title="honeybee.radiance.pattern.patternbase.RadiancePattern"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.pattern.patternbase.RadiancePattern</span></code></a></p>
+<p>Radiance Brighttext Pattern.</p>
+<p>Brighttext is like colortext, but the writing is monochromatic.</p>
+<blockquote>
+<div><p>mod brighttext id
+2 fontfile textfile
+0
+11+</p>
+<blockquote>
+<div>Ox Oy Oz
+Rx Ry Rz
+Dx Dy Dz
+foreground background
+[spacing]</div></blockquote>
+</div></blockquote>
+<p>or:</p>
+<blockquote>
+<div><p>mod brighttext id
+2+N fontfile . This is a line with N words …
+0
+11+</p>
+<blockquote>
+<div>Ox Oy Oz
+Rx Ry Rz
+Dx Dy Dz
+foreground background
+[spacing]</div></blockquote>
+</div></blockquote>
+<p>By default, a uniform spacing algorithm is used that guarantees every character will
+appear in a precisely determined position. Unfortunately, such a scheme results in
+rather unattractive and difficult to read text with most fonts. The optional spacing
+value defines the distance between characters for proportional spacing. A positive
+value selects a spacing algorithm that preserves right margins and indentation, but
+does not provide the ultimate in proportionally spaced text. A negative value insures
+that characters are properly spaced, but the placement of words then varies
+unpredictably. The choice depends on the relative importance of spacing versus
+formatting. When presenting a section of formatted text, a positive spacing value is
+usually preferred. A single line of text will often be accompanied by a negative
+spacing value. A section of text meant to depict a picture, perhaps using a special
+purpose font such as hexbit4x1.fnt, calls for uniform spacing. Reasonable magnitudes
+for proportional spacing are between 0.1 (for tightly spaced characters) and 0.3 (for
+wide spacing).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.pattern.colordata">
+<span id="honeybee-radiance-pattern-colordata-module"></span><h2>honeybee.radiance.pattern.colordata module<a class="headerlink" href="#module-honeybee.radiance.pattern.colordata" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Colordata Pattern.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Colordata">http://radsite.lbl.gov/radiance/refer/ray.html#Colordata</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.pattern.colordata.Colordata">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.pattern.colordata.</code><code class="descname">Colordata</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/pattern/colordata.html#Colordata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.pattern.colordata.Colordata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.pattern.patternbase.RadiancePattern" title="honeybee.radiance.pattern.patternbase.RadiancePattern"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.pattern.patternbase.RadiancePattern</span></code></a></p>
+<p>Radiance Colordata Pattern.</p>
+<p>Colordata uses an interpolated data map to modify a material’s color. The map is
+n-dimensional, and is stored in three auxiliary files, one for each color. The
+coordinates used to look up and interpolate the data are defined in another auxiliary
+file. The interpolated data values are modified by functions of one or three
+variables. If the functions are of one variable, then they are passed the
+corresponding color component (red or green or blue). If the functions are of three
+variables, then they are passed the original red, green, and blue values as
+parameters.</p>
+<blockquote>
+<div><p>mod colordata id
+7+n+</p>
+<blockquote>
+<div>rfunc gfunc bfunc rdatafile gdatafile bdatafile
+funcfile x1 x2 .. xn transform</div></blockquote>
+<p>0
+m A1 A2 .. Am</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.pattern.colorfunc">
+<span id="honeybee-radiance-pattern-colorfunc-module"></span><h2>honeybee.radiance.pattern.colorfunc module<a class="headerlink" href="#module-honeybee.radiance.pattern.colorfunc" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Colorfunc Texture.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Colorfunc">http://radsite.lbl.gov/radiance/refer/ray.html#Colorfunc</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.pattern.colorfunc.Colorfunc">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.pattern.colorfunc.</code><code class="descname">Colorfunc</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/pattern/colorfunc.html#Colorfunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.pattern.colorfunc.Colorfunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.pattern.patternbase.RadiancePattern" title="honeybee.radiance.pattern.patternbase.RadiancePattern"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.pattern.patternbase.RadiancePattern</span></code></a></p>
+<p>Radiance Colorfunc Material.</p>
+<p>A colorfunc is a procedurally defined color pattern. It is specified as follows:</p>
+<blockquote>
+<div>mod colorfunc id
+4+ red green blue funcfile transform
+0
+n A1 A2 .. An</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.pattern.colorpict">
+<span id="honeybee-radiance-pattern-colorpict-module"></span><h2>honeybee.radiance.pattern.colorpict module<a class="headerlink" href="#module-honeybee.radiance.pattern.colorpict" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Colorpict Pattern.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Colorpict">http://radsite.lbl.gov/radiance/refer/ray.html#Colorpict</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.pattern.colorpict.Colorpict">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.pattern.colorpict.</code><code class="descname">Colorpict</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/pattern/colorpict.html#Colorpict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.pattern.colorpict.Colorpict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.pattern.patternbase.RadiancePattern" title="honeybee.radiance.pattern.patternbase.RadiancePattern"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.pattern.patternbase.RadiancePattern</span></code></a></p>
+<p>Radiance Colorpict Pattern.</p>
+<p>Colorpict is a special case of colordata, where the pattern is a two-dimensional
+image stored in the RADIANCE picture format. The dimensions of the image data are
+determined by the picture such that the smaller dimension is always 1, and the
+other is the ratio between the larger and the smaller. For example, a 500x338
+picture would have coordinates (u,v) in the rectangle between (0,0) and (1.48,1).</p>
+<blockquote>
+<div><p>mod colorpict id
+7+</p>
+<blockquote>
+<div>rfunc gfunc bfunc pictfile
+funcfile u v transform</div></blockquote>
+<p>0
+m A1 A2 .. Am</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.pattern.colortext">
+<span id="honeybee-radiance-pattern-colortext-module"></span><h2>honeybee.radiance.pattern.colortext module<a class="headerlink" href="#module-honeybee.radiance.pattern.colortext" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Colortext Pattern.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Colortext">http://radsite.lbl.gov/radiance/refer/ray.html#Colortext</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.pattern.colortext.Colortext">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.pattern.colortext.</code><code class="descname">Colortext</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/pattern/colortext.html#Colortext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.pattern.colortext.Colortext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.pattern.patternbase.RadiancePattern" title="honeybee.radiance.pattern.patternbase.RadiancePattern"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.pattern.patternbase.RadiancePattern</span></code></a></p>
+<p>Radiance Colortext Pattern.</p>
+<blockquote>
+<div><p>Colortext is dichromatic writing in a polygonal font. The font is defined in an
+auxiliary file, such as helvet.fnt. The text itself is also specified in a separate
+file, or can be part of the material arguments. The character size, orientation,
+aspect ratio and slant is determined by right and down motion vectors. The upper left
+origin for the text block as well as the foreground and background colors must also
+be given.</p>
+<blockquote>
+<div><p>mod colortext id
+2 fontfile textfile
+0
+15+</p>
+<blockquote>
+<div>Ox Oy Oz
+Rx Ry Rz
+Dx Dy Dz
+rfore gfore bfore
+rback gback bback
+[spacing]</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<p>or:</p>
+<blockquote>
+<div><p>mod colortext id
+2+N fontfile . This is a line with N words …
+0
+15+</p>
+<blockquote>
+<div>Ox Oy Oz
+Rx Ry Rz
+Dx Dy Dz
+rfore gfore bfore
+rback gback bback
+[spacing]</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.pattern.patternbase">
+<span id="honeybee-radiance-pattern-patternbase-module"></span><h2>honeybee.radiance.pattern.patternbase module<a class="headerlink" href="#module-honeybee.radiance.pattern.patternbase" title="Permalink to this headline">¶</a></h2>
+<p>Base Radiance Texture class (Texfunc, Texdata).</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Textures">http://radsite.lbl.gov/radiance/refer/ray.html#Textures</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.pattern.patternbase.RadiancePattern">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.pattern.patternbase.</code><code class="descname">RadiancePattern</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/pattern/patternbase.html#RadiancePattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.pattern.patternbase.RadiancePattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="honeybee.radiance.html#honeybee.radiance.primitive.Primitive" title="honeybee.radiance.primitive.Primitive"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.primitive.Primitive</span></code></a></p>
+<p>Base class for Radiance patterns.</p>
+<p>Patterns are used to modify the reflectance of materials..</p>
+<dl class="attribute">
+<dt id="honeybee.radiance.pattern.patternbase.RadiancePattern.name">
+<code class="descname">name</code><a class="headerlink" href="#honeybee.radiance.pattern.patternbase.RadiancePattern.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Primitive name as a string. Do not use white space and special character.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.pattern.patternbase.RadiancePattern.modifier">
+<code class="descname">modifier</code><a class="headerlink" href="#honeybee.radiance.pattern.patternbase.RadiancePattern.modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifier. It can be primitive, mixture, texture or pattern.
+(Default: “void”).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.pattern.patternbase.RadiancePattern.values">
+<code class="descname">values</code><a class="headerlink" href="#honeybee.radiance.pattern.patternbase.RadiancePattern.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary of primitive data. key is line number and item is the list
+of values {0: [], 1: [], 2: [‘0.500’, ‘0.500’, ‘0.500’, ‘0.000’, ‘0.050’]}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.pattern.patternbase.RadiancePattern.isRadiancePattern">
+<code class="descname">isRadiancePattern</code><a class="headerlink" href="#honeybee.radiance.pattern.patternbase.RadiancePattern.isRadiancePattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate that this object is a Radiance Pattern.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.pattern">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-honeybee.radiance.pattern" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Patterns.</p>
+<p>Patterns are used to modify the reflectance of materials.</p>
+<p>See <a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Patterns">http://radsite.lbl.gov/radiance/refer/ray.html#Patterns</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee.html">honeybee package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee.energyplus.html">honeybee.energyplus package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee.radiance.html">honeybee.radiance package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="honeybee.radiance.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysisgrid">honeybee.radiance.analysisgrid module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysispoint">honeybee.radiance.analysispoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.datatype">honeybee.radiance.datatype module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.factory">honeybee.radiance.factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.imagecollection">honeybee.radiance.imagecollection module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.primitive">honeybee.radiance.primitive module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.properties">honeybee.radiance.properties module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radfile">honeybee.radiance.radfile module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radparser">honeybee.radiance.radparser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.scene">honeybee.radiance.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.staticscene">honeybee.radiance.staticscene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.view">honeybee.radiance.view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.server.html">honeybee.server package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.vectormath.html">honeybee.vectormath package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.config">honeybee.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.dataoperation">honeybee.dataoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.futil">honeybee.futil module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.geometryoperation">honeybee.geometryoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbdynamicsurface">honeybee.hbdynamicsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbfensurface">honeybee.hbfensurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbobject">honeybee.hbobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.plus">honeybee.plus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfacetype">honeybee.surfacetype module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.utilcol">honeybee.utilcol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="honeybee.html">honeybee package</a><ul>
+  <li><a href="honeybee.radiance.html">honeybee.radiance package</a><ul>
+      <li>Previous: <a href="honeybee.radiance.parameters.html" title="previous chapter">honeybee.radiance.parameters package</a></li>
+      <li>Next: <a href="honeybee.radiance.recipe.html" title="next chapter">honeybee.radiance.recipe package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/honeybee.radiance.pattern.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

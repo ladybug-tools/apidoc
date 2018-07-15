@@ -1,0 +1,607 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.radiance.primitive &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.primitive</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base class for Radiance Primitives.</span>
+
+<span class="sd">Unless you are a developer you most likely want to use one of the subclasses of</span>
+<span class="sd">Primitive instead of using this class directly. Look under honeybee.radiance.material</span>
+<span class="sd">and honeybee.radiance.geometry</span>
+
+<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">..utilcol</span> <span class="k">import</span> <span class="n">check_name</span>
+<span class="kn">from</span> <span class="nn">.radparser</span> <span class="k">import</span> <span class="n">parse_from_string</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.factory</span> <span class="k">import</span> <span class="n">primitive_from_string</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># circular import</span>
+    <span class="k">pass</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.factory</span> <span class="k">import</span> <span class="n">primitive_from_json</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># circular import</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="Void"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Void">[docs]</a><span class="k">class</span> <span class="nc">Void</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Void modifier.&quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Void.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;void&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">can_be_modifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;True.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_opaque</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;False for a void.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Void.to_rad_string"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Void.to_rad_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_rad_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return full radiance definition.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;void&#39;</span></div>
+
+<div class="viewcode-block" id="Void.to_json"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Void.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return void.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Void.ToString"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Void.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Primitive"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Primitive">[docs]</a><span class="k">class</span> <span class="nc">Primitive</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for Radiance Primitives.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        name: Primitive name as a string. Do not use white space and special character.</span>
+<span class="sd">        type: One of Radiance standard Primitive types (e.g. glass, plastic, etc)</span>
+<span class="sd">        modifier: Modifier. It can be primitive, mixture, texture or pattern.</span>
+<span class="sd">            (Default: &quot;void&quot;).</span>
+<span class="sd">        values: A dictionary of primitive data. key is line number and item is the list</span>
+<span class="sd">            of values {0: [], 1: [], 2: [&#39;0.500&#39;, &#39;0.500&#39;, &#39;0.500&#39;, &#39;0.000&#39;, &#39;0.050&#39;]}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># list of Radiance material types</span>
+    <span class="n">MATERIALTYPES</span> <span class="o">=</span> \
+        <span class="nb">set</span><span class="p">((</span><span class="s1">&#39;plastic&#39;</span><span class="p">,</span> <span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;trans&#39;</span><span class="p">,</span> <span class="s1">&#39;metal&#39;</span><span class="p">,</span> <span class="s1">&#39;mirror&#39;</span><span class="p">,</span> <span class="s1">&#39;illum&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;mixedfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;dielectric&#39;</span><span class="p">,</span> <span class="s1">&#39;transdata&#39;</span><span class="p">,</span> <span class="s1">&#39;light&#39;</span><span class="p">,</span> <span class="s1">&#39;glow&#39;</span><span class="p">,</span> <span class="s1">&#39;BSDF&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;void&#39;</span><span class="p">,</span> <span class="s1">&#39;spotlight&#39;</span><span class="p">,</span> <span class="s1">&#39;prism1&#39;</span><span class="p">,</span> <span class="s1">&#39;prism2&#39;</span><span class="p">,</span> <span class="s1">&#39;mist&#39;</span><span class="p">,</span> <span class="s1">&#39;plastic2&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;metal2&#39;</span><span class="p">,</span> <span class="s1">&#39;trans2&#39;</span><span class="p">,</span> <span class="s1">&#39;ashik2&#39;</span><span class="p">,</span> <span class="s1">&#39;dielectric&#39;</span><span class="p">,</span> <span class="s1">&#39;interface&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;plasfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;metfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;transfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;BRTDfunc&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;plasdata&#39;</span><span class="p">,</span> <span class="s1">&#39;metdata&#39;</span><span class="p">,</span> <span class="s1">&#39;transdata&#39;</span><span class="p">,</span> <span class="s1">&#39;antimatter&#39;</span><span class="p">))</span>
+
+    <span class="n">TEXTURETYPES</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="s1">&#39;texfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;texdata&#39;</span><span class="p">))</span>
+
+    <span class="c1"># list of Radiance geometry types</span>
+    <span class="n">GEOMETRYTYPES</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;sphere&#39;</span><span class="p">,</span> <span class="s1">&#39;bubble&#39;</span><span class="p">,</span> <span class="s1">&#39;polygon&#39;</span><span class="p">,</span> <span class="s1">&#39;cone&#39;</span><span class="p">,</span> <span class="s1">&#39;cup&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;cylinder&#39;</span><span class="p">,</span> <span class="s1">&#39;tube&#39;</span><span class="p">,</span> <span class="s1">&#39;ring&#39;</span><span class="p">,</span> <span class="s1">&#39;instance&#39;</span><span class="p">,</span> <span class="s1">&#39;mesh&#39;</span><span class="p">))</span>
+
+    <span class="n">PATTERNTYPES</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="s1">&#39;colorfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;brightfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;colordata&#39;</span><span class="p">,</span> <span class="s1">&#39;brightdata&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;colorpict&#39;</span><span class="p">,</span> <span class="s1">&#39;colortext&#39;</span><span class="p">,</span> <span class="s1">&#39;brighttext&#39;</span><span class="p">))</span>
+
+    <span class="n">MIXTURETYPES</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="s1">&#39;mixfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;mixdata&#39;</span><span class="p">,</span> <span class="s1">&#39;mixpict&#39;</span><span class="p">,</span> <span class="s1">&#39;mixtext&#39;</span><span class="p">))</span>
+
+    <span class="n">TYPES</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">MATERIALTYPES</span><span class="p">,</span> <span class="n">TEXTURETYPES</span><span class="p">,</span> <span class="n">GEOMETRYTYPES</span><span class="p">,</span> <span class="n">PATTERNTYPES</span><span class="p">,</span>
+                        <span class="n">MIXTURETYPES</span><span class="p">)</span>
+
+    <span class="c1"># Materials, mixtures, textures or patterns</span>
+    <span class="n">MODIFIERTYPES</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">MATERIALTYPES</span><span class="p">,</span> <span class="n">MIXTURETYPES</span><span class="p">,</span> <span class="n">TEXTURETYPES</span><span class="p">,</span> <span class="n">PATTERNTYPES</span><span class="p">)</span>
+    <span class="c1"># Materials that are not usually opaque. This will be used to set is_opaque property</span>
+    <span class="c1"># is it&#39;s not provided by user and can be overwritten by setting the value for</span>
+    <span class="c1"># is_opaque</span>
+    <span class="n">NONEOPAQUETYPES</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;trans&#39;</span><span class="p">,</span> <span class="s1">&#39;trans2&#39;</span><span class="p">,</span> <span class="s1">&#39;transdata&#39;</span><span class="p">,</span> <span class="s1">&#39;transfunc&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;dielectric&#39;</span><span class="p">,</span> <span class="s1">&#39;BSDF&#39;</span><span class="p">,</span> <span class="s1">&#39;mixfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;BRTDfunc&#39;</span><span class="p">,</span> <span class="s1">&#39;mist&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;prism1&#39;</span><span class="p">,</span> <span class="s1">&#39;prism2&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_opaque</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create primitive base.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span> <span class="o">=</span> <span class="n">modifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span> <span class="ow">or</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">[],</span> <span class="mi">1</span><span class="p">:</span> <span class="p">[],</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_opaque</span> <span class="o">=</span> <span class="n">is_opaque</span>
+
+<div class="viewcode-block" id="Primitive.from_string"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Primitive.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">primitive_string</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a Radiance primitive from a string.</span>
+
+<span class="sd">        If the primitive has a modifier the modifier primitive should also be part of the</span>
+<span class="sd">        string or should be provided using modifier argument.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">primitive_type</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_string_type</span><span class="p">(</span><span class="n">primitive_string</span><span class="p">)</span>
+
+        <span class="n">modifier</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">base_data</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_string_input</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span> <span class="n">primitive_string</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span>
+
+        <span class="n">count_1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">base_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">count_2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">base_data</span><span class="p">[</span><span class="n">count_1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">count_3</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">base_data</span><span class="p">[</span><span class="n">count_1</span> <span class="o">+</span> <span class="n">count_2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">l1</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">count_1</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">base_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span> <span class="n">count_1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">l2</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">count_2</span> <span class="o">==</span> <span class="mi">0</span> \
+            <span class="k">else</span> <span class="n">base_data</span><span class="p">[</span><span class="n">count_1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span> <span class="n">count_1</span> <span class="o">+</span> <span class="n">count_2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">l3</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">count_3</span> <span class="o">==</span> <span class="mi">0</span> \
+            <span class="k">else</span> <span class="n">base_data</span><span class="p">[</span><span class="n">count_1</span> <span class="o">+</span> <span class="n">count_2</span> <span class="o">+</span> <span class="mi">3</span><span class="p">:</span> <span class="n">count_1</span> <span class="o">+</span> <span class="n">count_2</span> <span class="o">+</span> <span class="n">count_3</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">l1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">l2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">l3</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;Primitive&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">primitive_type</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># subclass - type will be assigned based on name</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Primitive.from_json"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Primitive.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">mat_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make radiance primitive from json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;modifier&quot;: &quot;&quot;, // primitive modifier (Default: &quot;void&quot;)</span>
+<span class="sd">            &quot;type&quot;: &quot;custom&quot;, // primitive type</span>
+<span class="sd">            &quot;base_type&quot;: &quot;type&quot;, // primitive type</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // primitive Name</span>
+<span class="sd">            &quot;values&quot;: {} // values</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_json_input</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">mat_json</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;Primitive&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">mat_json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                       <span class="nb">type</span><span class="o">=</span><span class="n">mat_json</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span>
+                       <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">,</span>
+                       <span class="n">values</span><span class="o">=</span><span class="n">mat_json</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># subclass - type will be assigned based on name</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">mat_json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                       <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">,</span>
+                       <span class="n">values</span><span class="o">=</span><span class="n">mat_json</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">])</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_values</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span>
+
+    <span class="nd">@values</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Modify values for the current primitive.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           new_values: New values as a dictionary. The keys should be between 0 and 2.</span>
+
+<span class="sd">         Usage:</span>
+<span class="sd">            # This line will assign 9 values to line 0 of the primitive</span>
+<span class="sd">            primitive.values = {0: [&quot;0.5&quot;, &quot;0.5&quot;, &quot;0.5&quot;,</span>
+<span class="sd">                &quot;/usr/local/lib/ray/oakfloor.pic&quot;, &quot;.&quot;, &quot;frac(U)&quot;,</span>
+<span class="sd">                &quot;frac(V)&quot;, &quot;-s&quot;, &quot;1.1667&quot;]}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">line_count</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new_values</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">line_count</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Illegal input: </span><span class="si">{}</span><span class="s1">. Key values must be between 0-2.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">line_count</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">line_count</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isRadiancePrimitive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate that this object is a Radiance primitive.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isRadianceGeometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate if this object is a Radiance geometry.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isRadianceTexture</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate if this object is a Radiance geometry.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isRadiancePattern</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate if this object is a Radiance geometry.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isRadianceMixture</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate if this object is a Radiance geometry.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isRadianceMaterial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate if this object is a Radiance material.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">can_be_modifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate if this object can be a modifier.</span>
+
+<span class="sd">        Materials, mixtures, textures or patterns can be modifiers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODIFIERTYPES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get/set primitive name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isRadianceMaterial</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">MATERIALTYPES</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is a radiance primitive type and&#39;</span> \
+                <span class="s1">&#39; should not be used as a material name.&#39;</span> <span class="o">%</span> <span class="n">name</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">isRadianceGeometry</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">GEOMETRYTYPES</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is a radiance geometry type and&#39;</span> \
+                <span class="s1">&#39; should not be used as a geometry name.&#39;</span> <span class="o">%</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+        <span class="n">check_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">modifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get/set primitive modifier.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modifier</span>
+
+    <span class="nd">@modifier</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">modifier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modifier</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">modifier</span> <span class="ow">or</span> <span class="n">modifier</span> <span class="o">==</span> <span class="s1">&#39;void&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modifier</span> <span class="o">=</span> <span class="n">Void</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">modifier</span><span class="p">,</span> <span class="s1">&#39;can_be_modifier&#39;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Invalid modifier: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">modifier</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">modifier</span><span class="o">.</span><span class="n">can_be_modifier</span><span class="p">,</span> \
+                <span class="s1">&#39;A </span><span class="si">{}</span><span class="s1"> cannot be a modifier. Modifiers can be Materials, mixtures, &#39;</span> \
+                <span class="s1">&#39;textures or patterns&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">modifier</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modifier</span> <span class="o">=</span> <span class="n">modifier</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get/set primitive type.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span>
+
+    <span class="nd">@type</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+        <span class="n">_mapper</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bsdf&#39;</span><span class="p">:</span> <span class="s1">&#39;BSDF&#39;</span><span class="p">,</span> <span class="s1">&#39;brtdfunc&#39;</span><span class="p">:</span> <span class="s1">&#39;BRTDfunc&#39;</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="nb">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TYPES</span><span class="p">:</span>
+            <span class="c1"># try base classes for subclasses</span>
+            <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">_mapper</span><span class="p">:</span>
+                    <span class="nb">type</span> <span class="o">=</span> <span class="n">_mapper</span><span class="p">[</span><span class="n">base</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TYPES</span><span class="p">:</span>
+                    <span class="nb">type</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="k">break</span>
+
+        <span class="k">assert</span> <span class="nb">type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TYPES</span><span class="p">,</span> \
+            <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is not a supported primitive type.&quot;</span> <span class="o">%</span> <span class="nb">type</span> <span class="o">+</span> \
+            <span class="s2">&quot;Try one of these primitives:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TYPES</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="nb">type</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_opaque</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate if the primitive is opaque.</span>
+
+<span class="sd">        This property is used to separate opaque and non-opaque surfaces.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_opaque</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_opaque</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NONEOPAQUETYPES</span><span class="p">:</span>
+            <span class="c1"># none opaque material</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_opaque</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_opaque</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># check modifier for surfaces</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">is_opaque</span>
+
+    <span class="nd">@is_opaque</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">is_opaque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_opaque</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_opaque</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">is_opaque</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_string_type</span><span class="p">(</span><span class="n">input_string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is a helper function for from_string classmethod.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            input_string: Radiance input string</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            primitive type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">input_objects</span> <span class="o">=</span> <span class="n">parse_from_string</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">input_objects</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> includes no radiance primitives.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">bm</span> <span class="o">=</span> <span class="n">input_objects</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">bm_data</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">bm_type</span> <span class="o">=</span> <span class="n">bm_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">bm_type</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_analyze_string_input</span><span class="p">(</span><span class="n">desired_type</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">modifier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is a helper function for from_string classmethod.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            desired_type: Desired type of base modifier as a string (e.g. plastic).</span>
+<span class="sd">            input_string: Radiance input string</span>
+<span class="sd">            modifier: A radiance modifier for base input string.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            modifier, name, modifier data as a list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">input_objects</span> <span class="o">=</span> <span class="n">parse_from_string</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">input_objects</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> includes no radiance primitives.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">bm</span> <span class="o">=</span> <span class="n">input_objects</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">bm_data</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">bm_modifier</span> <span class="o">=</span> <span class="n">bm_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">bm_type</span> <span class="o">=</span> <span class="n">bm_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">bm_name</span> <span class="o">=</span> <span class="n">bm_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">desired_type</span><span class="p">:</span>
+            <span class="c1"># custom primitives won&#39;t have desired_type</span>
+            <span class="k">assert</span> <span class="n">bm_type</span> <span class="o">==</span> <span class="n">desired_type</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is a </span><span class="si">{}</span><span class="s1"> not a </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bm</span><span class="p">,</span> <span class="n">bm_type</span><span class="p">,</span> <span class="n">desired_type</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_objects</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># There is only one primitive ensure that modifier is void</span>
+
+            <span class="k">if</span> <span class="n">bm_modifier</span> <span class="o">!=</span> <span class="s1">&#39;void&#39;</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">modifier</span><span class="p">,</span> \
+                    <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> has a modifier: &quot;</span><span class="si">{}</span><span class="s1">&quot; which is not provided.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">bm_data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">bm_modifier</span>
+                    <span class="p">)</span>
+                <span class="k">assert</span> <span class="n">modifier</span><span class="o">.</span><span class="n">can_be_modifier</span><span class="p">,</span> \
+                    <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> cannot be a modifier!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modifier</span><span class="p">)</span>
+
+                <span class="k">assert</span> <span class="n">modifier</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">bm_modifier</span><span class="p">,</span> \
+                    <span class="s1">&#39;Illegal modifier. Expected </span><span class="si">{}</span><span class="s1"> got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bm_modifier</span><span class="p">,</span>
+                                                                  <span class="n">modifier</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">modifier</span> <span class="o">==</span> <span class="n">bm_modifier</span>
+
+        <span class="k">if</span> <span class="n">modifier</span> <span class="o">!=</span> <span class="s1">&#39;void&#39;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_objects</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># create modifier if any</span>
+            <span class="n">modifier_primitives</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_objects</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">modifier</span> <span class="o">=</span> <span class="n">primitive_from_string</span><span class="p">(</span><span class="n">modifier_primitives</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">UnboundLocalError</span><span class="p">:</span>
+                <span class="c1"># circular import</span>
+                <span class="kn">from</span> <span class="nn">.factory</span> <span class="k">import</span> <span class="n">primitive_from_string</span>
+                <span class="n">modifier</span> <span class="o">=</span> <span class="n">primitive_from_string</span><span class="p">(</span><span class="n">modifier_primitives</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">modifier</span><span class="p">,</span> <span class="n">bm_name</span><span class="p">,</span> <span class="n">bm_data</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_analyze_json_input</span><span class="p">(</span><span class="n">desired_type</span><span class="p">,</span> <span class="n">input_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is a helper function for from_json classmethod.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            desired_type: Desired type of base modifier as a string (e.g. plastic).</span>
+<span class="sd">            input_json: Radiance input as a dictionary.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            modifier as a Honeybee Radiance primitive.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">input_json</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> includes no radiance primitives.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_json</span><span class="p">))</span>
+
+        <span class="n">bm_data</span> <span class="o">=</span> <span class="n">input_json</span>
+        <span class="n">bm_modifier</span> <span class="o">=</span> <span class="n">bm_data</span><span class="p">[</span><span class="s1">&#39;modifier&#39;</span><span class="p">]</span>
+        <span class="n">bm_type</span> <span class="o">=</span> <span class="n">bm_data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">desired_type</span><span class="p">:</span>
+            <span class="c1"># custom primitives won&#39;t have desired_type</span>
+            <span class="k">assert</span> <span class="n">bm_type</span> <span class="o">==</span> <span class="n">desired_type</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is a </span><span class="si">{}</span><span class="s1"> not a </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bm_data</span><span class="p">,</span> <span class="n">bm_type</span><span class="p">,</span> <span class="n">desired_type</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">bm_modifier</span> <span class="o">!=</span> <span class="s1">&#39;void&#39;</span><span class="p">:</span>
+            <span class="c1"># create modifier if any</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">modifier</span> <span class="o">=</span> <span class="n">primitive_from_json</span><span class="p">(</span><span class="n">bm_modifier</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">UnboundLocalError</span><span class="p">:</span>
+                <span class="c1"># circular import</span>
+                <span class="kn">from</span> <span class="nn">.factory</span> <span class="k">import</span> <span class="n">primitive_from_json</span>
+                <span class="n">modifier</span> <span class="o">=</span> <span class="n">primitive_from_json</span><span class="p">(</span><span class="n">bm_modifier</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">modifier</span> <span class="o">=</span> <span class="n">Void</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">modifier</span>
+
+    <span class="k">def</span> <span class="nf">_update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;update value dictionaries.</span>
+
+<span class="sd">        _update_values must be implemented under subclasses.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Primitive.head_line"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Primitive.head_line">[docs]</a>    <span class="k">def</span> <span class="nf">head_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_modifier</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return first line of primitive definition.</span>
+
+<span class="sd">        If primitive has a modifier it returns the modifier definition as well.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;void&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;void </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">include_modifier</span><span class="p">:</span>
+            <span class="c1"># include modifier primitive in definition</span>
+            <span class="n">modifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">modifier</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+    <span class="c1"># add string format for float values</span>
+<div class="viewcode-block" id="Primitive.to_rad_string"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Primitive.to_rad_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_rad_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_modifier</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return full radiance definition.&quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">head_line</span><span class="p">(</span><span class="n">minimal</span><span class="p">,</span> <span class="n">include_modifier</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">line_count</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">line_count</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># line will be printed as 0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">line_count</span><span class="p">])</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="k">if</span> <span class="n">minimal</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Primitive.to_json"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Primitive.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate radiance primitive to json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;modifier&quot;: &quot;&quot;, // primitive modifier (Default: &quot;void&quot;)</span>
+<span class="sd">            &quot;type&quot;: &quot;custom&quot;, // primitive type</span>
+<span class="sd">            &quot;base_type&quot;: &quot;type&quot;, // primitive type</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // primitive Name</span>
+<span class="sd">            &quot;values&quot;: {} // values</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;modifier&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Primitive.ToString"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.primitive.Primitive.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return primitive definition.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

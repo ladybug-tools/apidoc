@@ -32,66 +32,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="index.html">
-    <img class="logo" src="_static/ladybug.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Ladybug performs detailed analysis of climate data to produce customized, interactive visualizations for environmentally-informed design.</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=ladybug&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="ladybug.html">ladybug package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -109,6 +52,7 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -146,13 +90,17 @@
 </li>
       <li><a href="ladybug.html#ladybug.datatype.Angle">Angle (class in ladybug.datatype)</a>
 </li>
+      <li><a href="ladybug.html#ladybug.datacollection.DataCollection.append">append() (ladybug.datacollection.DataCollection method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ladybug.html#ladybug.datacollection.DataCollection.append">append() (ladybug.datacollection.DataCollection method)</a>
+      <li><a href="ladybug.html#ladybug.stat.Stat.ashrae_climate_zone">ashrae_climate_zone (ladybug.stat.Stat attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.atmospheric_station_pressure">atmospheric_station_pressure (ladybug.epw.EPW attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.datacollection.DataCollection.average">average() (ladybug.datacollection.DataCollection static method)</a>
+</li>
+      <li><a href="ladybug.html#ladybug.datacollection.DataCollection.average_data">average_data() (ladybug.datacollection.DataCollection method)</a>
 </li>
       <li><a href="ladybug.html#ladybug.datacollection.DataCollection.average_data_monthly">average_data_monthly() (ladybug.datacollection.DataCollection method)</a>
 </li>
@@ -192,7 +140,7 @@
 </li>
       <li><a href="ladybug.html#ladybug.sunpath.Sunpath.calculate_sun">calculate_sun() (ladybug.sunpath.Sunpath method)</a>
 </li>
-      <li><a href="ladybug.html#ladybug.sunpath.Sunpath.calculate_sun_from_data_time">calculate_sun_from_data_time() (ladybug.sunpath.Sunpath method)</a>
+      <li><a href="ladybug.html#ladybug.sunpath.Sunpath.calculate_sun_from_date_time">calculate_sun_from_date_time() (ladybug.sunpath.Sunpath method)</a>
 </li>
       <li><a href="ladybug.html#ladybug.sunpath.Sunpath.calculate_sun_from_hoy">calculate_sun_from_hoy() (ladybug.sunpath.Sunpath method)</a>
 </li>
@@ -209,6 +157,8 @@
       <li><a href="ladybug.html#ladybug.legendparameters.LegendParameters.chart_type">chart_type (ladybug.legendparameters.LegendParameters attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.location.Location.city">city (ladybug.location.Location attribute)</a>, <a href="ladybug.html#ladybug.location.Location.city">[1]</a>
+</li>
+      <li><a href="ladybug.html#ladybug.datatype.Clothing">Clothing (class in ladybug.datatype)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -261,6 +211,8 @@
       <li><a href="ladybug.html#ladybug.datatype.Angle.datetime">datetime (ladybug.datatype.Angle attribute)</a>
 
       <ul>
+        <li><a href="ladybug.html#ladybug.datatype.Clothing.datetime">(ladybug.datatype.Clothing attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.DataPoint.datetime">(ladybug.datatype.DataPoint attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.datetime">(ladybug.datatype.DataTypeBase attribute)</a>, <a href="ladybug.html#ladybug.datatype.DataTypeBase.datetime">[1]</a>
@@ -274,6 +226,12 @@
         <li><a href="ladybug.html#ladybug.datatype.Illuminance.datetime">(ladybug.datatype.Illuminance attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Luminance.datetime">(ladybug.datatype.Luminance attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.MetabolicRate.datetime">(ladybug.datatype.MetabolicRate attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied.datetime">(ladybug.datatype.PercentagePeopleDissatisfied attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote.datetime">(ladybug.datatype.PredictedMeanVote attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Pressure.datetime">(ladybug.datatype.Pressure attribute)</a>
 </li>
@@ -303,7 +261,11 @@
       <ul>
         <li><a href="ladybug.html#ladybug.datacollection.DataCollection.datetimes">(ladybug.datacollection.DataCollection attribute)</a>
 </li>
+        <li><a href="ladybug.html#ladybug.wea.Wea.datetimes">(ladybug.wea.Wea attribute)</a>
+</li>
       </ul></li>
+      <li><a href="ladybug.html#ladybug.wea.Wea.day_count">day_count() (ladybug.wea.Wea static method)</a>
+</li>
       <li><a href="ladybug.html#ladybug.sunpath.Sunpath.daylight_saving_period">daylight_saving_period (ladybug.sunpath.Sunpath attribute)</a>, <a href="ladybug.html#ladybug.sunpath.Sunpath.daylight_saving_period">[1]</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.days_since_last_snowfall">days_since_last_snowfall (ladybug.epw.EPW attribute)</a>
@@ -315,10 +277,22 @@
       <li><a href="ladybug.html#ladybug.epw.EPW.diffuse_horizontal_illuminance">diffuse_horizontal_illuminance (ladybug.epw.EPW attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.diffuse_horizontal_radiation">diffuse_horizontal_radiation (ladybug.epw.EPW attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.wea.Wea.diffuse_horizontal_radiation">(ladybug.wea.Wea attribute)</a>, <a href="ladybug.html#ladybug.wea.Wea.diffuse_horizontal_radiation">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="ladybug.html#ladybug.wea.Wea.direct_horizontal_radiation">direct_horizontal_radiation (ladybug.wea.Wea attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.direct_normal_illuminance">direct_normal_illuminance (ladybug.epw.EPW attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.direct_normal_radiation">direct_normal_radiation (ladybug.epw.EPW attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.wea.Wea.direct_normal_radiation">(ladybug.wea.Wea attribute)</a>, <a href="ladybug.html#ladybug.wea.Wea.direct_normal_radiation">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="ladybug.html#ladybug.wea.Wea.directional_radiation">directional_radiation() (ladybug.wea.Wea method)</a>
 </li>
       <li><a href="ladybug.html#ladybug.datatype.Distance">Distance (class in ladybug.datatype)</a>
 </li>
@@ -391,9 +365,17 @@
       <li><a href="ladybug.html#ladybug.epw.EPWFields.FIELDS">FIELDS (ladybug.epw.EPWFields attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.file_name">file_name (ladybug.epw.EPW attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.stat.Stat.file_name">(ladybug.stat.Stat attribute)</a>
 </li>
+      </ul></li>
       <li><a href="ladybug.html#ladybug.epw.EPW.file_path">file_path (ladybug.epw.EPW attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.stat.Stat.file_path">(ladybug.stat.Stat attribute)</a>
 </li>
+      </ul></li>
       <li><a href="ladybug.html#ladybug.datacollection.DataCollection.filter_by_analysis_period">filter_by_analysis_period() (ladybug.datacollection.DataCollection method)</a>
 </li>
       <li><a href="ladybug.html#ladybug.datacollection.DataCollection.filter_by_conditional_statement">filter_by_conditional_statement() (ladybug.datacollection.DataCollection method)</a>
@@ -424,19 +406,27 @@
 </li>
       <li><a href="ladybug.html#ladybug.psychrometrics.find_wet_bulb">find_wet_bulb() (in module ladybug.psychrometrics)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ladybug.html#ladybug.listoperations.flatten">flatten() (in module ladybug.listoperations)</a>
 </li>
       <li><a href="ladybug.html#ladybug.dt.DateTime.float_hour">float_hour (ladybug.dt.DateTime attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.folder">folder (ladybug.epw.EPW attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.stat.Stat.folder">(ladybug.stat.Stat attribute)</a>
 </li>
+      </ul></li>
       <li><a href="ladybug.html#ladybug.legendparameters.LegendParameters.font">font (ladybug.legendparameters.LegendParameters attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ladybug.html#ladybug.legendparameters.LegendParameters.fontSize">fontSize (ladybug.legendparameters.LegendParameters attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.from_analysis_period">from_analysis_period() (ladybug.analysisperiod.AnalysisPeriod class method)</a>
+</li>
+      <li><a href="ladybug.html#ladybug.wea.Wea.from_ashrae_clear_sky">from_ashrae_clear_sky() (ladybug.wea.Wea class method)</a>
+</li>
+      <li><a href="ladybug.html#ladybug.wea.Wea.from_ashrae_revised_clear_sky">from_ashrae_revised_clear_sky() (ladybug.wea.Wea class method)</a>
 </li>
       <li><a href="ladybug.html#ladybug.datatype.DataPoint.from_data">from_data() (ladybug.datatype.DataPoint class method)</a>
 </li>
@@ -452,8 +442,22 @@
 </li>
       <li><a href="ladybug.html#ladybug.dt.DateTime.from_hoy">from_hoy() (ladybug.dt.DateTime class method)</a>
 </li>
-      <li><a href="ladybug.html#ladybug.location.Location.from_json">from_json() (ladybug.location.Location class method)</a>
+      <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.from_json">from_json() (ladybug.analysisperiod.AnalysisPeriod class method)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.datacollection.DataCollection.from_json">(ladybug.datacollection.DataCollection class method)</a>
 </li>
+        <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.from_json">(ladybug.datatype.DataTypeBase class method)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.dt.DateTime.from_json">(ladybug.dt.DateTime class method)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.header.Header.from_json">(ladybug.header.Header class method)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.location.Location.from_json">(ladybug.location.Location class method)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.wea.Wea.from_json">(ladybug.wea.Wea class method)</a>
+</li>
+      </ul></li>
       <li><a href="ladybug.html#ladybug.datacollection.DataCollection.from_list">from_list() (ladybug.datacollection.DataCollection class method)</a>
 </li>
       <li><a href="ladybug.html#ladybug.location.Location.from_location">from_location() (ladybug.location.Location class method)</a>
@@ -464,7 +468,13 @@
       </ul></li>
       <li><a href="ladybug.html#ladybug.dt.DateTime.from_moy">from_moy() (ladybug.dt.DateTime class method)</a>
 </li>
+      <li><a href="ladybug.html#ladybug.wea.Wea.from_stat_file">from_stat_file() (ladybug.wea.Wea class method)</a>
+</li>
       <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.from_string">from_string() (ladybug.analysisperiod.AnalysisPeriod class method)</a>
+</li>
+      <li><a href="ladybug.html#ladybug.wea.Wea.from_values">from_values() (ladybug.wea.Wea class method)</a>
+</li>
+      <li><a href="ladybug.html#ladybug.wea.Wea.from_zhang_huang_solar_model">from_zhang_huang_solar_model() (ladybug.wea.Wea class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -483,7 +493,11 @@
       <li><a href="ladybug.html#ladybug.epw.EPW.global_horizontal_illuminance">global_horizontal_illuminance (ladybug.epw.EPW attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.global_horizontal_radiation">global_horizontal_radiation (ladybug.epw.EPW attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.wea.Wea.global_horizontal_radiation">(ladybug.wea.Wea attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ladybug.html#ladybug.datacollection.DataCollection.group_by_day">group_by_day() (ladybug.datacollection.DataCollection method)</a>
@@ -511,6 +525,8 @@
       <ul>
         <li><a href="ladybug.html#ladybug.epw.EPW.header">(ladybug.epw.EPW attribute)</a>
 </li>
+        <li><a href="ladybug.html#ladybug.stat.Stat.header">(ladybug.stat.Stat attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.wea.Wea.header">(ladybug.wea.Wea attribute)</a>
 </li>
       </ul></li>
@@ -527,7 +543,11 @@
 </li>
       </ul></li>
       <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.hoys">hoys (ladybug.analysisperiod.AnalysisPeriod attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.wea.Wea.hoys">(ladybug.wea.Wea attribute)</a>
 </li>
+      </ul></li>
       <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.hoys_int">hoys_int (ladybug.analysisperiod.AnalysisPeriod attribute)</a>
 </li>
   </ul></td>
@@ -540,9 +560,11 @@
 </li>
       <li><a href="ladybug.html#ladybug.datatype.Illuminance">Illuminance (class in ladybug.datatype)</a>
 </li>
-      <li><a href="ladybug.html#ladybug.epw.EPW.import_data">import_data() (ladybug.epw.EPW method)</a>
+      <li><a href="ladybug.html#ladybug.stat.Stat.import_data">import_data() (ladybug.stat.Stat method)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.import_data_by_field">import_data_by_field() (ladybug.epw.EPW method)</a>
+</li>
+      <li><a href="ladybug.html#ladybug.datacollection.DataCollection.insert">insert() (ladybug.datacollection.DataCollection method)</a>
 </li>
       <li><a href="ladybug.html#ladybug.dt.DateTime.int_hoy">int_hoy (ladybug.dt.DateTime attribute)</a>
 </li>
@@ -551,7 +573,11 @@
       <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.is_annual">is_annual (ladybug.analysisperiod.AnalysisPeriod attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.is_data_loaded">is_data_loaded (ladybug.epw.EPW attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.stat.Stat.is_data_loaded">(ladybug.stat.Stat attribute)</a>
 </li>
+      </ul></li>
       <li><a href="ladybug.html#ladybug.sunpath.Sun.is_daylight_saving">is_daylight_saving (ladybug.sunpath.Sun attribute)</a>, <a href="ladybug.html#ladybug.sunpath.Sun.is_daylight_saving">[1]</a>
 </li>
       <li><a href="ladybug.html#ladybug.sunpath.Sunpath.is_daylight_saving_hour">is_daylight_saving_hour() (ladybug.sunpath.Sunpath method)</a>
@@ -568,6 +594,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.is_in_range">is_in_range() (ladybug.datatype.DataTypeBase method)</a>
 </li>
+      <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.is_leap_year">is_leap_year (ladybug.analysisperiod.AnalysisPeriod attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.sunpath.Sunpath.is_leap_year">(ladybug.sunpath.Sunpath attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.wea.Wea.is_leap_year">(ladybug.wea.Wea attribute)</a>, <a href="ladybug.html#ladybug.wea.Wea.is_leap_year">[1]</a>
+</li>
+      </ul></li>
       <li><a href="ladybug.html#ladybug.epw.EPW.is_location_loaded">is_location_loaded (ladybug.epw.EPW attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.is_overnight">is_overnight (ladybug.analysisperiod.AnalysisPeriod attribute)</a>
@@ -591,6 +625,14 @@
       <li><a href="ladybug.html#ladybug.location.Location.isLocation">isLocation (ladybug.location.Location attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.wea.Wea.isWea">isWea (ladybug.wea.Wea attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ladybug.html#ladybug.stat.Stat.koppen_climate_zone">koppen_climate_zone (ladybug.stat.Stat attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -622,6 +664,8 @@
 </li>
       <li><a href="ladybug.html#module-ladybug.psychrometrics">ladybug.psychrometrics (module)</a>
 </li>
+      <li><a href="ladybug.html#module-ladybug.stat">ladybug.stat (module)</a>
+</li>
       <li><a href="ladybug.html#module-ladybug.sunpath">ladybug.sunpath (module)</a>
 </li>
   </ul></td>
@@ -649,6 +693,10 @@
       <ul>
         <li><a href="ladybug.html#ladybug.header.Header.location">(ladybug.header.Header attribute)</a>
 </li>
+        <li><a href="ladybug.html#ladybug.stat.Stat.location">(ladybug.stat.Stat attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.wea.Wea.location">(ladybug.wea.Wea attribute)</a>
+</li>
       </ul></li>
       <li><a href="ladybug.html#ladybug.location.Location.longitude">longitude (ladybug.location.Location attribute)</a>, <a href="ladybug.html#ladybug.location.Location.longitude">[1]</a>
 
@@ -675,6 +723,10 @@
 </li>
         <li><a href="ladybug.html#ladybug.datatype.DryBulbTemperature.maximum">(ladybug.datatype.DryBulbTemperature attribute)</a>
 </li>
+        <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied.maximum">(ladybug.datatype.PercentagePeopleDissatisfied attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote.maximum">(ladybug.datatype.PredictedMeanVote attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.Pressure.maximum">(ladybug.datatype.Pressure attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.RelativeHumidity.maximum">(ladybug.datatype.RelativeHumidity attribute)</a>
@@ -688,9 +740,15 @@
       </ul></li>
       <li><a href="ladybug.html#ladybug.location.Location.meridian">meridian (ladybug.location.Location attribute)</a>
 </li>
+      <li><a href="ladybug.html#ladybug.datatype.MetabolicRate">MetabolicRate (class in ladybug.datatype)</a>
+</li>
+      <li><a href="ladybug.html#ladybug.header.Header.middle_hour">middle_hour (ladybug.header.Header attribute)</a>
+</li>
       <li><a href="ladybug.html#ladybug.datatype.Angle.minimum">minimum (ladybug.datatype.Angle attribute)</a>
 
       <ul>
+        <li><a href="ladybug.html#ladybug.datatype.Clothing.minimum">(ladybug.datatype.Clothing attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.DataPoint.minimum">(ladybug.datatype.DataPoint attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.minimum">(ladybug.datatype.DataTypeBase attribute)</a>
@@ -704,6 +762,12 @@
         <li><a href="ladybug.html#ladybug.datatype.Illuminance.minimum">(ladybug.datatype.Illuminance attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Luminance.minimum">(ladybug.datatype.Luminance attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.MetabolicRate.minimum">(ladybug.datatype.MetabolicRate attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied.minimum">(ladybug.datatype.PercentagePeopleDissatisfied attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote.minimum">(ladybug.datatype.PredictedMeanVote attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Pressure.minimum">(ladybug.datatype.Pressure attribute)</a>
 </li>
@@ -754,6 +818,10 @@
         <li><a href="ladybug.html#ladybug.datatype.Time.missing">(ladybug.datatype.Time attribute)</a>
 </li>
       </ul></li>
+      <li><a href="ladybug.html#ladybug.stat.Stat.monthly_tau_beam">monthly_tau_beam (ladybug.stat.Stat attribute)</a>
+</li>
+      <li><a href="ladybug.html#ladybug.stat.Stat.monthly_tau_diffuse">monthly_tau_diffuse (ladybug.stat.Stat attribute)</a>
+</li>
       <li><a href="ladybug.html#ladybug.dt.DateTime.moy">moy (ladybug.dt.DateTime attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.color.Colorset.multi_colored">multi_colored() (ladybug.color.Colorset class method)</a>
@@ -771,6 +839,8 @@
       <li><a href="ladybug.html#ladybug.datatype.Angle.nickname">nickname (ladybug.datatype.Angle attribute)</a>
 
       <ul>
+        <li><a href="ladybug.html#ladybug.datatype.Clothing.nickname">(ladybug.datatype.Clothing attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.DataPoint.nickname">(ladybug.datatype.DataPoint attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.nickname">(ladybug.datatype.DataTypeBase attribute)</a>, <a href="ladybug.html#ladybug.datatype.DataTypeBase.nickname">[1]</a>
@@ -785,7 +855,17 @@
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Luminance.nickname">(ladybug.datatype.Luminance attribute)</a>
 </li>
+        <li><a href="ladybug.html#ladybug.datatype.MetabolicRate.nickname">(ladybug.datatype.MetabolicRate attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied.nickname">(ladybug.datatype.PercentagePeopleDissatisfied attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote.nickname">(ladybug.datatype.PredictedMeanVote attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.Pressure.nickname">(ladybug.datatype.Pressure attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.Radiation.nickname">(ladybug.datatype.Radiation attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.RelativeHumidity.nickname">(ladybug.datatype.RelativeHumidity attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Speed.nickname">(ladybug.datatype.Speed attribute)</a>
 </li>
@@ -814,6 +894,8 @@
 </li>
       <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.NUMOFDAYSEACHMONTH">NUMOFDAYSEACHMONTH (ladybug.analysisperiod.AnalysisPeriod attribute)</a>
 </li>
+      <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.NUMOFDAYSEACHMONTHLEAP">NUMOFDAYSEACHMONTHLEAP (ladybug.analysisperiod.AnalysisPeriod attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -832,16 +914,22 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied">PercentagePeopleDissatisfied (class in ladybug.datatype)</a>
+</li>
       <li><a href="ladybug.html#ladybug.sunpath.Sun.PI">PI (ladybug.sunpath.Sun attribute)</a>
 
       <ul>
         <li><a href="ladybug.html#ladybug.sunpath.Sunpath.PI">(ladybug.sunpath.Sunpath attribute)</a>
 </li>
       </ul></li>
-      <li><a href="ladybug.html#ladybug.epw.EPW.precipitable_water">precipitable_water (ladybug.epw.EPW attribute)</a>
+      <li><a href="ladybug.html#ladybug.datacollection.DataCollection.pop">pop() (ladybug.datacollection.DataCollection method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ladybug.html#ladybug.epw.EPW.precipitable_water">precipitable_water (ladybug.epw.EPW attribute)</a>
+</li>
+      <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote">PredictedMeanVote (class in ladybug.datatype)</a>
+</li>
       <li><a href="ladybug.html#ladybug.epw.EPW.present_weather_codes">present_weather_codes (ladybug.epw.EPW attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.present_weather_observation">present_weather_observation (ladybug.epw.EPW attribute)</a>
@@ -882,6 +970,8 @@
 </li>
       <li><a href="ladybug.html#ladybug.color.Colorset.shade_harm">shade_harm() (ladybug.color.Colorset class method)</a>
 </li>
+      <li><a href="ladybug.html#ladybug.epw.EPW.sky_temperature">sky_temperature (ladybug.epw.EPW attribute)</a>
+</li>
       <li><a href="ladybug.html#ladybug.datatype.SkyPatch">SkyPatch (class in ladybug.datatype)</a>
 </li>
       <li><a href="ladybug.html#ladybug.epw.EPW.snow_depth">snow_depth (ladybug.epw.EPW attribute)</a>
@@ -899,6 +989,8 @@
       <li><a href="ladybug.html#ladybug.datatype.Angle.standard">standard (ladybug.datatype.Angle attribute)</a>
 
       <ul>
+        <li><a href="ladybug.html#ladybug.datatype.Clothing.standard">(ladybug.datatype.Clothing attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.DataPoint.standard">(ladybug.datatype.DataPoint attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.standard">(ladybug.datatype.DataTypeBase attribute)</a>, <a href="ladybug.html#ladybug.datatype.DataTypeBase.standard">[1]</a>
@@ -912,6 +1004,12 @@
         <li><a href="ladybug.html#ladybug.datatype.Illuminance.standard">(ladybug.datatype.Illuminance attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Luminance.standard">(ladybug.datatype.Luminance attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.MetabolicRate.standard">(ladybug.datatype.MetabolicRate attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied.standard">(ladybug.datatype.PercentagePeopleDissatisfied attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote.standard">(ladybug.datatype.PredictedMeanVote attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Pressure.standard">(ladybug.datatype.Pressure attribute)</a>
 </li>
@@ -934,6 +1032,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ladybug.html#ladybug.stat.Stat">Stat (class in ladybug.stat)</a>
+</li>
       <li><a href="ladybug.html#ladybug.location.Location.station_id">station_id (ladybug.location.Location attribute)</a>, <a href="ladybug.html#ladybug.location.Location.station_id">[1]</a>
 </li>
       <li><a href="ladybug.html#ladybug.dt.DateTime.sub_hour">sub_hour() (ladybug.dt.DateTime method)</a>
@@ -981,7 +1081,11 @@
 </li>
       </ul></li>
       <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.timestep">timestep (ladybug.analysisperiod.AnalysisPeriod attribute)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.wea.Wea.timestep">(ladybug.wea.Wea attribute)</a>, <a href="ladybug.html#ladybug.wea.Wea.timestep">[1]</a>
 </li>
+      </ul></li>
       <li><a href="ladybug.html#ladybug.legendparameters.LegendParameters.title">title (ladybug.legendparameters.LegendParameters attribute)</a>
 </li>
       <li><a href="ladybug.html#ladybug.datatype.Angle.to_ip">to_ip (ladybug.datatype.Angle attribute)</a>
@@ -1004,8 +1108,22 @@
         <li><a href="ladybug.html#ladybug.datatype.Temperature.to_ip">(ladybug.datatype.Temperature attribute)</a>
 </li>
       </ul></li>
-      <li><a href="ladybug.html#ladybug.location.Location.to_json">to_json() (ladybug.location.Location method)</a>
+      <li><a href="ladybug.html#ladybug.analysisperiod.AnalysisPeriod.to_json">to_json() (ladybug.analysisperiod.AnalysisPeriod method)</a>
+
+      <ul>
+        <li><a href="ladybug.html#ladybug.datacollection.DataCollection.to_json">(ladybug.datacollection.DataCollection method)</a>
 </li>
+        <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.to_json">(ladybug.datatype.DataTypeBase method)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.dt.DateTime.to_json">(ladybug.dt.DateTime method)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.header.Header.to_json">(ladybug.header.Header method)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.location.Location.to_json">(ladybug.location.Location method)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.wea.Wea.to_json">(ladybug.wea.Wea method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ladybug.html#ladybug.datatype.Angle.to_si">to_si (ladybug.datatype.Angle attribute)</a>
@@ -1053,6 +1171,8 @@
 </li>
         <li><a href="ladybug.html#ladybug.location.Location.ToString">(ladybug.location.Location method)</a>
 </li>
+        <li><a href="ladybug.html#ladybug.stat.Stat.ToString">(ladybug.stat.Stat method)</a>
+</li>
         <li><a href="ladybug.html#ladybug.sunpath.Sun.ToString">(ladybug.sunpath.Sun method)</a>
 </li>
         <li><a href="ladybug.html#ladybug.wea.Wea.ToString">(ladybug.wea.Wea method)</a>
@@ -1081,6 +1201,8 @@
       <li><a href="ladybug.html#ladybug.datatype.Angle.unitIP">unitIP (ladybug.datatype.Angle attribute)</a>
 
       <ul>
+        <li><a href="ladybug.html#ladybug.datatype.Clothing.unitIP">(ladybug.datatype.Clothing attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.DataPoint.unitIP">(ladybug.datatype.DataPoint attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.unitIP">(ladybug.datatype.DataTypeBase attribute)</a>
@@ -1090,6 +1212,12 @@
         <li><a href="ladybug.html#ladybug.datatype.Illuminance.unitIP">(ladybug.datatype.Illuminance attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Luminance.unitIP">(ladybug.datatype.Luminance attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.MetabolicRate.unitIP">(ladybug.datatype.MetabolicRate attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied.unitIP">(ladybug.datatype.PercentagePeopleDissatisfied attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote.unitIP">(ladybug.datatype.PredictedMeanVote attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Pressure.unitIP">(ladybug.datatype.Pressure attribute)</a>
 </li>
@@ -1115,6 +1243,8 @@
       <li><a href="ladybug.html#ladybug.datatype.Angle.unitSI">unitSI (ladybug.datatype.Angle attribute)</a>
 
       <ul>
+        <li><a href="ladybug.html#ladybug.datatype.Clothing.unitSI">(ladybug.datatype.Clothing attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.DataPoint.unitSI">(ladybug.datatype.DataPoint attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.unitSI">(ladybug.datatype.DataTypeBase attribute)</a>
@@ -1124,6 +1254,12 @@
         <li><a href="ladybug.html#ladybug.datatype.Illuminance.unitSI">(ladybug.datatype.Illuminance attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Luminance.unitSI">(ladybug.datatype.Luminance attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.MetabolicRate.unitSI">(ladybug.datatype.MetabolicRate attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied.unitSI">(ladybug.datatype.PercentagePeopleDissatisfied attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote.unitSI">(ladybug.datatype.PredictedMeanVote attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Pressure.unitSI">(ladybug.datatype.Pressure attribute)</a>
 </li>
@@ -1161,6 +1297,8 @@
       <li><a href="ladybug.html#ladybug.datatype.Angle.value">value (ladybug.datatype.Angle attribute)</a>
 
       <ul>
+        <li><a href="ladybug.html#ladybug.datatype.Clothing.value">(ladybug.datatype.Clothing attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.DataPoint.value">(ladybug.datatype.DataPoint attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.value">(ladybug.datatype.DataTypeBase attribute)</a>, <a href="ladybug.html#ladybug.datatype.DataTypeBase.value">[1]</a>
@@ -1174,6 +1312,12 @@
         <li><a href="ladybug.html#ladybug.datatype.Illuminance.value">(ladybug.datatype.Illuminance attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Luminance.value">(ladybug.datatype.Luminance attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.MetabolicRate.value">(ladybug.datatype.MetabolicRate attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied.value">(ladybug.datatype.PercentagePeopleDissatisfied attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote.value">(ladybug.datatype.PredictedMeanVote attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Pressure.value">(ladybug.datatype.Pressure attribute)</a>
 </li>
@@ -1199,6 +1343,8 @@
       <li><a href="ladybug.html#ladybug.datatype.Angle.value_type">value_type (ladybug.datatype.Angle attribute)</a>
 
       <ul>
+        <li><a href="ladybug.html#ladybug.datatype.Clothing.value_type">(ladybug.datatype.Clothing attribute)</a>
+</li>
         <li><a href="ladybug.html#ladybug.datatype.DataPoint.value_type">(ladybug.datatype.DataPoint attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.DataTypeBase.value_type">(ladybug.datatype.DataTypeBase attribute)</a>
@@ -1208,6 +1354,12 @@
         <li><a href="ladybug.html#ladybug.datatype.Illuminance.value_type">(ladybug.datatype.Illuminance attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Luminance.value_type">(ladybug.datatype.Luminance attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.MetabolicRate.value_type">(ladybug.datatype.MetabolicRate attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PercentagePeopleDissatisfied.value_type">(ladybug.datatype.PercentagePeopleDissatisfied attribute)</a>
+</li>
+        <li><a href="ladybug.html#ladybug.datatype.PredictedMeanVote.value_type">(ladybug.datatype.PredictedMeanVote attribute)</a>
 </li>
         <li><a href="ladybug.html#ladybug.datatype.Pressure.value_type">(ladybug.datatype.Pressure attribute)</a>
 </li>
@@ -1292,8 +1444,66 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/ladybug.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Ladybug performs detailed analysis of climate data to produce customized, interactive visualizations for environmentally-informed design.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=ladybug&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ladybug.html">ladybug package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

@@ -33,112 +33,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="index.html">
-    <img class="logo" src="_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="honeybee.html">honeybee package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="honeybee.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="honeybee.energyplus.html">honeybee.energyplus package</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">honeybee.radiance package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.analysisgrid">honeybee.radiance.analysisgrid module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.analysispoint">honeybee.radiance.analysispoint module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.datatype">honeybee.radiance.datatype module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.filemanager">honeybee.radiance.filemanager module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.geometry">honeybee.radiance.geometry module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.imagecollection">honeybee.radiance.imagecollection module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.properties">honeybee.radiance.properties module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.radfile">honeybee.radiance.radfile module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.runmanager">honeybee.radiance.runmanager module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.scene">honeybee.radiance.scene module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.view">honeybee.radiance.view module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="honeybee.server.html">honeybee.server package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="honeybee.vectormath.html">honeybee.vectormath package</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.config">honeybee.config module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.dataoperation">honeybee.dataoperation module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.futil">honeybee.futil module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.geometryoperation">honeybee.geometryoperation module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbdynamicsurface">honeybee.hbdynamicsurface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbfensurface">honeybee.hbfensurface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbobject">honeybee.hbobject module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfacetype">honeybee.surfacetype module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.utilcol">honeybee.utilcol module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee">Module contents</a></li>
-</ul>
-</li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="honeybee.html">honeybee package</a><ul>
-      <li>Previous: <a href="honeybee.energyplus.html" title="previous chapter">honeybee.energyplus package</a></li>
-      <li>Next: <a href="honeybee.radiance.command.html" title="next chapter">honeybee.radiance.command package</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -179,6 +76,7 @@
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.command.html#module-honeybee.radiance.command.genskyvec">honeybee.radiance.command.genskyvec module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.command.html#module-honeybee.radiance.command.getbbox">honeybee.radiance.command.getbbox module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.command.html#module-honeybee.radiance.command.getinfo">honeybee.radiance.command.getinfo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.command.html#module-honeybee.radiance.command.mkpmap">honeybee.radiance.command.mkpmap module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.command.html#module-honeybee.radiance.command.objview">honeybee.radiance.command.objview module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.command.html#module-honeybee.radiance.command.oconv">honeybee.radiance.command.oconv module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.command.html#module-honeybee.radiance.command.pcomb">honeybee.radiance.command.pcomb module</a></li>
@@ -196,16 +94,64 @@
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.command.html#module-honeybee.radiance.command">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="honeybee.radiance.geometry.html">honeybee.radiance.geometry package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.bubble">honeybee.radiance.geometry.bubble module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.cone">honeybee.radiance.geometry.cone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.cup">honeybee.radiance.geometry.cup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.cylinder">honeybee.radiance.geometry.cylinder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.geometrybase">honeybee.radiance.geometry.geometrybase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.instance">honeybee.radiance.geometry.instance module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.mesh">honeybee.radiance.geometry.mesh module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.polygon">honeybee.radiance.geometry.polygon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.ring">honeybee.radiance.geometry.ring module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.source">honeybee.radiance.geometry.source module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.sphere">honeybee.radiance.geometry.sphere module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry.tube">honeybee.radiance.geometry.tube module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.geometry.html#module-honeybee.radiance.geometry">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="honeybee.radiance.material.html">honeybee.radiance.material package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.antimatter">honeybee.radiance.material.antimatter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.ashik2">honeybee.radiance.material.ashik2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.brtdfunc">honeybee.radiance.material.brtdfunc module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.bsdf">honeybee.radiance.material.bsdf module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.custom">honeybee.radiance.material.custom module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.dielectric">honeybee.radiance.material.dielectric module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.glass">honeybee.radiance.material.glass module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.glow">honeybee.radiance.material.glow module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.illum">honeybee.radiance.material.illum module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.interface">honeybee.radiance.material.interface module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.light">honeybee.radiance.material.light module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.materialbase">honeybee.radiance.material.materialbase module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.metal">honeybee.radiance.material.metal module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.metal2">honeybee.radiance.material.metal2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.metdata">honeybee.radiance.material.metdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.metfunc">honeybee.radiance.material.metfunc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.mirror">honeybee.radiance.material.mirror module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.mist">honeybee.radiance.material.mist module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.plasdata">honeybee.radiance.material.plasdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.plasfunc">honeybee.radiance.material.plasfunc module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.plastic">honeybee.radiance.material.plastic module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.plastic2">honeybee.radiance.material.plastic2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.prism1">honeybee.radiance.material.prism1 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.prism2">honeybee.radiance.material.prism2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.spotlight">honeybee.radiance.material.spotlight module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.trans">honeybee.radiance.material.trans module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.trans2">honeybee.radiance.material.trans2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.transdata">honeybee.radiance.material.transdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material.transfunc">honeybee.radiance.material.transfunc module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.material.html#module-honeybee.radiance.material">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="honeybee.radiance.mixture.html">honeybee.radiance.mixture package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.mixture.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.mixture.html#module-honeybee.radiance.mixture.mixdata">honeybee.radiance.mixture.mixdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.mixture.html#module-honeybee.radiance.mixture.mixfunc">honeybee.radiance.mixture.mixfunc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.mixture.html#module-honeybee.radiance.mixture.mixpict">honeybee.radiance.mixture.mixpict module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.mixture.html#module-honeybee.radiance.mixture.mixtext">honeybee.radiance.mixture.mixtext module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.mixture.html#module-honeybee.radiance.mixture.mixturebase">honeybee.radiance.mixture.mixturebase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.mixture.html#module-honeybee.radiance.mixture">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="honeybee.radiance.parameters.html">honeybee.radiance.parameters package</a><ul>
@@ -216,8 +162,7 @@
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.gendaylit">honeybee.radiance.parameters.gendaylit module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.gendaymtx">honeybee.radiance.parameters.gendaymtx module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.gensky">honeybee.radiance.parameters.gensky module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.gridbased">honeybee.radiance.parameters.gridbased module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.imagebased">honeybee.radiance.parameters.imagebased module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.mkpmap">honeybee.radiance.parameters.mkpmap module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.oconv">honeybee.radiance.parameters.oconv module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.pcomb">honeybee.radiance.parameters.pcomb module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.raBmp">honeybee.radiance.parameters.raBmp module</a></li>
@@ -227,9 +172,24 @@
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.rcontrib">honeybee.radiance.parameters.rcontrib module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.rfluxmtx">honeybee.radiance.parameters.rfluxmtx module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.rmtxop">honeybee.radiance.parameters.rmtxop module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.rpict">honeybee.radiance.parameters.rpict module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.rtrace">honeybee.radiance.parameters.rtrace module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.vwrays">honeybee.radiance.parameters.vwrays module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters.xform">honeybee.radiance.parameters.xform module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.parameters.html#module-honeybee.radiance.parameters">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="honeybee.radiance.pattern.html">honeybee.radiance.pattern package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#module-honeybee.radiance.pattern.brightdata">honeybee.radiance.pattern.brightdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#module-honeybee.radiance.pattern.brightfunc">honeybee.radiance.pattern.brightfunc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#module-honeybee.radiance.pattern.brighttext">honeybee.radiance.pattern.brighttext module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#module-honeybee.radiance.pattern.colordata">honeybee.radiance.pattern.colordata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#module-honeybee.radiance.pattern.colorfunc">honeybee.radiance.pattern.colorfunc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#module-honeybee.radiance.pattern.colorpict">honeybee.radiance.pattern.colorpict module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#module-honeybee.radiance.pattern.colortext">honeybee.radiance.pattern.colortext module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#module-honeybee.radiance.pattern.patternbase">honeybee.radiance.pattern.patternbase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.pattern.html#module-honeybee.radiance.pattern">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="honeybee.radiance.recipe.html">honeybee.radiance.recipe package</a><ul>
@@ -251,6 +211,12 @@
 <li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.recipe.daylightfactor.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.recipe.daylightfactor.html#module-honeybee.radiance.recipe.daylightfactor.gridbased">honeybee.radiance.recipe.daylightfactor.gridbased module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.recipe.daylightfactor.html#module-honeybee.radiance.recipe.daylightfactor">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.radiance.recipe.directreflection.html">honeybee.radiance.recipe.directreflection package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.recipe.directreflection.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.recipe.directreflection.html#module-honeybee.radiance.recipe.directreflection.gridbased">honeybee.radiance.recipe.directreflection.gridbased module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.recipe.directreflection.html#module-honeybee.radiance.recipe.directreflection">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="honeybee.radiance.recipe.fivephase.html">honeybee.radiance.recipe.fivephase package</a><ul>
@@ -294,8 +260,16 @@
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.recipe.html#module-honeybee.radiance.recipe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="honeybee.radiance.runmanager.html">honeybee.radiance.runmanager package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.runmanager.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.runmanager.html#module-honeybee.radiance.runmanager.runmanager">honeybee.radiance.runmanager.runmanager module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.runmanager.html#module-honeybee.radiance.runmanager.task">honeybee.radiance.runmanager.task module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.runmanager.html#module-honeybee.radiance.runmanager">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="honeybee.radiance.sky.html">honeybee.radiance.sky package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.sky.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.sky.html#module-honeybee.radiance.sky.analemma">honeybee.radiance.sky.analemma module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.sky.html#module-honeybee.radiance.sky.certainIlluminance">honeybee.radiance.sky.certainIlluminance module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.sky.html#module-honeybee.radiance.sky.cie">honeybee.radiance.sky.cie module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.sky.html#module-honeybee.radiance.sky.climatebased">honeybee.radiance.sky.climatebased module</a></li>
@@ -304,6 +278,14 @@
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.sky.html#module-honeybee.radiance.sky.skyvector">honeybee.radiance.sky.skyvector module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.sky.html#module-honeybee.radiance.sky.sunmatrix">honeybee.radiance.sky.sunmatrix module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.sky.html#module-honeybee.radiance.sky">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="honeybee.radiance.texture.html">honeybee.radiance.texture package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.texture.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.texture.html#module-honeybee.radiance.texture.texdata">honeybee.radiance.texture.texdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.texture.html#module-honeybee.radiance.texture.texfunc">honeybee.radiance.texture.texfunc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.texture.html#module-honeybee.radiance.texture.texturebase">honeybee.radiance.texture.texturebase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.radiance.texture.html#module-honeybee.radiance.texture">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -375,8 +357,8 @@ Less than UDI, More than UDI</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="honeybee.radiance.analysisgrid.AnalysisGrid.annual_solar_exposure">
-<code class="descname">annual_solar_exposure</code><span class="sig-paren">(</span><em>threshhold=None</em>, <em>blinds_state_ids=None</em>, <em>occ_schedule=None</em>, <em>target_hours=None</em>, <em>target_area=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/analysisgrid.html#AnalysisGrid.annual_solar_exposure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.analysisgrid.AnalysisGrid.annual_solar_exposure" title="Permalink to this definition">¶</a></dt>
+<dt id="honeybee.radiance.analysisgrid.AnalysisGrid.annual_sunlight_exposure">
+<code class="descname">annual_sunlight_exposure</code><span class="sig-paren">(</span><em>threshhold=None</em>, <em>blinds_state_ids=None</em>, <em>occ_schedule=None</em>, <em>target_hours=None</em>, <em>target_area=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/analysisgrid.html#AnalysisGrid.annual_sunlight_exposure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.analysisgrid.AnalysisGrid.annual_sunlight_exposure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annual Solar Exposure (ASE)</p>
 <p>As per IES-LM-83-12 ase is the percent of sensors that are
 found to be exposed to more than 1000lux of direct sunlight for
@@ -408,7 +390,7 @@ Problematic points, Problematic hours for each point</p>
 
 <dl class="method">
 <dt id="honeybee.radiance.analysisgrid.AnalysisGrid.combined_value_by_id">
-<code class="descname">combined_value_by_id</code><span class="sig-paren">(</span><em>hoy</em>, <em>blinds_state_ids=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/analysisgrid.html#AnalysisGrid.combined_value_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.analysisgrid.AnalysisGrid.combined_value_by_id" title="Permalink to this definition">¶</a></dt>
+<code class="descname">combined_value_by_id</code><span class="sig-paren">(</span><em>hoy=None</em>, <em>blinds_state_ids=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/analysisgrid.html#AnalysisGrid.combined_value_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.analysisgrid.AnalysisGrid.combined_value_by_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get combined value from all sources based on state_id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -726,7 +708,7 @@ you want a source to be removed set the state to -1.</li>
 <dl class="method">
 <dt id="honeybee.radiance.analysisgrid.AnalysisGrid.to_json">
 <code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/analysisgrid.html#AnalysisGrid.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.analysisgrid.AnalysisGrid.to_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an analysis grid from json objects.</p>
+<dd><p>Create json object from analysisGrid.</p>
 </dd></dl>
 
 <dl class="method">
@@ -834,8 +816,8 @@ Less than UDI, More than UDI</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="honeybee.radiance.analysispoint.AnalysisPoint.annual_solar_exposure">
-<code class="descname">annual_solar_exposure</code><span class="sig-paren">(</span><em>threshhold=None</em>, <em>blinds_state_ids=None</em>, <em>occ_schedule=None</em>, <em>target_hours=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/analysispoint.html#AnalysisPoint.annual_solar_exposure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.analysispoint.AnalysisPoint.annual_solar_exposure" title="Permalink to this definition">¶</a></dt>
+<dt id="honeybee.radiance.analysispoint.AnalysisPoint.annual_sunlight_exposure">
+<code class="descname">annual_sunlight_exposure</code><span class="sig-paren">(</span><em>threshhold=None</em>, <em>blinds_state_ids=None</em>, <em>occ_schedule=None</em>, <em>target_hours=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/analysispoint.html#AnalysisPoint.annual_sunlight_exposure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.analysispoint.AnalysisPoint.annual_sunlight_exposure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annual Solar Exposure (ASE).</p>
 <p>Calculate number of hours that this point is exposed to more than 1000lux
 of direct sunlight. The point meets the traget in the number of hours is
@@ -1098,6 +1080,12 @@ you want a source to be removed set the state to -1.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.analysispoint.AnalysisPoint.moys">
+<code class="descname">moys</code><a class="headerlink" href="#honeybee.radiance.analysispoint.AnalysisPoint.moys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return minutes of the year for results if any.</p>
 </dd></dl>
 
 <dl class="staticmethod">
@@ -1614,79 +1602,71 @@ output (i.e. -of, -od) (Default: False)</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-honeybee.radiance.filemanager">
-<span id="honeybee-radiance-filemanager-module"></span><h2>honeybee.radiance.filemanager module<a class="headerlink" href="#module-honeybee.radiance.filemanager" title="Permalink to this headline">¶</a></h2>
-<p>A collection of auxiliary funtions for working with radiance files and objects.</p>
+<div class="section" id="module-honeybee.radiance.factory">
+<span id="honeybee-radiance-factory-module"></span><h2>honeybee.radiance.factory module<a class="headerlink" href="#module-honeybee.radiance.factory" title="Permalink to this headline">¶</a></h2>
+<p>Material utility.</p>
 <dl class="function">
-<dt id="honeybee.radiance.filemanager.get_radiance_objects_from_file">
-<code class="descclassname">honeybee.radiance.filemanager.</code><code class="descname">get_radiance_objects_from_file</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/filemanager.html#get_radiance_objects_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.filemanager.get_radiance_objects_from_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse Radinace file and return a list of radiance objects as separate strings.</p>
+<dt id="honeybee.radiance.factory.material_from_json">
+<code class="descclassname">honeybee.radiance.factory.</code><code class="descname">material_from_json</code><span class="sig-paren">(</span><em>mat_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/factory.html#material_from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.factory.material_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Honeybee Radiance material from string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> – Path to Radiance file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mat_json</strong> – A radiance modifier string. The input can be a multi-line string.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of strings. Each string represents a differnt Rdiance Object</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Usage:</dt>
-<dd>get_radiance_objects_from_file(“C:/ladybug/21MAR900/imageBasedSimulation/21MAR900.rad”)</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="honeybee.radiance.filemanager.get_radiance_objects_from_string">
-<code class="descclassname">honeybee.radiance.filemanager.</code><code class="descname">get_radiance_objects_from_string</code><span class="sig-paren">(</span><em>full_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/filemanager.html#get_radiance_objects_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.filemanager.get_radiance_objects_from_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>separate a Radinace file string into multiple strings for each object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rad_fileString</strong> – Radiance data as a single string. The string can be multiline.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of strings. Each string represents a differnt Rdiance Object</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of Honeybee Radiance materials.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="function">
-<dt id="honeybee.radiance.filemanager.import_radiance_materials_from_file">
-<code class="descclassname">honeybee.radiance.filemanager.</code><code class="descname">import_radiance_materials_from_file</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/filemanager.html#import_radiance_materials_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.filemanager.import_radiance_materials_from_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse Radinace file and add return available radiance materials in file.</p>
+<dt id="honeybee.radiance.factory.material_from_string">
+<code class="descclassname">honeybee.radiance.factory.</code><code class="descname">material_from_string</code><span class="sig-paren">(</span><em>mat_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/factory.html#material_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.factory.material_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Honeybee Radiance material from string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> – Path to a radiance file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mat_string</strong> – A radiance modifier string. The input can be a multi-line string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of Honeybee Radiance materials.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
-<div class="section" id="module-honeybee.radiance.geometry">
-<span id="honeybee-radiance-geometry-module"></span><h2>honeybee.radiance.geometry module<a class="headerlink" href="#module-honeybee.radiance.geometry" title="Permalink to this headline">¶</a></h2>
-<p>A collection of methods for writing Radiance geometry file.</p>
 <dl class="function">
-<dt id="honeybee.radiance.geometry.polygon">
-<code class="descclassname">honeybee.radiance.geometry.</code><code class="descname">polygon</code><span class="sig-paren">(</span><em>name</em>, <em>material_name</em>, <em>pts</em>, <em>minimal=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry.html#polygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.polygon" title="Permalink to this definition">¶</a></dt>
-<dd><p>return a string for radiance polygon.</p>
+<dt id="honeybee.radiance.factory.primitive_from_json">
+<code class="descclassname">honeybee.radiance.factory.</code><code class="descname">primitive_from_json</code><span class="sig-paren">(</span><em>prm_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/factory.html#primitive_from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.factory.primitive_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prm_json</strong> – A radiance modifier as a dictionary.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of Honeybee Radiance primitives. If input includes polygons and
+materials, materials will be added to polygons as modifiers. This method
+will return all the polygons and only the materials that are not used.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="honeybee.radiance.factory.primitive_from_string">
+<code class="descclassname">honeybee.radiance.factory.</code><code class="descname">primitive_from_string</code><span class="sig-paren">(</span><em>prm_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/factory.html#primitive_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.factory.primitive_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Honeybee Radiance primitives from string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> – Surface name. Surface name can’t have white space.</li>
-<li><strong>material_name</strong> – Name of the radiance material. Material name can’t have white
-space.</li>
-<li><strong>pts</strong> – List of points as (x, y, z). Number of points can’t be less than 3.</li>
-<li><strong>minimal</strong> – Set to True to get the definition in as single line.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prim_string</strong> – A radiance modifier string. The input can be a multi-line string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of Honeybee Radiance primitives. If input includes polygons and
+materials, materials will be added to polygons as modifiers. This method
+will return all the polygons and only the materials that are not used.</td>
 </tr>
 </tbody>
 </table>
@@ -1943,12 +1923,264 @@ of sources.</td>
 </dd></dl>
 
 </div>
+<div class="section" id="module-honeybee.radiance.primitive">
+<span id="honeybee-radiance-primitive-module"></span><h2>honeybee.radiance.primitive module<a class="headerlink" href="#module-honeybee.radiance.primitive" title="Permalink to this headline">¶</a></h2>
+<p>Base class for Radiance Primitives.</p>
+<p>Unless you are a developer you most likely want to use one of the subclasses of
+Primitive instead of using this class directly. Look under honeybee.radiance.material
+and honeybee.radiance.geometry</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html">http://radsite.lbl.gov/radiance/refer/ray.html</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.primitive.Primitive">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.primitive.</code><code class="descname">Primitive</code><span class="sig-paren">(</span><em>name</em>, <em>type</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Primitive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Primitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Base class for Radiance Primitives.</p>
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.name">
+<code class="descname">name</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Primitive name as a string. Do not use white space and special character.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.type">
+<code class="descname">type</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>One of Radiance standard Primitive types (e.g. glass, plastic, etc)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.modifier">
+<code class="descname">modifier</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifier. It can be primitive, mixture, texture or pattern.
+(Default: “void”).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.values">
+<code class="descname">values</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary of primitive data. key is line number and item is the list
+of values {0: [], 1: [], 2: [‘0.500’, ‘0.500’, ‘0.500’, ‘0.000’, ‘0.050’]}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.GEOMETRYTYPES">
+<code class="descname">GEOMETRYTYPES</code><em class="property"> = set(['instance', 'cylinder', 'polygon', 'cup', 'tube', 'sphere', 'source', 'mesh', 'cone', 'ring', 'bubble'])</em><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.GEOMETRYTYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.MATERIALTYPES">
+<code class="descname">MATERIALTYPES</code><em class="property"> = set(['metfunc', 'plasdata', 'plastic2', 'mirror', 'mist', 'BRTDfunc', 'transdata', 'ashik2', 'antimatter', 'plastic', 'BSDF', 'mixedfunc', 'metdata', 'illum', 'void', 'transfunc', 'trans2', 'metal2', 'glass', 'prism1', 'plasfunc', 'interface', 'dielectric', 'glow', 'prism2', 'light', 'metal', 'trans', 'spotlight'])</em><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.MATERIALTYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.MIXTURETYPES">
+<code class="descname">MIXTURETYPES</code><em class="property"> = set(['mixtext', 'mixpict', 'mixdata', 'mixfunc'])</em><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.MIXTURETYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.MODIFIERTYPES">
+<code class="descname">MODIFIERTYPES</code><em class="property"> = set(['plastic2', 'metal2', 'metfunc', 'colorpict', 'ashik2', 'void', 'colordata', 'illum', 'trans2', 'transfunc', 'glass', 'prism1', 'brighttext', 'plasfunc', 'mirror', 'interface', 'prism2', 'mist', 'dielectric', 'BRTDfunc', 'glow', 'mixtext', 'brightdata', 'texdata', 'mixpict', 'texfunc', 'transdata', 'light', 'mixfunc', 'plasdata', 'antimatter', 'plastic', 'BSDF', 'brightfunc', 'mixedfunc', 'colortext', 'metal', 'trans', 'colorfunc', 'spotlight', 'mixdata', 'metdata'])</em><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.MODIFIERTYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.NONEOPAQUETYPES">
+<code class="descname">NONEOPAQUETYPES</code><em class="property"> = set(['mist', 'transdata', 'mixfunc', 'transfunc', 'trans2', 'glass', 'prism1', 'BSDF', 'BRTDfunc', 'prism2', 'trans', 'dielectric'])</em><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.NONEOPAQUETYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.PATTERNTYPES">
+<code class="descname">PATTERNTYPES</code><em class="property"> = set(['brightdata', 'colorpict', 'colordata', 'colorfunc', 'brighttext', 'brightfunc', 'colortext'])</em><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.PATTERNTYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.TEXTURETYPES">
+<code class="descname">TEXTURETYPES</code><em class="property"> = set(['texdata', 'texfunc'])</em><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.TEXTURETYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.TYPES">
+<code class="descname">TYPES</code><em class="property"> = set(['cylinder', 'brightdata', 'metfunc', 'metal', 'illum', 'colorfunc', 'sphere', 'brighttext', 'cone', 'mirror', 'ring', 'mist', 'BRTDfunc', 'instance', 'mixfunc', 'texdata', 'polygon', 'transdata', 'tube', 'ashik2', 'antimatter', 'plastic', 'source', 'BSDF', 'brightfunc', 'mixedfunc', 'bubble', 'metdata', 'plastic2', 'colorpict', 'void', 'colordata', 'transfunc', 'trans2', 'metal2', 'glass', 'prism1', 'mesh', 'plasfunc', 'interface', 'dielectric', 'glow', 'mixtext', 'mixpict', 'texfunc', 'prism2', 'light', 'cup', 'plasdata', 'colortext', 'trans', 'spotlight', 'mixdata'])</em><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.TYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.primitive.Primitive.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Primitive.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.can_be_modifier">
+<code class="descname">can_be_modifier</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.can_be_modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate if this object can be a modifier.</p>
+<p>Materials, mixtures, textures or patterns can be modifiers.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.primitive.Primitive.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>mat_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Primitive.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make radiance primitive from json
+{</p>
+<blockquote>
+<div>“modifier”: “”, // primitive modifier (Default: “void”)
+“type”: “custom”, // primitive type
+“base_type”: “type”, // primitive type
+“name”: “”, // primitive Name
+“values”: {} // values</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.primitive.Primitive.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>primitive_string</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Primitive.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Radiance primitive from a string.</p>
+<p>If the primitive has a modifier the modifier primitive should also be part of the
+string or should be provided using modifier argument.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.primitive.Primitive.head_line">
+<code class="descname">head_line</code><span class="sig-paren">(</span><em>minimal=False</em>, <em>include_modifier=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Primitive.head_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.head_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first line of primitive definition.</p>
+<p>If primitive has a modifier it returns the modifier definition as well.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.isRadianceGeometry">
+<code class="descname">isRadianceGeometry</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.isRadianceGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate if this object is a Radiance geometry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.isRadianceMaterial">
+<code class="descname">isRadianceMaterial</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.isRadianceMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate if this object is a Radiance material.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.isRadianceMixture">
+<code class="descname">isRadianceMixture</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.isRadianceMixture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate if this object is a Radiance geometry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.isRadiancePattern">
+<code class="descname">isRadiancePattern</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.isRadiancePattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate if this object is a Radiance geometry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.isRadiancePrimitive">
+<code class="descname">isRadiancePrimitive</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.isRadiancePrimitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate that this object is a Radiance primitive.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.isRadianceTexture">
+<code class="descname">isRadianceTexture</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.isRadianceTexture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate if this object is a Radiance geometry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Primitive.is_opaque">
+<code class="descname">is_opaque</code><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.is_opaque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate if the primitive is opaque.</p>
+<p>This property is used to separate opaque and non-opaque surfaces.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">modifier</code></dt>
+<dd><p>Get/set primitive modifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Get/set primitive name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.primitive.Primitive.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Primitive.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate radiance primitive to json
+{</p>
+<blockquote>
+<div>“modifier”: “”, // primitive modifier (Default: “void”)
+“type”: “custom”, // primitive type
+“base_type”: “type”, // primitive type
+“name”: “”, // primitive Name
+“values”: {} // values</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.primitive.Primitive.to_rad_string">
+<code class="descname">to_rad_string</code><span class="sig-paren">(</span><em>minimal=False</em>, <em>include_modifier=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Primitive.to_rad_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Primitive.to_rad_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return full radiance definition.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Get/set primitive type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">values</code></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="honeybee.radiance.primitive.Void">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.primitive.</code><code class="descname">Void</code><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Void"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Void" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Void modifier.</p>
+<dl class="method">
+<dt id="honeybee.radiance.primitive.Void.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Void.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Void.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Void.can_be_modifier">
+<code class="descname">can_be_modifier</code><a class="headerlink" href="#honeybee.radiance.primitive.Void.can_be_modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>True.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Void.is_opaque">
+<code class="descname">is_opaque</code><a class="headerlink" href="#honeybee.radiance.primitive.Void.is_opaque" title="Permalink to this definition">¶</a></dt>
+<dd><p>False for a void.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.primitive.Void.name">
+<code class="descname">name</code><a class="headerlink" href="#honeybee.radiance.primitive.Void.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Void.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.primitive.Void.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Void.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Void.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return void.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.primitive.Void.to_rad_string">
+<code class="descname">to_rad_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/primitive.html#Void.to_rad_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.primitive.Void.to_rad_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return full radiance definition.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-honeybee.radiance.properties">
 <span id="honeybee-radiance-properties-module"></span><h2>honeybee.radiance.properties module<a class="headerlink" href="#module-honeybee.radiance.properties" title="Permalink to this headline">¶</a></h2>
 <p>Radiance Properties for HBSurfaces.</p>
 <dl class="class">
 <dt id="honeybee.radiance.properties.RadianceProperties">
-<em class="property">class </em><code class="descclassname">honeybee.radiance.properties.</code><code class="descname">RadianceProperties</code><span class="sig-paren">(</span><em>radiance_material=None</em>, <em>is_material_set_by_user=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/properties.html#RadianceProperties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">honeybee.radiance.properties.</code><code class="descname">RadianceProperties</code><span class="sig-paren">(</span><em>material=None</em>, <em>black_material=None</em>, <em>glow_material=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/properties.html#RadianceProperties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Radiance properties for HBSurface.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1956,10 +2188,14 @@ of sources.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>radiance_material</strong> – Radiance material for this surfcae.Use
-honeybee.radiace.material to create a radiance material (Default: None).</li>
-<li><strong>is_material_set_by_user</strong> – Set to True if you don’t want material automatically
-overwritten by honeybee in cases like solve adjacencies.</li>
+<li><strong>material</strong> – Radiance material. Use honeybee.radiace.material to create a
+radiance material (Default: None).</li>
+<li><strong>black_material</strong> – A material that will be used for blacking out this surface or in
+direct daylight calculations. By default black material is set to black color
+with no reflectance. In cases such as interior glass black material should be
+set to the original glass material.</li>
+<li><strong>glow_material</strong> – A material that will be used for daylight coefficeint calculation.
+By default black material is set to whitw glow.</li>
 </ul>
 </td>
 </tr>
@@ -1971,10 +2207,24 @@ overwritten by honeybee in cases like solve adjacencies.</li>
 <dd><p>Overwrite .NET ToString method.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="honeybee.radiance.properties.RadianceProperties.black_material">
+<code class="descname">black_material</code><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties.black_material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radiance black material.</p>
+<p>This material is used for direct daylight calculation.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="honeybee.radiance.properties.RadianceProperties.duplicate">
 <code class="descname">duplicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/properties.html#RadianceProperties.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties.duplicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Duplicate RadianceProperties.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.properties.RadianceProperties.glow_material">
+<code class="descname">glow_material</code><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties.glow_material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radiance glow material.</p>
+<p>This material will be used for daylight coefficeint calculation.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1984,21 +2234,27 @@ overwritten by honeybee in cases like solve adjacencies.</li>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="honeybee.radiance.properties.RadianceProperties.is_material_set_by_user">
-<code class="descname">is_material_set_by_user</code><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties.is_material_set_by_user" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if material is set by user.</p>
+<dt id="honeybee.radiance.properties.RadianceProperties.is_black_material_set_by_user">
+<code class="descname">is_black_material_set_by_user</code><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties.is_black_material_set_by_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if black material is set by user.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="honeybee.radiance.properties.RadianceProperties.radiance_material">
-<code class="descname">radiance_material</code><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties.radiance_material" title="Permalink to this definition">¶</a></dt>
+<dt id="honeybee.radiance.properties.RadianceProperties.is_glow_material_set_by_user">
+<code class="descname">is_glow_material_set_by_user</code><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties.is_glow_material_set_by_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if glow material is set by user.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.properties.RadianceProperties.material">
+<code class="descname">material</code><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties.material" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return Radiance Material.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="honeybee.radiance.properties.RadianceProperties.to_rad_string">
 <code class="descname">to_rad_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/properties.html#RadianceProperties.to_rad_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.properties.RadianceProperties.to_rad_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get radianace definition for honeybee surfaces if any.</p>
+<dd><p>Get Radiance definition for honeybee surfaces if any.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2010,7 +2266,7 @@ overwritten by honeybee in cases like solve adjacencies.</li>
 <p>Create, modify and generate radiance files from a collection of hbobjects.</p>
 <dl class="class">
 <dt id="honeybee.radiance.radfile.RadFile">
-<em class="property">class </em><code class="descclassname">honeybee.radiance.radfile.</code><code class="descname">RadFile</code><span class="sig-paren">(</span><em>hb_surfaces</em>, <em>additional_matrials=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/radfile.html#RadFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.radfile.RadFile" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">honeybee.radiance.radfile.</code><code class="descname">RadFile</code><span class="sig-paren">(</span><em>hb_surfaces</em>, <em>additional_materials=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/radfile.html#RadFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.radfile.RadFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Radiance file.</p>
 <p>Create, modify and generate radiance files from a collection of hbobjects.
@@ -2022,8 +2278,8 @@ You can also use this class for a single HBSurface or HBZone to get to_rad_strin
 </dd></dl>
 
 <dl class="attribute">
-<dt id="honeybee.radiance.radfile.RadFile.additional_matrials">
-<code class="descname">additional_matrials</code><a class="headerlink" href="#honeybee.radiance.radfile.RadFile.additional_matrials" title="Permalink to this definition">¶</a></dt>
+<dt id="honeybee.radiance.radfile.RadFile.additional_materials">
+<code class="descname">additional_materials</code><a class="headerlink" href="#honeybee.radiance.radfile.RadFile.additional_materials" title="Permalink to this definition">¶</a></dt>
 <dd><p>Additional radiance material objects that will be added on
 top of the file.</p>
 </dd></dl>
@@ -2036,7 +2292,7 @@ top of the file.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">additional_matrials</code></dt>
+<code class="descname">additional_materials</code></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
@@ -2069,8 +2325,9 @@ this will make this mathod fairly inflexible.</p>
 
 <dl class="classmethod">
 <dt id="honeybee.radiance.radfile.RadFile.from_file">
-<em class="property">classmethod </em><code class="descname">from_file</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/radfile.html#RadFile.from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.radfile.RadFile.from_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property">classmethod </em><code class="descname">from_file</code><span class="sig-paren">(</span><em>file_paths</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/radfile.html#RadFile.from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.radfile.RadFile.from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>create a RadFile from Radiance files.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="honeybee.radiance.radfile.RadFile.geometries">
@@ -2242,7 +2499,7 @@ this will make this mathod fairly inflexible.</p>
 <dl class="method">
 <dt id="honeybee.radiance.radfile.RadFile.write_geometries_glowed">
 <code class="descname">write_geometries_glowed</code><span class="sig-paren">(</span><em>folder</em>, <em>filename</em>, <em>mode=0</em>, <em>flipped=False</em>, <em>mkdir=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/radfile.html#RadFile.write_geometries_glowed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.radfile.RadFile.write_geometries_glowed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write all the surfaces to a file with WhiteGlowMaterial.</p>
+<dd><p>Write all the surfaces to a file with WhiteGlow.</p>
 <p>Use this method to write objects like window-groups.</p>
 </dd></dl>
 
@@ -2284,50 +2541,43 @@ either use blacked or glowed.</li>
 </dd></dl>
 
 </div>
-<div class="section" id="module-honeybee.radiance.runmanager">
-<span id="honeybee-radiance-runmanager-module"></span><h2>honeybee.radiance.runmanager module<a class="headerlink" href="#module-honeybee.radiance.runmanager" title="Permalink to this headline">¶</a></h2>
-<p>Radiance Analysis workflows.</p>
-<dl class="class">
-<dt id="honeybee.radiance.runmanager.AnalysisBase">
-<em class="property">class </em><code class="descclassname">honeybee.radiance.runmanager.</code><code class="descname">AnalysisBase</code><span class="sig-paren">(</span><em>hb_objects</em>, <em>analysis_recipe</em>, <em>other_rad_files=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager.html#AnalysisBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.AnalysisBase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Base analysis class for Radiance analysis.</p>
-<dl class="attribute">
-<dt id="honeybee.radiance.runmanager.AnalysisBase.is_over">
-<code class="descname">is_over</code><a class="headerlink" href="#honeybee.radiance.runmanager.AnalysisBase.is_over" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return if analysis is done.</p>
+<div class="section" id="module-honeybee.radiance.radparser">
+<span id="honeybee-radiance-radparser-module"></span><h2>honeybee.radiance.radparser module<a class="headerlink" href="#module-honeybee.radiance.radparser" title="Permalink to this headline">¶</a></h2>
+<p>A collection of auxiliary funtions for working with radiance files and objects.</p>
+<dl class="function">
+<dt id="honeybee.radiance.radparser.parse_from_file">
+<code class="descclassname">honeybee.radiance.radparser.</code><code class="descname">parse_from_file</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/radparser.html#parse_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.radparser.parse_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse Radiance file and return a list of radiance objects as separate strings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> – Path to Radiance file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of strings. Each string represents a different Radiance Object</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Usage:</dt>
+<dd>get_radiance_objects_from_file(“C:/ladybug/21MAR900/imageBasedSimulation/21MAR900.rad”)</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="honeybee.radiance.runmanager.AnalysisBase.is_running">
-<code class="descname">is_running</code><a class="headerlink" href="#honeybee.radiance.runmanager.AnalysisBase.is_running" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return is analysis is still running.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="honeybee.radiance.runmanager.AnalysisBase.progress">
-<code class="descname">progress</code><a class="headerlink" href="#honeybee.radiance.runmanager.AnalysisBase.progress" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return progress value between 0-100.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="honeybee.radiance.runmanager.AnalysisBase.results">
-<code class="descname">results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager.html#AnalysisBase.results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.AnalysisBase.results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get analysis results.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="honeybee.radiance.runmanager.AnalysisBase.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>minimize=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager.html#AnalysisBase.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.AnalysisBase.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run analysis.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="honeybee.radiance.runmanager.AnalysisBase.write">
-<code class="descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/runmanager.html#AnalysisBase.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.runmanager.AnalysisBase.write" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write analysis files.</p>
-</dd></dl>
-
+<dl class="function">
+<dt id="honeybee.radiance.radparser.parse_from_string">
+<code class="descclassname">honeybee.radiance.radparser.</code><code class="descname">parse_from_string</code><span class="sig-paren">(</span><em>full_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/radparser.html#parse_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.radparser.parse_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>separate a Radiance file string into multiple strings for each object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rad_fileString</strong> – Radiance data as a single string. The string can be multiline.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of strings. Each string represents a different Radiance Object</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -2336,7 +2586,317 @@ either use blacked or glowed.</li>
 <p>Radiance scene.</p>
 <dl class="class">
 <dt id="honeybee.radiance.scene.Scene">
-<em class="property">class </em><code class="descclassname">honeybee.radiance.scene.</code><code class="descname">Scene</code><span class="sig-paren">(</span><em>files</em>, <em>copy_local=True</em>, <em>overwrite=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">honeybee.radiance.scene.</code><code class="descname">Scene</code><span class="sig-paren">(</span><em>opaque_surfaces=None</em>, <em>non_opaque_surfaces=None</em>, <em>dynamic_surfaces=None</em>, <em>static_scene=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Radiance scene.</p>
+<p>A scene includes all the surfaces and modifiers in a radiance model. Sky is not
+included in the scene and should be added to the secne for simulation based on the
+recipe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>opaque_surfaces</strong> – A list of surfaces with opaque modifiers.</li>
+<li><strong>non_opaque_surfaces</strong> – A list of non_opaque surfaces like glass and tranlucent
+surfaces.</li>
+<li><strong>dynamic_surfaces</strong> – A list of dynamic surfaces. Dynamic surfaces are surfaces like
+window groups which have more than one state.</li>
+<li><strong>static_scene</strong> – A honeybee StaticScene which inludes radiance files which will be
+included in simulations as part of the octree.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite ToString .NET method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.analemma_folder">
+<code class="descname">analemma_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.analemma_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write analemma files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.aperture_folder">
+<code class="descname">aperture_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.aperture_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write aperture surfaces.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.bsdf_folder">
+<code class="descname">bsdf_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.bsdf_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write bsdf materials.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.create_folder_structure">
+<code class="descname">create_folder_structure</code><span class="sig-paren">(</span><em>folder</em>, <em>remove_content=False</em>, <em>include_readme=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.create_folder_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.create_folder_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create folder structure for honeybee daylight study.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>folder</strong> – Target folder to write the scene.</li>
+<li><strong>remove_content</strong> – Set to True to remove current content (default: False).</li>
+<li><strong>included_readme</strong> – Include readme.md files in each folder which includes a
+brief description of files inside each folder (default: False)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.dynamic_aperture_file">
+<code class="descname">dynamic_aperture_file</code><span class="sig-paren">(</span><em>surface</em>, <em>state=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.dynamic_aperture_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.dynamic_aperture_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to file for a dynamic aperture aka window-group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>surface</strong> – Name of dynamic aperture.</li>
+<li><strong>state</strong> – Current state of dynamic aperture.
+-2 &gt; glowed, -1 &gt; blacked, 0 &gt; default material, 1 &gt; first state, …</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.dynamic_surfaces">
+<code class="descname">dynamic_surfaces</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.dynamic_surfaces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.electric_lighting_folder">
+<code class="descname">electric_lighting_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.electric_lighting_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write electric lighting IES files.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.scene.Scene.from_folder">
+<em class="property">classmethod </em><code class="descname">from_folder</code><span class="sig-paren">(</span><em>folder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.from_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.from_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create scene from a project folder.</p>
+<p>The folder should be strutured as a standard Honeybee folder for daylight. Use
+create_folder_structure method to create empty folders with README files.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.scene.Scene.from_surfaces">
+<em class="property">classmethod </em><code class="descname">from_surfaces</code><span class="sig-paren">(</span><em>surfaces=None</em>, <em>static_scene=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.from_surfaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.from_surfaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create scene from a list of honeybee surfaces.</p>
+<p>This method separates opaque, non_opaque and dynamic surfaces based on modifiers.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.grid_folder">
+<code class="descname">grid_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.grid_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write analysis grid files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.light_source_folder">
+<code class="descname">light_source_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.light_source_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write light sourcesself.</p>
+<p>light sources include sky, enalemma and lighting fixture files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.matrix_folder">
+<code class="descname">matrix_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.matrix_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write daylight coeff matrices files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.mixed_folder">
+<code class="descname">mixed_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.mixed_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write surfaces with mixed materials.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.non_opaque_surfaces">
+<code class="descname">non_opaque_surfaces</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.non_opaque_surfaces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.octree_file">
+<code class="descname">octree_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.octree_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.octree_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of input files for creating octree of the scene.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.octree_file_blackedout">
+<code class="descname">octree_file_blackedout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.octree_file_blackedout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.octree_file_blackedout" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of input files for a blackedout octree.</p>
+<p>target_dynamic_surface is the dynamic surface which should not be blacked out.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.octree_folder">
+<code class="descname">octree_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.octree_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write octree files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.opaque_files">
+<code class="descname">opaque_files</code><span class="sig-paren">(</span><em>blackedout=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.opaque_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.opaque_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of files for opaque surfaces.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.opaque_folder">
+<code class="descname">opaque_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.opaque_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write opaque surfaces.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.opaque_geometry_file">
+<code class="descname">opaque_geometry_file</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.opaque_geometry_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full path to opaque geometry file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.opaque_geometry_file_balckedout">
+<code class="descname">opaque_geometry_file_balckedout</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.opaque_geometry_file_balckedout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full path to blackedout opaque geometry file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.opaque_material_file">
+<code class="descname">opaque_material_file</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.opaque_material_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full path to material file for opaque geometries.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.opaque_material_file_balckedout">
+<code class="descname">opaque_material_file_balckedout</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.opaque_material_file_balckedout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full path to material file for blackedout opaque geometries.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.opaque_surfaces">
+<code class="descname">opaque_surfaces</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.opaque_surfaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of surfaces with opaque modifiers.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.options_folder">
+<code class="descname">options_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.options_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write radiance options for radiance commands.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.output_folder">
+<code class="descname">output_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.output_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write output files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.result_folder">
+<code class="descname">result_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.result_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write final result files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.sky_folder">
+<code class="descname">sky_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.sky_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write sky files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.static_aperture_file">
+<code class="descname">static_aperture_file</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.static_aperture_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to file for static aperture in scene.</p>
+<p>This file includes all non-opa</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.static_scene_non_opaque_folder">
+<code class="descname">static_scene_non_opaque_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.static_scene_non_opaque_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write static radiance files added as StaticScene.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.static_scene_opaque_folder">
+<code class="descname">static_scene_opaque_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.static_scene_opaque_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write static radiance files added as StaticScene.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.temp_folder">
+<code class="descname">temp_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.temp_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write temporary files.</p>
+<p>The content inside this folder will be removed once the simulation is over.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.view_folder">
+<code class="descname">view_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.view_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write view files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.scene.Scene.wea_folder">
+<code class="descname">wea_folder</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.wea_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder to write wea file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>folder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write all geometries to folder.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.write_dynamic_folder">
+<code class="descname">write_dynamic_folder</code><span class="sig-paren">(</span><em>folder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.write_dynamic_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.write_dynamic_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write files to dynamic folder.</p>
+<p>Files will be written to folder/self.non_opaque_folder. Use non_opaque_files
+method to see the list of files which will be written to opaque folder.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.write_non_opaque_folder">
+<code class="descname">write_non_opaque_folder</code><span class="sig-paren">(</span><em>folder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.write_non_opaque_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.write_non_opaque_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write files to non_opaque folder.</p>
+<p>Files will be written to folder/self.non_opaque_folder. Use non_opaque_files
+method to see the list of files which will be written to opaque folder.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.write_opaque_folder">
+<code class="descname">write_opaque_folder</code><span class="sig-paren">(</span><em>folder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.write_opaque_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.write_opaque_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write files to opaque_folder.</p>
+<p>Files will be written to folder/self.opaque_folder. Use opaque_files method to
+see the list of files which will be written to opaque folder.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.scene.Scene.write_static_scene">
+<code class="descname">write_static_scene</code><span class="sig-paren">(</span><em>folder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.write_static_scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.write_static_scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write static_scene to folder.</p>
+<p>Files will be written to folder/self.static_scene_folder.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.staticscene">
+<span id="honeybee-radiance-staticscene-module"></span><h2>honeybee.radiance.staticscene module<a class="headerlink" href="#module-honeybee.radiance.staticscene" title="Permalink to this headline">¶</a></h2>
+<p>Radiance scene.</p>
+<dl class="class">
+<dt id="honeybee.radiance.staticscene.StaticScene">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.staticscene.</code><code class="descname">StaticScene</code><span class="sig-paren">(</span><em>files</em>, <em>copy_local=True</em>, <em>overwrite=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/staticscene.html#StaticScene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.staticscene.StaticScene" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Radiance base scene.</p>
 <p>Use this class to create a base for the radiance studies by using a number
@@ -2356,27 +2916,27 @@ the geometries and writing the files in parametric studies.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="honeybee.radiance.scene.Scene.ToString">
-<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.ToString" title="Permalink to this definition">¶</a></dt>
+<dt id="honeybee.radiance.staticscene.StaticScene.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/staticscene.html#StaticScene.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.staticscene.StaticScene.ToString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite ToString .NET method.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="honeybee.radiance.scene.Scene.file_count">
-<code class="descname">file_count</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.file_count" title="Permalink to this definition">¶</a></dt>
+<dt id="honeybee.radiance.staticscene.StaticScene.file_count">
+<code class="descname">file_count</code><a class="headerlink" href="#honeybee.radiance.staticscene.StaticScene.file_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of total files in the scene.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="honeybee.radiance.scene.Scene.files">
-<code class="descname">files</code><a class="headerlink" href="#honeybee.radiance.scene.Scene.files" title="Permalink to this definition">¶</a></dt>
+<dt id="honeybee.radiance.staticscene.StaticScene.files">
+<code class="descname">files</code><a class="headerlink" href="#honeybee.radiance.staticscene.StaticScene.files" title="Permalink to this definition">¶</a></dt>
 <dd><p>A named tuple of radiance files.</p>
 <p>keys are: (mat, oct, rad)</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="honeybee.radiance.scene.Scene.to_rad_string">
-<code class="descname">to_rad_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/scene.html#Scene.to_rad_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.scene.Scene.to_rad_string" title="Permalink to this definition">¶</a></dt>
+<dt id="honeybee.radiance.staticscene.StaticScene.to_rad_string">
+<code class="descname">to_rad_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/staticscene.html#StaticScene.to_rad_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.staticscene.StaticScene.to_rad_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of files as single string.</p>
 </dd></dl>
 
@@ -2581,13 +3141,13 @@ since it creates an inverted image for objects behind the viewpoint.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">view_direction</code></dt>
+<code class="descname">view_direction</code><em class="property"> = (0, 0, 1)</em></dt>
 <dd><p>Set the view direction (-vd) vector to (x, y, z).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">view_h_size</code></dt>
+<code class="descname">view_h_size</code><em class="property"> = None</em></dt>
 <dd><p>Set the view horizontal size (-vs). For a perspective projection
 (including fisheye views), val is the horizontal field of view (in
 degrees). For a parallel projection, val is the view width in world
@@ -2596,20 +3156,20 @@ coordinates.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">view_lift</code></dt>
+<code class="descname">view_lift</code><em class="property"> = None</em></dt>
 <dd><p>Set the view lift (-vl) to a value. This is the amount the
 actual image will be lifted up from the specified view.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">view_point</code></dt>
+<code class="descname">view_point</code><em class="property"> = (0, 0, 0)</em></dt>
 <dd><p>Set the view point (-vp) to (x, y, z).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">view_shift</code></dt>
+<code class="descname">view_shift</code><em class="property"> = None</em></dt>
 <dd><p>Set the view shift (-vs). This is the amount the actual
 image will be shifted to the right of the specified view.</p>
 </dd></dl>
@@ -2626,13 +3186,13 @@ image will be shifted to the right of the specified view.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">view_up_vector</code></dt>
+<code class="descname">view_up_vector</code><em class="property"> = (0, 1, 0)</em></dt>
 <dd><p>Set the view up (-vu) vector (vertical direction) to (x, y, z).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">view_v_size</code></dt>
+<code class="descname">view_v_size</code><em class="property"> = None</em></dt>
 <dd><p>Set the view vertical size (-vv). For a perspective projection
 (including fisheye views), val is the horizontal field of view (in
 degrees). For a parallel projection, val is the view width in world
@@ -2641,13 +3201,13 @@ coordinates.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">x_resolution</code></dt>
+<code class="descname">x_resolution</code><em class="property"> = None</em></dt>
 <dd><p>Set the maximum x resolution (-x).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">y_resolution</code></dt>
+<code class="descname">y_resolution</code><em class="property"> = None</em></dt>
 <dd><p>Set the maximum y resolution (-y).</p>
 </dd></dl>
 
@@ -2664,8 +3224,114 @@ coordinates.</p>
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee.html">honeybee package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee.energyplus.html">honeybee.energyplus package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">honeybee.radiance package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.analysisgrid">honeybee.radiance.analysisgrid module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.analysispoint">honeybee.radiance.analysispoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.datatype">honeybee.radiance.datatype module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.factory">honeybee.radiance.factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.imagecollection">honeybee.radiance.imagecollection module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.primitive">honeybee.radiance.primitive module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.properties">honeybee.radiance.properties module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.radfile">honeybee.radiance.radfile module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.radparser">honeybee.radiance.radparser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.scene">honeybee.radiance.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.staticscene">honeybee.radiance.staticscene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance.view">honeybee.radiance.view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-honeybee.radiance">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.server.html">honeybee.server package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.vectormath.html">honeybee.vectormath package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.config">honeybee.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.dataoperation">honeybee.dataoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.futil">honeybee.futil module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.geometryoperation">honeybee.geometryoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbdynamicsurface">honeybee.hbdynamicsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbfensurface">honeybee.hbfensurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbobject">honeybee.hbobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.plus">honeybee.plus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfacetype">honeybee.surfacetype module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.utilcol">honeybee.utilcol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="honeybee.html">honeybee package</a><ul>
+      <li>Previous: <a href="honeybee.energyplus.html" title="previous chapter">honeybee.energyplus package</a></li>
+      <li>Next: <a href="honeybee.radiance.command.html" title="next chapter">honeybee.radiance.command package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

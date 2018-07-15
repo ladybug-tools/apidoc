@@ -1,0 +1,160 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.radiance.geometry.instance &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.geometry.instance</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Radiance Transfunc Instance.</span>
+
+<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Instance</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.geometrybase</span> <span class="k">import</span> <span class="n">RadianceGeometry</span>
+
+
+<span class="c1"># TODO(): Implement the class. It&#39;s currently creates this geometry as generic Radiance</span>
+<span class="c1"># geometry</span>
+<div class="viewcode-block" id="Instance"><a class="viewcode-back" href="../../../../honeybee.radiance.geometry.html#honeybee.radiance.geometry.instance.Instance">[docs]</a><span class="k">class</span> <span class="nc">Instance</span><span class="p">(</span><span class="n">RadianceGeometry</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Radiance Instance.</span>
+
+<span class="sd">    An instance is a compound surface, given by the contents of an octree file (created</span>
+<span class="sd">    by oconv).</span>
+
+<span class="sd">        mod instance id</span>
+<span class="sd">        1+ octree transform</span>
+<span class="sd">        0</span>
+<span class="sd">        0</span>
+
+<span class="sd">    If the modifier is &quot;void&quot;, then surfaces will use the modifiers given in the original</span>
+<span class="sd">    description. Otherwise, the modifier specified is used in their place. The transform</span>
+<span class="sd">    moves the octree to the desired location in the scene. Multiple instances using the</span>
+<span class="sd">    same octree take little extra memory, hence very complex descriptions can be rendered</span>
+<span class="sd">    using this primitive.</span>
+
+<span class="sd">    There are a number of important limitations to be aware of when using instances.</span>
+<span class="sd">    First, the scene description used to generate the octree must stand on its own,</span>
+<span class="sd">    without referring to modifiers in the parent description. This is necessary for</span>
+<span class="sd">    oconv to create the octree. Second, light sources in the octree will not be</span>
+<span class="sd">    incorporated correctly in the calculation, and they are not recommended. Finally,</span>
+<span class="sd">    there is no advantage (other than convenience) to using a single instance of an</span>
+<span class="sd">    octree, or an octree containing only a few surfaces. An xform command on the</span>
+<span class="sd">    subordinate description is prefered in such cases. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../../index.html">
+    <img class="logo" src="../../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  <li><a href="../geometry.html">honeybee.radiance.geometry</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

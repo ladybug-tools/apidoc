@@ -31,8 +31,67 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.parameters.rcalc</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;Radiance rcalc parameters&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">._advancedparametersbase</span> <span class="k">import</span> <span class="n">AdvancedRadianceParameters</span>
+<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
+
+
+<div class="viewcode-block" id="RcalcParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.rcalc.RcalcParameters">[docs]</a><span class="nd">@frozen</span>
+<span class="k">class</span> <span class="nc">RcalcParameters</span><span class="p">(</span><span class="n">AdvancedRadianceParameters</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accept_exact_matches</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_new_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">passive_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">single_ouput</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_warnings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">flush_ouput_every_record</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tmplt_ip_rec_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">expression</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Init parameters</span>
+        <span class="n">AdvancedRadianceParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;accept exact matches&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;accept_exact_matches&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accept_exact_matches</span> <span class="o">=</span> <span class="n">accept_exact_matches</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore new lines&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;ignore_new_lines&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_new_lines</span> <span class="o">=</span> <span class="n">ignore_new_lines</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;passive mode&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;passive_mode&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passive_mode</span> <span class="o">=</span> <span class="n">passive_mode</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;produce single output record&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;single_ouput&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">single_ouput</span> <span class="o">=</span> <span class="n">single_ouput</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore non fatal warnings&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;ignore_warnings&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_warnings</span> <span class="o">=</span> <span class="n">ignore_warnings</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;flush ouput after every record&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;flush_ouput_every_record&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flush_ouput_every_record</span> <span class="o">=</span> <span class="n">flush_ouput_every_record</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span>
+            <span class="s1">&#39;tmplt_ip_rec_format&#39;</span><span class="p">,</span> <span class="s1">&#39;template for alternate input record format&#39;</span><span class="p">,</span>
+            <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;tmplt_ip_rec_format&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmplt_ip_rec_format</span> <span class="o">=</span> <span class="n">tmplt_ip_rec_format</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;a valid expression&#39;</span><span class="p">,</span> <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;expression&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expression</span> <span class="o">=</span> <span class="n">expression</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,66 +152,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.parameters.rcalc</h1><div class="highlight"><pre>
-<span></span><span class="c1"># coding=utf-8</span>
-<span class="sd">&quot;&quot;&quot;Radiance rcalc parameters&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">._advancedparametersbase</span> <span class="k">import</span> <span class="n">AdvancedRadianceParameters</span>
-<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
-
-
-<div class="viewcode-block" id="RcalcParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.rcalc.RcalcParameters">[docs]</a><span class="nd">@frozen</span>
-<span class="k">class</span> <span class="nc">RcalcParameters</span><span class="p">(</span><span class="n">AdvancedRadianceParameters</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accept_exact_matches</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_new_lines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">passive_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">single_ouput</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_warnings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">flush_ouput_every_record</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tmplt_ip_rec_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">expression</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># Init parameters</span>
-        <span class="n">AdvancedRadianceParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;accept exact matches&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;accept_exact_matches&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">accept_exact_matches</span> <span class="o">=</span> <span class="n">accept_exact_matches</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore new lines&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;ignore_new_lines&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_new_lines</span> <span class="o">=</span> <span class="n">ignore_new_lines</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;passive mode&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;passive_mode&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">passive_mode</span> <span class="o">=</span> <span class="n">passive_mode</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;produce single output record&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;single_ouput&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">single_ouput</span> <span class="o">=</span> <span class="n">single_ouput</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore non fatal warnings&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;ignore_warnings&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_warnings</span> <span class="o">=</span> <span class="n">ignore_warnings</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;flush ouput after every record&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;flush_ouput_every_record&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">flush_ouput_every_record</span> <span class="o">=</span> <span class="n">flush_ouput_every_record</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span>
-            <span class="s1">&#39;tmplt_ip_rec_format&#39;</span><span class="p">,</span> <span class="s1">&#39;template for alternate input record format&#39;</span><span class="p">,</span>
-            <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;tmplt_ip_rec_format&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tmplt_ip_rec_format</span> <span class="o">=</span> <span class="n">tmplt_ip_rec_format</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;a valid expression&#39;</span><span class="p">,</span> <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;expression&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">expression</span> <span class="o">=</span> <span class="n">expression</span></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

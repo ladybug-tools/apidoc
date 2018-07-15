@@ -31,8 +31,433 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.scene</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Radiance scene.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.staticscene</span> <span class="k">import</span> <span class="n">StaticScene</span>
+<span class="kn">from</span> <span class="nn">.radfile</span> <span class="k">import</span> <span class="n">RadFile</span>
+<span class="kn">from</span> <span class="nn">..futil</span> <span class="k">import</span> <span class="n">preparedir</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+
+
+<div class="viewcode-block" id="Scene"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene">[docs]</a><span class="k">class</span> <span class="nc">Scene</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Radiance scene.</span>
+
+<span class="sd">    A scene includes all the surfaces and modifiers in a radiance model. Sky is not</span>
+<span class="sd">    included in the scene and should be added to the secne for simulation based on the</span>
+<span class="sd">    recipe.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        opaque_surfaces: A list of surfaces with opaque modifiers.</span>
+<span class="sd">        non_opaque_surfaces: A list of non_opaque surfaces like glass and tranlucent</span>
+<span class="sd">            surfaces.</span>
+<span class="sd">        dynamic_surfaces: A list of dynamic surfaces. Dynamic surfaces are surfaces like</span>
+<span class="sd">            window groups which have more than one state.</span>
+<span class="sd">        static_scene: A honeybee StaticScene which inludes radiance files which will be</span>
+<span class="sd">            included in simulations as part of the octree.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opaque_surfaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">non_opaque_surfaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">dynamic_surfaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">static_scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create scene.</span>
+
+<span class="sd">        Scene will analyze the input surfaces to separate surfaces which have a modified</span>
+<span class="sd">        radiance material for direct daylight simulation. These surfaces will be written</span>
+<span class="sd">        to scene/mixed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mixed_surfaces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opaque_surfaces</span> <span class="o">=</span> <span class="n">opaque_surfaces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">non_opaque_surfaces</span> <span class="o">=</span> <span class="n">non_opaque_surfaces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_surfaces</span> <span class="o">=</span> <span class="n">dynamic_surfaces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_scene</span> <span class="o">=</span> <span class="n">static_scene</span>
+
+<div class="viewcode-block" id="Scene.from_surfaces"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.from_surfaces">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_surfaces</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surfaces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">static_scene</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create scene from a list of honeybee surfaces.</span>
+
+<span class="sd">        This method separates opaque, non_opaque and dynamic surfaces based on modifiers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">opaque</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">non_opaque</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dynamic</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="n">surfaces</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">srf</span><span class="o">.</span><span class="n">isHBDynamicSurface</span><span class="p">:</span>
+                <span class="c1"># window groups, multiple of single state</span>
+                <span class="n">dynamic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srf</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">srf</span><span class="o">.</span><span class="n">radiance_material</span><span class="o">.</span><span class="n">is_opaque</span><span class="p">:</span>
+                <span class="c1"># generic window surfaces</span>
+                <span class="n">non_opaque</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srf</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">srf</span><span class="o">.</span><span class="n">isHBSurface</span><span class="p">:</span>
+                <span class="n">opaque</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srf</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">child_srf</span> <span class="ow">in</span> <span class="n">srf</span><span class="o">.</span><span class="n">children_surfaces</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">child_srf</span><span class="o">.</span><span class="n">radiance_material</span><span class="o">.</span><span class="n">is_opaque</span><span class="p">:</span>
+                        <span class="n">opaque</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child_srf</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">non_opaque</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child_srf</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not an analysis surface.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srf</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">opaque</span><span class="p">,</span> <span class="n">non_opaque</span><span class="p">,</span> <span class="n">dynamic</span><span class="p">,</span> <span class="n">static_scene</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Scene.from_folder"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.from_folder">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_folder</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create scene from a project folder.</span>
+
+<span class="sd">        The folder should be strutured as a standard Honeybee folder for daylight. Use</span>
+<span class="sd">        create_folder_structure method to create empty folders with README files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opaque_surfaces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of surfaces with opaque modifiers.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opaque_surfaces</span>
+
+    <span class="nd">@opaque_surfaces</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">opaque_surfaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opaque_surfaces</span><span class="p">):</span>
+        <span class="n">opaque_surfaces</span> <span class="o">=</span> <span class="n">opaque_surfaces</span> <span class="ow">or</span> <span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_opaque_surfaces</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="n">opaque_surfaces</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">srf</span><span class="o">.</span><span class="n">isHBSurface</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a valid honeybee surface.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srf</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">srf</span><span class="o">.</span><span class="n">radiance_material</span><span class="o">.</span><span class="n">is_opaque</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not an opaque surface.&#39;</span><span class="o">.</span><span class="n">fromat</span><span class="p">(</span><span class="n">srf</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">srf</span><span class="o">.</span><span class="n">radiance_properties</span><span class="o">.</span><span class="n">is_black_material_set_by_user</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_mixed_surfaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srf</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_opaque_surfaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srf</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Found </span><span class="si">%d</span><span class="s1"> opaque surfaces and </span><span class="si">%d</span><span class="s1"> mixed surfaces.&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_opaque_surfaces</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mixed_surfaces</span><span class="p">)))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">non_opaque_surfaces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_non_opaque_surfaces</span>
+
+    <span class="nd">@non_opaque_surfaces</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">non_opaque_surfaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">non_opaque_surfaces</span><span class="p">):</span>
+        <span class="n">non_opaque_surfaces</span> <span class="o">=</span> <span class="n">non_opaque_surfaces</span> <span class="ow">or</span> <span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_non_opaque_surfaces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="n">non_opaque_surfaces</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">srf</span><span class="o">.</span><span class="n">isHBSurface</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a valid honeybee surface.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srf</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">srf</span><span class="o">.</span><span class="n">radiance_material</span><span class="o">.</span><span class="n">is_opaque</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a non_opaque surface.&#39;</span><span class="o">.</span><span class="n">fromat</span><span class="p">(</span><span class="n">srf</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">srf</span><span class="o">.</span><span class="n">radiance_properties</span><span class="o">.</span><span class="n">is_black_material_set_by_user</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_mixed_surfaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srf</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_non_opaque_surfaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srf</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Found </span><span class="si">%d</span><span class="s1"> non-opaque surfaces and </span><span class="si">%d</span><span class="s1"> mixed surfaces.&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_non_opaque_surfaces</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mixed_surfaces</span><span class="p">)))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dynamic_surfaces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_surfaces</span>
+
+    <span class="nd">@dynamic_surfaces</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">dynamic_surfaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_surfaces</span><span class="p">):</span>
+        <span class="n">dynamic_surfaces</span> <span class="o">=</span> <span class="n">dynamic_surfaces</span> <span class="ow">or</span> <span class="p">()</span>
+        <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="n">dynamic_surfaces</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">srf</span><span class="o">.</span><span class="n">isHBDynamicSurface</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a valid honeybee dynamic surface.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srf</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># make sure there is no duplicat name in dynamic surfaces</span>
+        <span class="n">dup</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Counter</span><span class="p">((</span><span class="n">ds</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">dynamic_surfaces</span><span class="p">))</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">dup</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> \
+            <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Found duplicate window-group names: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                       <span class="s1">&#39;Each window-group must have a uniqe name.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dup</span><span class="p">))</span>
+
+        <span class="c1"># give a brief report</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Found </span><span class="si">%d</span><span class="s1"> dynamic surfaces/window-groups.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">dynamic_surfaces</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">ds</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dynamic_surfaces</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">states</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  [</span><span class="si">%d</span><span class="s1">] </span><span class="si">%s</span><span class="s1">, 1 state.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  [</span><span class="si">%d</span><span class="s1">] </span><span class="si">%s</span><span class="s1">, </span><span class="si">%d</span><span class="s1"> states.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">states</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_surfaces</span> <span class="o">=</span> <span class="n">dynamic_surfaces</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">aperture_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write aperture surfaces.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;scene/aperture&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bsdf_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write bsdf materials.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;scene/bsdf&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opaque_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write opaque surfaces.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;scene/opaque&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mixed_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write surfaces with mixed materials.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;scene/mixed&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">static_scene_opaque_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write static radiance files added as StaticScene.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;scene/opaque/additional_files&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">static_scene_non_opaque_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write static radiance files added as StaticScene.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;scene/mixed/additional_files&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">wea_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write wea file.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;wea&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">grid_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write analysis grid files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;grid&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">view_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write view files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;view&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">light_source_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write light sourcesself.</span>
+
+<span class="sd">        light sources include sky, enalemma and lighting fixture files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;light_source&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">analemma_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write analemma files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">light_source_folder</span><span class="p">,</span> <span class="s1">&#39;analemma&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sky_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write sky files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">light_source_folder</span><span class="p">,</span> <span class="s1">&#39;sky&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">electric_lighting_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write electric lighting IES files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">light_source_folder</span><span class="p">,</span> <span class="s1">&#39;ies&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">options_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write radiance options for radiance commands.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;options&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">output_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write output files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;output&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">temp_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write temporary files.</span>
+
+<span class="sd">        The content inside this folder will be removed once the simulation is over.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_folder</span><span class="p">,</span> <span class="s1">&#39;tmp&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">octree_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write octree files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_folder</span><span class="p">,</span> <span class="s1">&#39;octree&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">matrix_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write daylight coeff matrices files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_folder</span><span class="p">,</span> <span class="s1">&#39;dc_matrix&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Folder to write final result files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_folder</span><span class="p">,</span> <span class="s1">&#39;result&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Scene.opaque_files"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.opaque_files">[docs]</a>    <span class="k">def</span> <span class="nf">opaque_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blackedout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of files for opaque surfaces.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">blackedout</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opaque_material_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opaque_geometry_file</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opaque_material_file_blackedout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opaque_geometry_file</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opaque_geometry_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Full path to opaque geometry file.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opaque_folder</span><span class="p">,</span> <span class="s1">&#39;geometry.rad&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opaque_material_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Full path to material file for opaque geometries.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opaque_folder</span><span class="p">,</span> <span class="s1">&#39;material.rad&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opaque_geometry_file_balckedout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Full path to blackedout opaque geometry file.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opaque_folder</span><span class="p">,</span> <span class="s1">&#39;material.blk&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opaque_material_file_balckedout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Full path to material file for blackedout opaque geometries.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opaque_folder</span><span class="p">,</span> <span class="s1">&#39;opaque_blackedout.mat&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">static_aperture_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Path to file for static aperture in scene.</span>
+
+<span class="sd">        This file includes all non-opa</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aperture_folder</span><span class="p">,</span> <span class="s1">&#39;static_aperture.000&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Scene.dynamic_aperture_file"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.dynamic_aperture_file">[docs]</a>    <span class="k">def</span> <span class="nf">dynamic_aperture_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Path to file for a dynamic aperture aka window-group.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            surface: Name of dynamic aperture.</span>
+<span class="sd">            state: Current state of dynamic aperture.</span>
+<span class="sd">                -2 &gt; glowed, -1 &gt; blacked, 0 &gt; default material, 1 &gt; first state, ...</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">name</span>
+        <span class="c1"># TODO(Mostapha): Get name for the current state.</span>
+        <span class="n">state_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="s1">&#39;glw&#39;</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="s1">&#39;blk&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%03d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">state</span>
+
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aperture_folder</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">..</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">state_name</span><span class="p">,</span> <span class="n">ext</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Scene.octree_file"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.octree_file">[docs]</a>    <span class="k">def</span> <span class="nf">octree_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of input files for creating octree of the scene.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Scene.octree_file_blackedout"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.octree_file_blackedout">[docs]</a>    <span class="k">def</span> <span class="nf">octree_file_blackedout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of input files for a blackedout octree.</span>
+
+<span class="sd">        target_dynamic_surface is the dynamic surface which should not be blacked out.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Scene.create_folder_structure"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.create_folder_structure">[docs]</a>    <span class="k">def</span> <span class="nf">create_folder_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">remove_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                <span class="n">include_readme</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create folder structure for honeybee daylight study.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder: Target folder to write the scene.</span>
+<span class="sd">            remove_content: Set to True to remove current content (default: False).</span>
+<span class="sd">            included_readme: Include readme.md files in each folder which includes a</span>
+<span class="sd">                brief description of files inside each folder (default: False)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">include_readme</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;readme files are not implemented yet!&#39;</span><span class="p">)</span>
+        <span class="c1"># create parent folder</span>
+        <span class="n">write_parent_folder</span> <span class="o">=</span> <span class="n">preparedir</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">remove_content</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">write_parent_folder</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">()</span>
+        <span class="c1"># write folders</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+
+        <span class="n">folders</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bsdf_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aperture_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opaque_folder</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mixed_folder</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wea_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options_folder</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_folder</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sky_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">analemma_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">electric_lighting_folder</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_folder</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temp_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">octree_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_folder</span>
+        <span class="p">)</span>
+
+        <span class="n">static_scene_folders</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_scene_opaque_folder</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">static_scene_non_opaque_folder</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">:</span>
+            <span class="n">preparedir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_scene</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">static_scene_folders</span><span class="p">:</span>
+                <span class="n">preparedir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Scene.write_opaque_folder"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.write_opaque_folder">[docs]</a>    <span class="k">def</span> <span class="nf">write_opaque_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write files to opaque_folder.</span>
+
+<span class="sd">        Files will be written to folder/self.opaque_folder. Use opaque_files method to</span>
+<span class="sd">        see the list of files which will be written to opaque folder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opaque_folder</span><span class="p">)</span>
+        <span class="n">opq</span> <span class="o">=</span> <span class="n">RadFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opaque_surfaces</span><span class="p">)</span>
+        <span class="n">opq</span><span class="o">.</span><span class="n">write_geometries</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opaque_geometry_file</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mkdir</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">opq</span><span class="o">.</span><span class="n">write_materials</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opaque_material_file</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">blacked</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Scene.write_non_opaque_folder"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.write_non_opaque_folder">[docs]</a>    <span class="k">def</span> <span class="nf">write_non_opaque_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write files to non_opaque folder.</span>
+
+<span class="sd">        Files will be written to folder/self.non_opaque_folder. Use non_opaque_files</span>
+<span class="sd">        method to see the list of files which will be written to opaque folder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_opaque_folder</span><span class="p">)</span>
+        <span class="n">non_opq</span> <span class="o">=</span> <span class="n">RadFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">non_opaque_surfaces</span><span class="p">)</span>
+        <span class="n">non_opq</span><span class="o">.</span><span class="n">write_geometries</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_opaque_geometry_file</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mkdir</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">non_opq</span><span class="o">.</span><span class="n">write_materials</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_opaque_material_file</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">blacked</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Scene.write_dynamic_folder"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.write_dynamic_folder">[docs]</a>    <span class="k">def</span> <span class="nf">write_dynamic_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write files to dynamic folder.</span>
+
+<span class="sd">        Files will be written to folder/self.non_opaque_folder. Use non_opaque_files</span>
+<span class="sd">        method to see the list of files which will be written to opaque folder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_folder</span><span class="p">)</span>
+        <span class="n">dynamic_srfs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">RadFile</span><span class="p">(</span><span class="n">dyn_srf</span><span class="p">)</span> <span class="k">for</span> <span class="n">dyn_srf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_surfaces</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">dsf</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dynamic_srfs</span><span class="p">):</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">dsf</span><span class="o">.</span><span class="n">hb_surfaces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">scount</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">states</span><span class="p">)):</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">scount</span>
+                <span class="n">dsf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_surface_file</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">scount</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Scene.write_static_scene"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.write_static_scene">[docs]</a>    <span class="k">def</span> <span class="nf">write_static_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write static_scene to folder.</span>
+
+<span class="sd">        Files will be written to folder/self.static_scene_folder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># copy from recipeutil</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Scene.write"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write all geometries to folder.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_folder_structure</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_opaque_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_non_opaque_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_dynamic_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Scene.ToString"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite ToString .NET method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scene.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;Radiance Scene&#39;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,80 +518,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.scene</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Radiance scene.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
-
-
-<div class="viewcode-block" id="Scene"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene">[docs]</a><span class="k">class</span> <span class="nc">Scene</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Radiance base scene.</span>
-
-<span class="sd">    Use this class to create a base for the radiance studies by using a number</span>
-<span class="sd">    of radiance files. The main advantage of creating a scene is to avoid re-creating</span>
-<span class="sd">    the geometries and writing the files in parametric studies.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        files: List of radiance files. Valid files are *.rad, *.mat and *.oct.</span>
-<span class="sd">        copy_local: Set to True to copy the files to the analysis folder (Default: True).</span>
-<span class="sd">        overwrite: Set to True to overwrite the files if already exist.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">copy_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create scene.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">files</span> <span class="o">=</span> <span class="n">files</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">copy_local</span> <span class="o">=</span> <span class="n">copy_local</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="n">overwrite</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">file_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Number of total files in the scene.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A named tuple of radiance files.</span>
-
-<span class="sd">        keys are: (mat, oct, rad)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__files</span>
-
-    <span class="nd">@files</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
-        <span class="n">_f</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Files&#39;</span><span class="p">,</span> <span class="s1">&#39;mat rad oct&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__files</span> <span class="o">=</span> <span class="n">_f</span><span class="p">((),</span> <span class="p">(),</span> <span class="p">())</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__files</span> <span class="o">=</span> <span class="n">_f</span><span class="p">(</span>
-                <span class="nb">tuple</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fs</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.mat&#39;</span><span class="p">)),</span>
-                <span class="nb">tuple</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fs</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.rad&#39;</span><span class="p">)),</span>
-                <span class="nb">tuple</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fs</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.oct&#39;</span><span class="p">)))</span>
-
-<div class="viewcode-block" id="Scene.to_rad_string"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.to_rad_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_rad_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return list of files as single string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">f</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Scene.ToString"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.scene.Scene.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overwrite ToString .NET method.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Scene.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;Radiance Scene</span><span class="si">%s</span><span class="s1">:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="s1">&#39; (Files will be copied locally)&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_local</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-
-            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">f</span><span class="p">)</span>
-        <span class="p">)</span></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

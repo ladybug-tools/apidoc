@@ -31,8 +31,138 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.material.glow</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Radiance Glow Material.</span>
+
+<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Glow</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceNumber</span>
+<span class="kn">from</span> <span class="nn">.materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
+
+
+<div class="viewcode-block" id="Glow"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.glow.Glow">[docs]</a><span class="k">class</span> <span class="nc">Glow</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create glow material.</span>
+
+<span class="sd">    Attributes:</span>
+
+<span class="sd">        name: Material name as a string. The name should not have whitespaces or</span>
+<span class="sd">            special characters.</span>
+<span class="sd">        red: A positive value for the Red channel of the glow (default: 0).</span>
+<span class="sd">        green: A positive value for the Green channel of the glow (default: 0).</span>
+<span class="sd">        blue: A positive value for the Blue channel of the glow (default: 0).</span>
+<span class="sd">        max_radius: a maximum radius for shadow testing (default: 0). If maxrad is zero,</span>
+<span class="sd">            then the surface will never be tested for shadow, although it may</span>
+<span class="sd">            participate in an interreflection calculation. If maxrad is negative, then</span>
+<span class="sd">            the surface will never contribute to scene illumination. Glow sources will</span>
+<span class="sd">            never illuminate objects on the other side of an illum surface. This</span>
+<span class="sd">            provides a convenient way to illuminate local light fixture geometry without</span>
+<span class="sd">            overlighting nearby objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">red</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">green</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">blue</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">max_radius</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;max_radius&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">red</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">green</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">blue</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_radius</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">modifier</span><span class="o">=</span><span class="s1">&#39;void&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init Glow material.&quot;&quot;&quot;</span>
+        <span class="n">RadianceMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">red</span> <span class="o">=</span> <span class="n">red</span>
+        <span class="sd">&quot;&quot;&quot;A positive value for the Red channel of the glow&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">green</span> <span class="o">=</span> <span class="n">green</span>
+        <span class="sd">&quot;&quot;&quot;A positive value for the Green channel of the glow&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blue</span> <span class="o">=</span> <span class="n">blue</span>
+        <span class="sd">&quot;&quot;&quot;A positive value for the Blue channel of the glow&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_radius</span> <span class="o">=</span> <span class="n">max_radius</span>
+        <span class="sd">&quot;&quot;&quot;Maximum radius for shadow testing&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_values</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Glow.from_string"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.glow.Glow.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a Radiance material from a string.</span>
+
+<span class="sd">        If the material has a modifier the modifier material should also be partof the</span>
+<span class="sd">        string or should be provided using modifier argument.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">modifier</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">base_material_data</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_string_input</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">base_material_data</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Glow.from_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.glow.Glow.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make radiance material from json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // Material Name</span>
+<span class="sd">            &quot;red&quot;: float, // A positive value for the Red channel of the glow</span>
+<span class="sd">            &quot;green&quot;: float, // A positive value for the Green channel of the glow</span>
+<span class="sd">            &quot;blue&quot;: float, // A positive value for the Blue channel of the glow</span>
+<span class="sd">            &quot;radius&quot;: float // Maximum radius for shadow testing</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_json_input</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">rec_json</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                   <span class="n">red</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">],</span>
+                   <span class="n">green</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">],</span>
+                   <span class="n">blue</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">],</span>
+                   <span class="n">max_radius</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;max_radius&quot;</span><span class="p">],</span>
+                   <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;update value dictionaries.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">red</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">green</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">blue</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_radius</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="Glow.to_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.glow.Glow.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate radiance material to json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;type&quot;: &quot;glow&quot;, // Material type</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // Material Name</span>
+<span class="sd">            &quot;red&quot;: float, // A positive value for the Red channel of the glow</span>
+<span class="sd">            &quot;green&quot;: float, // A positive value for the Green channel of the glow</span>
+<span class="sd">            &quot;blue&quot;: float, // A positive value for the Blue channel of the glow</span>
+<span class="sd">            &quot;radius&quot;: float // Maximum radius for shadow testing</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;modifier&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;glow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;red&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">red</span><span class="p">,</span>
+            <span class="s2">&quot;green&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">green</span><span class="p">,</span>
+            <span class="s2">&quot;blue&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">blue</span><span class="p">,</span>
+            <span class="s2">&quot;max_radius&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_radius</span>
+        <span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="WhiteGlow"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.glow.WhiteGlow">[docs]</a><span class="k">class</span> <span class="nc">WhiteGlow</span><span class="p">(</span><span class="n">Glow</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A white glow material.</span>
+
+<span class="sd">    Use this material for multi-phase daylight studies.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;white_glow&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create glow material.&quot;&quot;&quot;</span>
+        <span class="n">Glow</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,77 +223,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.material.glow</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Radiance Glow Material.</span>
-
-<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Glow</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceNumber</span>
-<span class="kn">from</span> <span class="nn">._materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
-
-
-<div class="viewcode-block" id="GlowMaterial"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.glow.GlowMaterial">[docs]</a><span class="k">class</span> <span class="nc">GlowMaterial</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create glow material.</span>
-
-<span class="sd">    Attributes:</span>
-
-<span class="sd">        name: Material name as a string. The name should not have whitespaces or</span>
-<span class="sd">            special characters.</span>
-<span class="sd">        red: A positive value for the Red channel of the glow</span>
-<span class="sd">        green: A positive value for the Green channel of the glow</span>
-<span class="sd">        blue: A positive value for the Blue channel of the glow</span>
-<span class="sd">        max_radius: ---.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">red</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">blue</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">green</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">max_radius</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;max_radius&#39;</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">red</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">green</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">blue</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_radius</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Init Glow material.&quot;&quot;&quot;</span>
-        <span class="n">RadianceMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">material_type</span><span class="o">=</span><span class="s1">&#39;glow&#39;</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s1">&#39;void&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">red</span> <span class="o">=</span> <span class="n">red</span>
-        <span class="sd">&quot;&quot;&quot;A positive value for the Red channel of the glow&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">green</span> <span class="o">=</span> <span class="n">green</span>
-        <span class="sd">&quot;&quot;&quot;A positive value for the Green channel of the glow&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">blue</span> <span class="o">=</span> <span class="n">blue</span>
-        <span class="sd">&quot;&quot;&quot;A positive value for the Blue channel of the glow&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_radius</span> <span class="o">=</span> <span class="n">max_radius</span>
-        <span class="sd">&quot;&quot;&quot;Maximum radius for shadow testing&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="GlowMaterial.to_rad_string"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.glow.GlowMaterial.to_rad_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_rad_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return full Radiance definition&quot;&quot;&quot;</span>
-        <span class="n">base_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_line</span> <span class="o">+</span> <span class="s2">&quot;0</span><span class="se">\n</span><span class="s2">0</span><span class="se">\n</span><span class="s2">4 </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2">&quot;</span>
-
-        <span class="n">glow_definition</span> <span class="o">=</span> <span class="n">base_string</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">green</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_radius</span><span class="o">.</span><span class="n">_value</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">glow_definition</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">minimal</span> <span class="k">else</span> <span class="n">glow_definition</span></div></div>
-
-
-<div class="viewcode-block" id="WhiteGlowMaterial"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.glow.WhiteGlowMaterial">[docs]</a><span class="k">class</span> <span class="nc">WhiteGlowMaterial</span><span class="p">(</span><span class="n">GlowMaterial</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A white glow material.</span>
-
-<span class="sd">    Use this material for multi-phase daylight studies.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;white_glow&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create glow material.&quot;&quot;&quot;</span>
-        <span class="n">GlowMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

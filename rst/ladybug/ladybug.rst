@@ -108,6 +108,14 @@ ladybug\.psychrometrics module
     :undoc-members:
     :show-inheritance:
 
+ladybug\.stat module
+--------------------
+
+.. automodule:: ladybug.stat
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 ladybug\.sunpath module
 -----------------------
 

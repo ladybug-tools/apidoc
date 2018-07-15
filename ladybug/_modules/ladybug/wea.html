@@ -31,8 +31,771 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ladybug.wea</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;Wea weather file.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.epw</span> <span class="k">import</span> <span class="n">EPW</span>
+<span class="kn">from</span> <span class="nn">.stat</span> <span class="k">import</span> <span class="n">Stat</span>
+<span class="kn">from</span> <span class="nn">.location</span> <span class="k">import</span> <span class="n">Location</span>
+<span class="kn">from</span> <span class="nn">.dt</span> <span class="k">import</span> <span class="n">DateTime</span>
+<span class="kn">from</span> <span class="nn">.header</span> <span class="k">import</span> <span class="n">Header</span>
+<span class="kn">from</span> <span class="nn">.datacollection</span> <span class="k">import</span> <span class="n">DataCollection</span>
+<span class="kn">from</span> <span class="nn">.datatype</span> <span class="k">import</span> <span class="n">DataPoint</span>
+<span class="kn">from</span> <span class="nn">.analysisperiod</span> <span class="k">import</span> <span class="n">AnalysisPeriod</span>
+<span class="kn">from</span> <span class="nn">.sunpath</span> <span class="k">import</span> <span class="n">Sunpath</span>
+<span class="kn">from</span> <span class="nn">.euclid</span> <span class="k">import</span> <span class="n">Vector3</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">izip</span> <span class="k">as</span> <span class="nb">zip</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># python 3</span>
+    <span class="n">xrange</span> <span class="o">=</span> <span class="nb">range</span>
+
+
+<div class="viewcode-block" id="Wea"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea">[docs]</a><span class="k">class</span> <span class="nc">Wea</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An annual WEA object containing solar radiation.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        location: Ladybug location object.</span>
+<span class="sd">        direct_normal_radiation: An annual DataCollection of direct normal radiation</span>
+<span class="sd">            values.</span>
+<span class="sd">        diffuse_horizontal_radiation: An annual DataCollection of diffuse horizontal</span>
+<span class="sd">            radiation values for every hourly timestep of the year.</span>
+<span class="sd">        timestep: An optional integer to set the number of time steps per hour.</span>
+<span class="sd">            Default is 1 for one value per hour.</span>
+<span class="sd">        is_leap_year: A boolean to indicate if values are representing a leap year.</span>
+<span class="sd">            Default is False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">direct_normal_radiation</span><span class="p">,</span>
+                 <span class="n">diffuse_horizontal_radiation</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a wea object.&quot;&quot;&quot;</span>
+        <span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span> <span class="ow">or</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timestep</span> <span class="o">=</span> <span class="n">timestep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_leap_year</span> <span class="o">=</span> <span class="n">is_leap_year</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s1">&#39;timestep must be an&#39;</span> \
+            <span class="s1">&#39; integer. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">timestep</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span> <span class="o">=</span> <span class="n">direct_normal_radiation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span> <span class="o">=</span> <span class="n">diffuse_horizontal_radiation</span>
+
+<div class="viewcode-block" id="Wea.from_values"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.from_values">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">direct_normal_radiation</span><span class="p">,</span>
+                    <span class="n">diffuse_horizontal_radiation</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create wea from a list of radiation values.</span>
+
+<span class="sd">        This method converts input lists to DataCollection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dnr</span><span class="p">,</span> <span class="n">dhr</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_empty_data_collections</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="n">dts</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_datetimes</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dir_norm</span><span class="p">,</span> <span class="n">diff_horiz</span><span class="p">,</span> <span class="n">dt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">direct_normal_radiation</span><span class="p">,</span>
+                                            <span class="n">diffuse_horizontal_radiation</span><span class="p">,</span> <span class="n">dts</span><span class="p">):</span>
+            <span class="n">dnr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">(</span><span class="n">dir_norm</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Direct Normal Radiation&#39;</span><span class="p">))</span>
+            <span class="n">dhr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">(</span><span class="n">diff_horiz</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Diffuse Horizontal Radiation&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">direct_normal_radiation</span><span class="p">,</span> <span class="n">diffuse_horizontal_radiation</span><span class="p">,</span>
+                   <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wea.from_json"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create Wea from json file</span>
+<span class="sd">            {</span>
+<span class="sd">            &quot;location&quot;: {} , // ladybug location schema</span>
+<span class="sd">            &quot;direct_normal_radiation&quot;: [], // List of hourly direct normal</span>
+<span class="sd">                radiation data points</span>
+<span class="sd">            &quot;diffuse_horizontal_radiation&quot;: [], // List of hourly diffuse</span>
+<span class="sd">                horizontal radiation data points</span>
+<span class="sd">            &quot;timestep&quot;: float //timestep between measurements, default is 1</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">required_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="s1">&#39;direct_normal_radiation&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;diffuse_horizontal_radiation&#39;</span><span class="p">)</span>
+        <span class="n">optional_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;timestep&#39;</span><span class="p">,</span> <span class="s1">&#39;is_leap_year&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">,</span> <span class="s1">&#39;Required key &quot;</span><span class="si">{}</span><span class="s1">&quot; is missing!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">optional_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">])</span>
+        <span class="n">direct_normal_radiation</span> <span class="o">=</span> \
+            <span class="n">DataCollection</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;direct_normal_radiation&#39;</span><span class="p">])</span>
+        <span class="n">diffuse_horizontal_radiation</span> <span class="o">=</span> \
+            <span class="n">DataCollection</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;diffuse_horizontal_radiation&#39;</span><span class="p">])</span>
+        <span class="n">timestep</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">]</span>
+        <span class="n">is_leap_year</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;is_leap_year&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">direct_normal_radiation</span><span class="p">,</span>
+                   <span class="n">diffuse_horizontal_radiation</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wea.from_epw_file"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.from_epw_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_epw_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">epwfile</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a wea object using the solar radiation values in an epw file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            epwfile: Full path to epw weather file.</span>
+<span class="sd">            timestep: An optional integer to set the number of time steps per hour.</span>
+<span class="sd">                Default is 1 for one value per hour. Note that this input</span>
+<span class="sd">                will only do a linear interpolation over the data in the EPW</span>
+<span class="sd">                file.  While such linear interpolations are suitable for most</span>
+<span class="sd">                thermal simulations, where thermal lag &quot;smooths over&quot; the effect</span>
+<span class="sd">                of momentary increases in solar energy, it is not recommended</span>
+<span class="sd">                for daylight simulations, where momentary increases in solar</span>
+<span class="sd">                energy can mean the difference between glare and visual comfort.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">epw</span> <span class="o">=</span> <span class="n">EPW</span><span class="p">(</span><span class="n">epwfile</span><span class="p">)</span>
+        <span class="n">direct_normal</span> <span class="o">=</span> <span class="n">epw</span><span class="o">.</span><span class="n">direct_normal_radiation</span>
+        <span class="n">diffuse_horizontal</span> <span class="o">=</span> <span class="n">epw</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span>
+        <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Note: timesteps greater than 1 on epw-generated Wea&#39;s </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;are suitable for thermal models but are not recommended </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;for daylight models.&quot;</span><span class="p">)</span>
+            <span class="n">direct_normal</span> <span class="o">=</span> <span class="n">direct_normal</span><span class="o">.</span><span class="n">interpolate_data</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">diffuse_horizontal</span> <span class="o">=</span> <span class="n">diffuse_horizontal</span><span class="o">.</span><span class="n">interpolate_data</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># add half an hour to datetime to put sun in the middle of the hour</span>
+            <span class="k">for</span> <span class="n">dnr</span> <span class="ow">in</span> <span class="n">direct_normal</span><span class="p">:</span>
+                <span class="n">dnr</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">dnr</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">add_minute</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">dhr</span> <span class="ow">in</span> <span class="n">diffuse_horizontal</span><span class="p">:</span>
+                <span class="n">dhr</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">dhr</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">add_minute</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+
+        <span class="c1"># epw file is always for 8760 hours</span>
+        <span class="n">is_leap_year</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">epw</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">direct_normal</span><span class="p">,</span> <span class="n">diffuse_horizontal</span><span class="p">,</span>
+                   <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wea.from_stat_file"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.from_stat_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_stat_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">statfile</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an ASHRAE Revised Clear Sky wea object from the monthly sky</span>
+<span class="sd">        optical depths in a .stat file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            statfile: Full path to the .stat file.</span>
+<span class="sd">            timestep: An optional integer to set the number of time steps per</span>
+<span class="sd">                hour. Default is 1 for one value per hour.</span>
+<span class="sd">            is_leap_year: A boolean to indicate if values are representing a leap year.</span>
+<span class="sd">                Default is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stat</span> <span class="o">=</span> <span class="n">Stat</span><span class="p">(</span><span class="n">statfile</span><span class="p">)</span>
+
+        <span class="c1"># check to be sure the stat file does not have missing tau values</span>
+        <span class="k">def</span> <span class="nf">check_missing</span><span class="p">(</span><span class="n">opt_data</span><span class="p">,</span> <span class="n">data_name</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">opt_data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s1">&#39;Missing optical depth data for </span><span class="si">{}</span><span class="s1"> at month </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">data_name</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="p">)</span>
+        <span class="n">check_missing</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">monthly_tau_beam</span><span class="p">,</span> <span class="s1">&#39;monthly_tau_beam&#39;</span><span class="p">)</span>
+        <span class="n">check_missing</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">monthly_tau_diffuse</span><span class="p">,</span> <span class="s1">&#39;monthly_tau_diffuse&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_ashrae_revised_clear_sky</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">stat</span><span class="o">.</span><span class="n">monthly_tau_beam</span><span class="p">,</span>
+                                                 <span class="n">stat</span><span class="o">.</span><span class="n">monthly_tau_diffuse</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span>
+                                                 <span class="n">is_leap_year</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wea.from_ashrae_revised_clear_sky"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.from_ashrae_revised_clear_sky">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_ashrae_revised_clear_sky</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">monthly_tau_beam</span><span class="p">,</span>
+                                      <span class="n">monthly_tau_diffuse</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                      <span class="n">is_leap_year</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a wea object representing an ASHRAE Revised Clear Sky (&quot;Tau Model&quot;)</span>
+
+<span class="sd">        ASHRAE Revised Clear Skies are intended to determine peak solar load</span>
+<span class="sd">        and sizing parmeters for HVAC systems.  The revised clear sky is</span>
+<span class="sd">        currently the default recommended sky model used to autosize HVAC</span>
+<span class="sd">        systems in EnergyPlus. For more information on the ASHRAE Revised Clear</span>
+<span class="sd">        Sky model, see the EnergyPlus Engineering Reference:</span>
+<span class="sd">        https://bigladdersoftware.com/epx/docs/8-9/engineering-reference/climate-calculations.html</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            location: Ladybug location object.</span>
+<span class="sd">            monthly_tau_beam: A list of 12 float values indicating the beam</span>
+<span class="sd">                optical depth of the sky at each month of the year.</span>
+<span class="sd">            monthly_tau_diffuse: A list of 12 float values indicating the</span>
+<span class="sd">                diffuse optical depth of the sky at each month of the year.</span>
+<span class="sd">            timestep: An optional integer to set the number of time steps per</span>
+<span class="sd">                hour. Default is 1 for one value per hour.</span>
+<span class="sd">            is_leap_year: A boolean to indicate if values are representing a leap year.</span>
+<span class="sd">                Default is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create sunpath and get altitude at every timestep of the year</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">Sunpath</span><span class="o">.</span><span class="n">from_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">sp</span><span class="o">.</span><span class="n">is_leap_year</span> <span class="o">=</span> <span class="n">is_leap_year</span>
+        <span class="n">altitudes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">months</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_datetimes</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t_date</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+            <span class="n">sun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">calculate_sun_from_date_time</span><span class="p">(</span><span class="n">t_date</span><span class="p">)</span>
+            <span class="n">months</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sun</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">altitudes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sun</span><span class="o">.</span><span class="n">altitude</span><span class="p">)</span>
+
+        <span class="c1"># calculate hourly air mass between top of the atmosphere and earth</span>
+        <span class="n">air_masses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">alt</span> <span class="ow">in</span> <span class="n">altitudes</span><span class="p">:</span>
+            <span class="n">air_mass</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">alt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">air_mass</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">alt</span><span class="p">))</span> <span class="o">+</span>
+                                <span class="p">(</span><span class="mf">0.50572</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="mf">6.07995</span> <span class="o">+</span> <span class="n">alt</span><span class="p">),</span> <span class="o">-</span><span class="mf">1.6364</span><span class="p">)))</span>
+            <span class="n">air_masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">air_mass</span><span class="p">)</span>
+
+        <span class="c1"># calculate monthly air mass exponents.</span>
+        <span class="n">beam_epxs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">diffuse_exps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">tb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">monthly_tau_beam</span><span class="p">):</span>
+            <span class="n">td</span> <span class="o">=</span> <span class="n">monthly_tau_diffuse</span><span class="p">[</span><span class="n">count</span><span class="p">]</span>
+            <span class="n">ab</span> <span class="o">=</span> <span class="mf">1.219</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.043</span> <span class="o">*</span> <span class="n">tb</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.151</span> <span class="o">*</span> <span class="n">td</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.204</span> <span class="o">*</span> <span class="n">tb</span> <span class="o">*</span> <span class="n">td</span><span class="p">)</span>
+            <span class="n">ad</span> <span class="o">=</span> <span class="mf">0.202</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.852</span> <span class="o">*</span> <span class="n">tb</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.007</span> <span class="o">*</span> <span class="n">td</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.357</span> <span class="o">*</span> <span class="n">tb</span> <span class="o">*</span> <span class="n">td</span><span class="p">)</span>
+            <span class="n">beam_epxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ab</span><span class="p">)</span>
+            <span class="n">diffuse_exps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ad</span><span class="p">)</span>
+
+        <span class="c1"># compute the clear sky radiation values</span>
+        <span class="n">direct_norm_rad</span><span class="p">,</span> <span class="n">diffuse_horiz_rad</span> <span class="o">=</span> \
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_get_empty_data_collections</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">air_mass</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">air_masses</span><span class="p">):</span>
+            <span class="n">alt</span> <span class="o">=</span> <span class="n">altitudes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">alt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">months</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">e_beam</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1415</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">monthly_tau_beam</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span>
+                    <span class="n">air_mass</span><span class="p">,</span> <span class="n">beam_epxs</span><span class="p">[</span><span class="n">m</span><span class="p">])))</span> <span class="o">/</span> <span class="n">timestep</span>
+                <span class="n">e_diff</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1415</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">monthly_tau_diffuse</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span>
+                    <span class="n">air_mass</span><span class="p">,</span> <span class="n">diffuse_exps</span><span class="p">[</span><span class="n">m</span><span class="p">])))</span> <span class="o">/</span> <span class="n">timestep</span>
+                <span class="n">direct_norm_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">DataPoint</span><span class="p">(</span><span class="n">e_beam</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Direct Normal Radiation&#39;</span><span class="p">))</span>
+                <span class="n">diffuse_horiz_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">DataPoint</span><span class="p">(</span><span class="n">e_diff</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Diffuse Horizontal Radiation&#39;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">direct_norm_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">DataPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Direct Normal Radiation&#39;</span><span class="p">))</span>
+                <span class="n">diffuse_horiz_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">DataPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Diffuse Horizontal Radiation&#39;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">direct_norm_rad</span><span class="p">,</span> <span class="n">diffuse_horiz_rad</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wea.from_ashrae_clear_sky"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.from_ashrae_clear_sky">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_ashrae_clear_sky</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">sky_clearness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                              <span class="n">is_leap_year</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a wea object representing an original ASHRAE Clear Sky.</span>
+
+<span class="sd">        The original ASHRAE Clear Sky is intended to determine peak solar load</span>
+<span class="sd">        and sizing parmeters for HVAC systems.  It is not the sky model</span>
+<span class="sd">        currently recommended by ASHRAE since it usually overestimates the</span>
+<span class="sd">        amount of solar radiation in comparison to the newer ASHRAE Revised</span>
+<span class="sd">        Clear Sky (&quot;Tau Model&quot;). However, the original model here is still</span>
+<span class="sd">        useful for cases where monthly optical depth values are not known. For</span>
+<span class="sd">        more information on the ASHRAE Clear Sky model, see the EnergyPlus</span>
+<span class="sd">        Engineering Reference:</span>
+<span class="sd">        https://bigladdersoftware.com/epx/docs/8-9/engineering-reference/climate-calculations.html</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            location: Ladybug location object.</span>
+<span class="sd">            sky_clearness: A factor that will be multiplied by the output of</span>
+<span class="sd">                the model. This is to help account for locations where clear,</span>
+<span class="sd">                dry skies predominate (e.g., at high elevations) or,</span>
+<span class="sd">                conversely, where hazy and humid conditions are frequent. See</span>
+<span class="sd">                Threlkeld and Jordan (1958) for recommended values. Typical</span>
+<span class="sd">                values range from 0.95 to 1.05 and are usually never more</span>
+<span class="sd">                than 1.2. Default is set to 1.0.</span>
+<span class="sd">            timestep: An optional integer to set the number of time steps per</span>
+<span class="sd">                hour. Default is 1 for one value per hour.</span>
+<span class="sd">            is_leap_year: A boolean to indicate if values are representing a leap year.</span>
+<span class="sd">                Default is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># parameters that approximate clear conditions across the planet</span>
+        <span class="c1"># apparent solar irradiation at air mass m = 0</span>
+        <span class="n">monthly_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1202</span><span class="p">,</span> <span class="mi">1187</span><span class="p">,</span> <span class="mi">1164</span><span class="p">,</span> <span class="mi">1130</span><span class="p">,</span> <span class="mi">1106</span><span class="p">,</span> <span class="mi">1092</span><span class="p">,</span> <span class="mi">1093</span><span class="p">,</span> <span class="mi">1107</span><span class="p">,</span> <span class="mi">1136</span><span class="p">,</span>
+                     <span class="mi">1166</span><span class="p">,</span> <span class="mi">1190</span><span class="p">,</span> <span class="mi">1204</span><span class="p">]</span>
+        <span class="c1"># atmospheric extinction coefficient</span>
+        <span class="n">monthly_b</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.141</span><span class="p">,</span> <span class="mf">0.142</span><span class="p">,</span> <span class="mf">0.149</span><span class="p">,</span> <span class="mf">0.164</span><span class="p">,</span> <span class="mf">0.177</span><span class="p">,</span> <span class="mf">0.185</span><span class="p">,</span> <span class="mf">0.186</span><span class="p">,</span> <span class="mf">0.182</span><span class="p">,</span>
+                     <span class="mf">0.165</span><span class="p">,</span> <span class="mf">0.152</span><span class="p">,</span> <span class="mf">0.144</span><span class="p">,</span> <span class="mf">0.141</span><span class="p">]</span>
+
+        <span class="c1"># create sunpath and get altitude at every timestep of the year</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">Sunpath</span><span class="o">.</span><span class="n">from_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">sp</span><span class="o">.</span><span class="n">is_leap_year</span> <span class="o">=</span> <span class="n">is_leap_year</span>
+        <span class="n">altitudes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">months</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_datetimes</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t_date</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+            <span class="n">sun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">calculate_sun_from_date_time</span><span class="p">(</span><span class="n">t_date</span><span class="p">)</span>
+            <span class="n">months</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sun</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">altitudes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sun</span><span class="o">.</span><span class="n">altitude</span><span class="p">)</span>
+
+        <span class="c1"># compute hourly direct normal and diffuse horizontal radiation</span>
+        <span class="n">direct_norm_rad</span><span class="p">,</span> <span class="n">diffuse_horiz_rad</span> <span class="o">=</span> \
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_get_empty_data_collections</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">alt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">altitudes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">alt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">dir_norm</span> <span class="o">=</span> <span class="n">monthly_a</span><span class="p">[</span><span class="n">months</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+                        <span class="n">monthly_b</span><span class="p">[</span><span class="n">months</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">alt</span><span class="p">)))))</span>
+                    <span class="n">diff_horiz</span> <span class="o">=</span> <span class="mf">0.17</span> <span class="o">*</span> <span class="n">dir_norm</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">alt</span><span class="p">))</span>
+                    <span class="n">dir_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">dir_norm</span> <span class="o">*</span> <span class="n">sky_clearness</span><span class="p">)</span> <span class="o">/</span> <span class="n">timestep</span>
+                    <span class="n">diff_horiz</span> <span class="o">=</span> <span class="p">(</span><span class="n">diff_horiz</span> <span class="o">*</span> <span class="n">sky_clearness</span><span class="p">)</span> <span class="o">/</span> <span class="n">timestep</span>
+                    <span class="n">direct_norm_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">(</span>
+                        <span class="n">dir_norm</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Direct Normal Radiation&#39;</span><span class="p">))</span>
+                    <span class="n">diffuse_horiz_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">(</span>
+                        <span class="n">diff_horiz</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Diffuse Horizontal Radiation&#39;</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">OverflowError</span><span class="p">:</span>
+                    <span class="c1"># very small altitude values</span>
+                    <span class="n">direct_norm_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">DataPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Direct Normal Radiation&#39;</span><span class="p">))</span>
+                    <span class="n">diffuse_horiz_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">DataPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Diffuse Horizontal Radiation&#39;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">direct_norm_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">DataPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Direct Normal Radiation&#39;</span><span class="p">))</span>
+                <span class="n">diffuse_horiz_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">DataPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Diffuse Horizontal Radiation&#39;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">direct_norm_rad</span><span class="p">,</span> <span class="n">diffuse_horiz_rad</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span></div>
+
+    <span class="c1"># TODO: Split golbal into direct and diffuse using Perez method.</span>
+    <span class="c1"># Right now, I use an old inaccurate method.</span>
+<div class="viewcode-block" id="Wea.from_zhang_huang_solar_model"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.from_zhang_huang_solar_model">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_zhang_huang_solar_model</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">cloud_cover</span><span class="p">,</span>
+                                     <span class="n">relative_humidity</span><span class="p">,</span> <span class="n">dry_bulb_temperature</span><span class="p">,</span>
+                                     <span class="n">wind_speed</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a wea object from climate data using the Zhang-Huang model.</span>
+
+<span class="sd">        The Zhang-Huang solar model was developed to estimate solar</span>
+<span class="sd">        radiation for weather stations that lack such values, which are</span>
+<span class="sd">        typically colleted with a pyranometer. Using total cloud cover,</span>
+<span class="sd">        dry-bulb temperature, relative humidity, and wind speed as</span>
+<span class="sd">        inputs the Zhang-Huang estimates global horizontal radiation</span>
+<span class="sd">        by means of a regression model across these variables.</span>
+<span class="sd">        For more information on the Zhang-Huang model, see the</span>
+<span class="sd">        EnergyPlus Engineering Reference:</span>
+<span class="sd">        https://bigladdersoftware.com/epx/docs/8-7/engineering-reference/climate-calculations.html#zhang-huang-solar-model</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            location: Ladybug location object.</span>
+<span class="sd">            cloud_cover: A list of annual float values between 0 and 1</span>
+<span class="sd">                that represent the fraction of the sky dome covered</span>
+<span class="sd">                in clouds (0 = clear; 1 = completely overcast)</span>
+<span class="sd">            cloud_cover: A list of annual float values between 0 and 1</span>
+<span class="sd">                that represent the fraction of the sky dome covered</span>
+<span class="sd">                in clouds (0 = clear; 1 = completely overcast)</span>
+<span class="sd">            relative_humidity: A list of annual float values between</span>
+<span class="sd">                0 and 100 that represent the relative humidity in percent.</span>
+<span class="sd">            dry_bulb_temperature: A list of annual float values that</span>
+<span class="sd">                represent the dry bulb temperature in degrees Celcius.</span>
+<span class="sd">            wind_speed: A list of annual float values that</span>
+<span class="sd">                represent the wind speed in meters per second.</span>
+<span class="sd">            timestep: An optional integer to set the number of time steps per</span>
+<span class="sd">                hour. Default is 1 for one value per hour.</span>
+<span class="sd">            is_leap_year: A boolean to indicate if values are representing a leap year.</span>
+<span class="sd">                Default is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check input data</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">cloud_cover</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">relative_humidity</span><span class="p">)</span> <span class="o">==</span> \
+            <span class="nb">len</span><span class="p">(</span><span class="n">dry_bulb_temperature</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">wind_speed</span><span class="p">),</span> \
+            <span class="s1">&#39;lengths of input climate data must match.&#39;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">cloud_cover</span><span class="p">)</span> <span class="o">/</span> <span class="n">timestep</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">day_count</span><span class="p">(</span><span class="n">is_leap_year</span><span class="p">),</span> \
+            <span class="s1">&#39;input climate data must be annual.&#39;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s1">&#39;timestep must be an&#39;</span> \
+            <span class="s1">&#39; integer. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">timestep</span><span class="p">))</span>
+
+        <span class="c1"># solar model regression constants</span>
+        <span class="n">c0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span><span class="p">,</span> <span class="n">c4</span><span class="p">,</span> <span class="n">c5</span><span class="p">,</span> <span class="n">d_coeff</span><span class="p">,</span> <span class="n">k_coeff</span> <span class="o">=</span> <span class="mf">0.5598</span><span class="p">,</span> <span class="mf">0.4982</span><span class="p">,</span> \
+            <span class="o">-</span><span class="mf">0.6762</span><span class="p">,</span> <span class="mf">0.02842</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00317</span><span class="p">,</span> <span class="mf">0.014</span><span class="p">,</span> <span class="o">-</span><span class="mf">17.853</span><span class="p">,</span> <span class="mf">0.843</span>
+
+        <span class="c1"># extraterrestrial solar constant (W/m2)</span>
+        <span class="n">irr0</span> <span class="o">=</span> <span class="mi">1355</span>
+
+        <span class="c1"># initiate sunpath based on location</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">Sunpath</span><span class="o">.</span><span class="n">from_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">sp</span><span class="o">.</span><span class="n">is_leap_year</span> <span class="o">=</span> <span class="n">is_leap_year</span>
+
+        <span class="c1"># calculate zhang-huang radiation</span>
+        <span class="n">direct_norm_rad</span><span class="p">,</span> <span class="n">diffuse_horiz_rad</span> <span class="o">=</span> \
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_get_empty_data_collections</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">t_date</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_get_datetimes</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)):</span>
+            <span class="c1"># start assuming night time</span>
+            <span class="n">glob_ir</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">dir_ir</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">diff_ir</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># calculate sun altitude</span>
+            <span class="n">sun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">calculate_sun_from_date_time</span><span class="p">(</span><span class="n">t_date</span><span class="p">)</span>
+            <span class="n">alt</span> <span class="o">=</span> <span class="n">sun</span><span class="o">.</span><span class="n">altitude</span>
+
+            <span class="k">if</span> <span class="n">alt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># get sin of the altitude</span>
+                <span class="n">sin_alt</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">alt</span><span class="p">))</span>
+
+                <span class="c1"># get the values at each timestep</span>
+                <span class="n">cc</span><span class="p">,</span> <span class="n">rh</span><span class="p">,</span> <span class="n">n_temp</span><span class="p">,</span> <span class="n">n3_temp</span><span class="p">,</span> <span class="n">w_spd</span> <span class="o">=</span> <span class="n">cloud_cover</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">,</span> \
+                    <span class="n">relative_humidity</span><span class="p">[</span><span class="n">count</span><span class="p">],</span> <span class="n">dry_bulb_temperature</span><span class="p">[</span><span class="n">count</span><span class="p">],</span> \
+                    <span class="n">dry_bulb_temperature</span><span class="p">[</span><span class="n">count</span> <span class="o">-</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">timestep</span><span class="p">)],</span> <span class="n">wind_speed</span><span class="p">[</span><span class="n">count</span><span class="p">]</span>
+
+                <span class="c1"># calculate zhang-huang global radiation</span>
+                <span class="n">glob_ir</span> <span class="o">=</span> <span class="p">((</span><span class="n">irr0</span> <span class="o">*</span> <span class="n">sin_alt</span> <span class="o">*</span>
+                            <span class="p">(</span><span class="n">c0</span> <span class="o">+</span> <span class="p">(</span><span class="n">c1</span> <span class="o">*</span> <span class="n">cc</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">c2</span> <span class="o">*</span> <span class="n">cc</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span>
+                             <span class="p">(</span><span class="n">c3</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_temp</span> <span class="o">-</span> <span class="n">n3_temp</span><span class="p">))</span> <span class="o">+</span>
+                             <span class="p">(</span><span class="n">c4</span> <span class="o">*</span> <span class="n">rh</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">c5</span> <span class="o">*</span> <span class="n">w_spd</span><span class="p">)))</span> <span class="o">+</span> <span class="n">d_coeff</span><span class="p">)</span> <span class="o">/</span> <span class="n">k_coeff</span>
+                <span class="k">if</span> <span class="n">glob_ir</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">glob_ir</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># calculate direct and diffuse solar</span>
+                    <span class="n">k_t</span> <span class="o">=</span> <span class="n">glob_ir</span> <span class="o">/</span> <span class="p">(</span><span class="n">irr0</span> <span class="o">*</span> <span class="n">sin_alt</span><span class="p">)</span>
+                    <span class="n">k_tc</span> <span class="o">=</span> <span class="mf">0.4268</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.1934</span> <span class="o">*</span> <span class="n">sin_alt</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">k_t</span> <span class="o">&gt;=</span> <span class="n">k_tc</span><span class="p">:</span>
+                        <span class="n">k_ds</span> <span class="o">=</span> <span class="n">k_t</span> <span class="o">-</span> <span class="p">((</span><span class="mf">1.107</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.03569</span> <span class="o">*</span> <span class="n">sin_alt</span><span class="p">)</span> <span class="o">+</span>
+                                       <span class="p">(</span><span class="mf">1.681</span> <span class="o">*</span> <span class="n">sin_alt</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">k_t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">k_ds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">3.996</span> <span class="o">-</span> <span class="p">(</span><span class="mf">3.862</span> <span class="o">*</span> <span class="n">sin_alt</span><span class="p">)</span> <span class="o">+</span>
+                                <span class="p">(</span><span class="mf">1.540</span> <span class="o">*</span> <span class="n">sin_alt</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">k_t</span><span class="o">**</span><span class="mi">3</span>
+                    <span class="n">diff_ir</span> <span class="o">=</span> <span class="p">(</span><span class="n">irr0</span> <span class="o">*</span> <span class="n">sin_alt</span> <span class="o">*</span> <span class="p">(</span><span class="n">k_t</span> <span class="o">-</span> <span class="n">k_ds</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">k_ds</span><span class="p">)</span>
+                    <span class="n">dir_horiz_ir</span> <span class="o">=</span> <span class="p">(</span><span class="n">irr0</span> <span class="o">*</span> <span class="n">sin_alt</span> <span class="o">*</span> <span class="n">k_ds</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">k_t</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">k_ds</span><span class="p">)</span>
+                    <span class="n">dir_ir</span> <span class="o">=</span> <span class="n">dir_horiz_ir</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">alt</span><span class="p">))</span>
+
+            <span class="n">direct_norm_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">(</span>
+                <span class="n">dir_ir</span><span class="p">,</span> <span class="n">t_date</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Direct Normal Radiation&#39;</span><span class="p">))</span>
+            <span class="n">diffuse_horiz_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">(</span>
+                <span class="n">diff_ir</span><span class="p">,</span> <span class="n">t_date</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Diffuse Horizontal Radiation&#39;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">direct_norm_rad</span><span class="p">,</span> <span class="n">diffuse_horiz_rad</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isWea</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">hoys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hours of the year in wea file.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">hoy</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">datetimes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Datetimes in wea file.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">datetime</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">timestep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the timestep.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timestep</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">direct_normal_radiation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the direct normal radiation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direct_normal_radiation</span>
+
+    <span class="nd">@direct_normal_radiation</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">direct_normal_radiation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">),</span> \
+            <span class="s1">&#39;direct_normal_radiation data must be annual.&#39;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DataCollection</span><span class="p">),</span> \
+            <span class="s1">&#39;direct_normal_radiation data must be a data collection.&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_direct_normal_radiation</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_global_computed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">diffuse_horizontal_radiation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the diffuse horizontal radiation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_diffuse_horizontal_radiation</span>
+
+    <span class="nd">@diffuse_horizontal_radiation</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">diffuse_horizontal_radiation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">),</span> \
+            <span class="s1">&#39;diffuse_horizontal_radiation data must be annual.&#39;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DataCollection</span><span class="p">),</span> \
+            <span class="s1">&#39;diffuse_horizontal_radiation data must be a data collection.&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_diffuse_horizontal_radiation</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_global_computed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">global_horizontal_radiation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the global horizontal radiation at each timestep.&quot;&quot;&quot;</span>
+        <span class="n">analysis_period</span> <span class="o">=</span> <span class="n">AnalysisPeriod</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">,</span>
+                                         <span class="n">is_leap_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="n">header_ghr</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+                            <span class="n">analysis_period</span><span class="o">=</span><span class="n">analysis_period</span><span class="p">,</span>
+                            <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;Global Horizontal Radiation&#39;</span><span class="p">,</span>
+                            <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;Wh/m2&#39;</span><span class="p">)</span>
+        <span class="n">global_horizontal_rad</span> <span class="o">=</span> <span class="n">DataCollection</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">header_ghr</span><span class="p">)</span>
+        <span class="n">is_leap_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">Sunpath</span><span class="o">.</span><span class="n">from_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">sp</span><span class="o">.</span><span class="n">is_leap_year</span> <span class="o">=</span> <span class="n">is_leap_year</span>
+        <span class="k">for</span> <span class="n">dnr</span><span class="p">,</span> <span class="n">dhr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">):</span>
+            <span class="n">sun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">calculate_sun_from_date_time</span><span class="p">(</span><span class="n">dnr</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+            <span class="n">glob_h</span> <span class="o">=</span> <span class="n">dhr</span> <span class="o">+</span> <span class="n">dnr</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">sun</span><span class="o">.</span><span class="n">altitude</span><span class="p">))</span>
+            <span class="n">global_horizontal_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">DataPoint</span><span class="p">(</span><span class="n">glob_h</span><span class="p">,</span> <span class="n">dnr</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Global Horizontal Radiation&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">global_horizontal_rad</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">direct_horizontal_radiation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the direct radiation on a horizontal surface at each timestep.</span>
+
+<span class="sd">        Note that this is different from the direct_normal_radiation needed</span>
+<span class="sd">        to construct a Wea, which is NORMAL and not HORIZONTAL.&quot;&quot;&quot;</span>
+        <span class="n">analysis_period</span> <span class="o">=</span> <span class="n">AnalysisPeriod</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">,</span>
+                                         <span class="n">is_leap_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="n">header_dhr</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+                            <span class="n">analysis_period</span><span class="o">=</span><span class="n">analysis_period</span><span class="p">,</span>
+                            <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;Direct Horizontal Radiation&#39;</span><span class="p">,</span>
+                            <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;Wh/m2&#39;</span><span class="p">)</span>
+        <span class="n">direct_horizontal_rad</span> <span class="o">=</span> <span class="n">DataCollection</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">header_dhr</span><span class="p">)</span>
+        <span class="n">is_leap_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">Sunpath</span><span class="o">.</span><span class="n">from_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">sp</span><span class="o">.</span><span class="n">is_leap_year</span> <span class="o">=</span> <span class="n">is_leap_year</span>
+        <span class="k">for</span> <span class="n">dnr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">:</span>
+            <span class="n">sun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">calculate_sun_from_date_time</span><span class="p">(</span><span class="n">dnr</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+            <span class="n">dir_h</span> <span class="o">=</span> <span class="n">dnr</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">sun</span><span class="o">.</span><span class="n">altitude</span><span class="p">))</span>
+            <span class="n">direct_horizontal_rad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">DataPoint</span><span class="p">(</span><span class="n">dir_h</span><span class="p">,</span> <span class="n">dnr</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Direct Horizontal Radiation&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">direct_horizontal_rad</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_leap_year</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the timestep.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_leap_year</span>
+
+<div class="viewcode-block" id="Wea.day_count"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.day_count">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">day_count</span><span class="p">(</span><span class="n">is_leap_year</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number of days in this Wea file.</span>
+
+<span class="sd">        Keep in mind that wea file is an annual file but this value will be different</span>
+<span class="sd">        for a leap year</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">8760</span> <span class="o">+</span> <span class="mi">24</span> <span class="k">if</span> <span class="n">is_leap_year</span> <span class="k">else</span> <span class="mi">8760</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_datetimes</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of datetimes based on timestep.</span>
+
+<span class="sd">        This method should only be used for classmethods. For datetimes use datetiems or</span>
+<span class="sd">        hoys methods.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">day_count</span> <span class="o">=</span> <span class="mi">8760</span> <span class="o">+</span> <span class="mi">24</span> <span class="k">if</span> <span class="n">is_leap_year</span> <span class="k">else</span> <span class="mi">8760</span>
+        <span class="n">adjust_time</span> <span class="o">=</span> <span class="mi">30</span> <span class="k">if</span> <span class="n">timestep</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">DateTime</span><span class="o">.</span><span class="n">from_moy</span><span class="p">(</span><span class="mf">60.0</span> <span class="o">*</span> <span class="n">count</span> <span class="o">/</span> <span class="n">timestep</span> <span class="o">+</span> <span class="n">adjust_time</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">day_count</span> <span class="o">*</span> <span class="n">timestep</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_empty_data_collections</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return two empty data collection.</span>
+
+<span class="sd">        Direct Normal Radiation, Diffuse Horizontal Radiation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">analysis_period</span> <span class="o">=</span> <span class="n">AnalysisPeriod</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">is_leap_year</span><span class="o">=</span><span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="n">header_dnr</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+                            <span class="n">analysis_period</span><span class="o">=</span><span class="n">analysis_period</span><span class="p">,</span>
+                            <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;Direct Normal Radiation&#39;</span><span class="p">,</span>
+                            <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;Wh/m2&#39;</span><span class="p">)</span>
+        <span class="n">direct_norm_rad</span> <span class="o">=</span> <span class="n">DataCollection</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">header_dnr</span><span class="p">)</span>
+        <span class="n">header_dhr</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+                            <span class="n">analysis_period</span><span class="o">=</span><span class="n">analysis_period</span><span class="p">,</span>
+                            <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;Diffuse Horizontal Radiation&#39;</span><span class="p">,</span>
+                            <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;Wh/m2&#39;</span><span class="p">)</span>
+        <span class="n">diffuse_horiz_rad</span> <span class="o">=</span> <span class="n">DataCollection</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">header_dhr</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">direct_norm_rad</span><span class="p">,</span> <span class="n">diffuse_horiz_rad</span>
+
+<div class="viewcode-block" id="Wea.get_radiation_values"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.get_radiation_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_radiation_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get direct and diffuse radiation values for a point in time.&quot;&quot;&quot;</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">leap_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">hoy</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">[</span><span class="n">count</span><span class="p">],</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">[</span><span class="n">count</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Wea.get_radiation_values_for_hoy"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.get_radiation_values_for_hoy">[docs]</a>    <span class="k">def</span> <span class="nf">get_radiation_values_for_hoy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get direct and diffuse radiation values for an hoy.&quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">[</span><span class="n">count</span><span class="p">],</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">[</span><span class="n">count</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Wea.directional_radiation"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.directional_radiation">[docs]</a>    <span class="k">def</span> <span class="nf">directional_radiation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">altitude</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">azimuth</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
+                              <span class="n">ground_reflectance</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">isotrophic</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the radiation components facing a given altitude and azimuth.</span>
+
+<span class="sd">        This method computes unobstructed solar flux facing a given</span>
+<span class="sd">        altitude and azimuth. The default is set to return the golbal horizontal</span>
+<span class="sd">        radiation, assuming an altitude facing straight up (90 degrees).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            altitude: A number between -90 and 90 that represents the</span>
+<span class="sd">                altitude at which radiation is being evaluated in degrees.</span>
+<span class="sd">            azimuth: A number between 0 and 360 that represents the</span>
+<span class="sd">                azimuth at wich radiation is being evaluated in degrees.</span>
+<span class="sd">            ground_reflectance: A number between 0 and 1 that represents the</span>
+<span class="sd">                reflectance of the ground. Default is set to 0.2.</span>
+<span class="sd">            isotrophic: A boolean value that sets whether an istotrophic sky is</span>
+<span class="sd">                used (as opposed to an anisotrophic sky). An isotrophic sky</span>
+<span class="sd">                assummes an even distribution of diffuse radiation across the</span>
+<span class="sd">                sky while an anisotrophic sky places more diffuse radiation</span>
+<span class="sd">                near the solar disc. Default is set to True for isotrophic</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            total_radiation: A list of total solar radiation at each timestep.</span>
+<span class="sd">            direct_radiation: A list of direct solar radiation at each timestep.</span>
+<span class="sd">            diffuse_radiation: A list of diffuse sky solar radiation</span>
+<span class="sd">                at each timestep.</span>
+<span class="sd">            reflected_radiation: A list of ground reflected solar radiation</span>
+<span class="sd">                at each timestep.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># function to convert polar coordinates to xyz.</span>
+        <span class="k">def</span> <span class="nf">pol2cart</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+            <span class="n">mult</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">mult</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">mult</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Vector3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+        <span class="c1"># convert the altitude and azimuth to a normal vector</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">pol2cart</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">azimuth</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">altitude</span><span class="p">))</span>
+
+        <span class="c1"># create sunpath and get altitude at every timestep of the year</span>
+        <span class="n">direct_radiation</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">diffuse_radiation</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">reflected_radiation</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">total_radiation</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">Sunpath</span><span class="o">.</span><span class="n">from_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">sp</span><span class="o">.</span><span class="n">is_leap_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span>
+        <span class="k">for</span> <span class="n">dnr</span><span class="p">,</span> <span class="n">dhr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">):</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">dnr</span><span class="o">.</span><span class="n">datetime</span>
+            <span class="n">sun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">calculate_sun_from_date_time</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            <span class="n">sun_vec</span> <span class="o">=</span> <span class="n">pol2cart</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">sun</span><span class="o">.</span><span class="n">azimuth</span><span class="p">),</span>
+                               <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">sun</span><span class="o">.</span><span class="n">altitude</span><span class="p">))</span>
+            <span class="n">vec_angle</span> <span class="o">=</span> <span class="n">sun_vec</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+
+            <span class="c1"># direct radiation on surface</span>
+            <span class="n">srf_dir</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">sun</span><span class="o">.</span><span class="n">altitude</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">vec_angle</span> <span class="o">&lt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">srf_dir</span> <span class="o">=</span> <span class="n">dnr</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">vec_angle</span><span class="p">)</span>
+
+            <span class="c1"># diffuse radiation on surface</span>
+            <span class="k">if</span> <span class="n">isotrophic</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">srf_dif</span> <span class="o">=</span> <span class="n">dhr</span> <span class="o">*</span> <span class="p">((</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">altitude</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.55</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.437</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">vec_angle</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.313</span> <span class="o">*</span>
+                        <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">vec_angle</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.313</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">vec_angle</span><span class="p">))</span>
+                <span class="n">srf_dif</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dhr</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">altitude</span><span class="p">))))</span> <span class="o">+</span>
+                    <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">altitude</span><span class="p">))))</span>
+
+            <span class="c1"># reflected radiation on surface.</span>
+            <span class="n">e_glob</span> <span class="o">=</span> <span class="n">dhr</span> <span class="o">+</span> <span class="n">dnr</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">sun</span><span class="o">.</span><span class="n">altitude</span><span class="p">))</span>
+            <span class="n">srf_ref</span> <span class="o">=</span> <span class="n">e_glob</span> <span class="o">*</span> <span class="n">ground_reflectance</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">-</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span>
+                <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">altitude</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+
+            <span class="c1"># add it all together</span>
+            <span class="n">direct_radiation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">DataPoint</span><span class="p">(</span><span class="n">srf_dir</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Radiation&#39;</span><span class="p">))</span>
+            <span class="n">diffuse_radiation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">DataPoint</span><span class="p">(</span><span class="n">srf_dif</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Radiation&#39;</span><span class="p">))</span>
+            <span class="n">reflected_radiation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">DataPoint</span><span class="p">(</span><span class="n">srf_ref</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Radiation&#39;</span><span class="p">))</span>
+            <span class="n">total_radiation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">DataPoint</span><span class="p">(</span><span class="n">srf_dir</span> <span class="o">+</span> <span class="n">srf_dif</span> <span class="o">+</span> <span class="n">srf_ref</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;Radiation&#39;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">total_radiation</span><span class="p">,</span> <span class="n">direct_radiation</span><span class="p">,</span> \
+            <span class="n">diffuse_radiation</span><span class="p">,</span> <span class="n">reflected_radiation</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wea header.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;place </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">city</span> <span class="o">+</span> \
+            <span class="s2">&quot;latitude </span><span class="si">%.2f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">latitude</span> <span class="o">+</span> \
+            <span class="s2">&quot;longitude </span><span class="si">%.2f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">longitude</span> <span class="o">+</span> \
+            <span class="s2">&quot;time_zone </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">time_zone</span> <span class="o">*</span> <span class="mi">15</span><span class="p">)</span> <span class="o">+</span> \
+            <span class="s2">&quot;site_elevation </span><span class="si">%.1f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">elevation</span> <span class="o">+</span> \
+            <span class="s2">&quot;weather_data_file_units 1</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="Wea.to_json"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write Wea to json file</span>
+<span class="sd">            {</span>
+<span class="sd">            &quot;location&quot;: {} , // ladybug location schema</span>
+<span class="sd">            &quot;direct_normal_radiation&quot;: (), // Tuple of hourly direct normal</span>
+<span class="sd">                radiation</span>
+<span class="sd">            &quot;diffuse_horizontal_radiation&quot;: (), // Tuple of hourly diffuse</span>
+<span class="sd">                horizontal radiation</span>
+<span class="sd">            &quot;timestep&quot;: float //timestep between measurements, default is 1</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;direct_normal_radiation&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;diffuse_horizontal_radiation&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;timestep&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">,</span>
+            <span class="s1">&#39;is_leap_year&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Wea.write"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">hoys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_hours</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write the wea file.</span>
+
+<span class="sd">        WEA carries radiation values from epw and is what gendaymtx uses to</span>
+<span class="sd">        generate the sky.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># generate hoys in wea file based on timestep</span>
+        <span class="n">full_wea</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">hoys</span><span class="p">:</span>
+            <span class="n">hoys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
+            <span class="n">full_wea</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wea_file</span><span class="p">:</span>
+            <span class="c1"># write header</span>
+            <span class="n">wea_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">full_wea</span><span class="p">:</span>
+                <span class="c1"># there is no input user for hoys, write it for all the hours</span>
+                <span class="c1"># write values</span>
+                <span class="k">for</span> <span class="n">dir_rad</span><span class="p">,</span> <span class="n">dif_rad</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">):</span>
+                    <span class="n">dt</span> <span class="o">=</span> <span class="n">dir_rad</span><span class="o">.</span><span class="n">datetime</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> \
+                        <span class="o">%</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">float_hour</span><span class="p">,</span> <span class="n">dir_rad</span><span class="p">,</span> <span class="n">dif_rad</span><span class="p">)</span>
+                    <span class="n">wea_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># output wea based on user request</span>
+                <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">dir_rad</span><span class="p">,</span> <span class="n">dif_rad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_radiation_values_for_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warn: Wea data for </span><span class="si">{}</span><span class="s1"> is not available!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="p">))</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">dt</span> <span class="o">=</span> <span class="n">dir_rad</span><span class="o">.</span><span class="n">datetime</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> \
+                        <span class="o">%</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">float_hour</span><span class="p">,</span> <span class="n">dir_rad</span><span class="p">,</span> <span class="n">dif_rad</span><span class="p">)</span>
+
+                    <span class="n">wea_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">write_hours</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.hrs&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outf</span><span class="p">:</span>
+                <span class="n">outf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">file_path</span></div>
+
+<div class="viewcode-block" id="Wea.ToString"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;epw file representation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;WEA [</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">city</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,111 +856,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for ladybug.wea</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Wea weather file.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">.epw</span> <span class="k">import</span> <span class="n">EPW</span>
-<span class="kn">from</span> <span class="nn">.dt</span> <span class="k">import</span> <span class="n">DateTime</span>
-
-<span class="kn">import</span> <span class="nn">itertools</span>
-
-
-<div class="viewcode-block" id="Wea"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea">[docs]</a><span class="k">class</span> <span class="nc">Wea</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An annual WEA data for a location.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">direct_normal_radiation</span><span class="p">,</span> <span class="n">diffuse_horizontal_radiation</span><span class="p">,</span>
-                 <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a wea object.&quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">direct_normal_radiation</span><span class="p">)</span> <span class="o">/</span> <span class="n">timestep</span> <span class="o">==</span> \
-            <span class="nb">len</span><span class="p">(</span><span class="n">diffuse_horizontal_radiation</span><span class="p">)</span> <span class="o">/</span> <span class="n">timestep</span> <span class="o">==</span> <span class="mi">8760</span><span class="p">,</span> \
-            <span class="s1">&#39;direct_normal_radiation and diffuse_horizontal_radiation data must be &#39;</span> \
-            <span class="s1">&#39;annual.&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span> <span class="o">=</span> <span class="n">direct_normal_radiation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span> <span class="o">=</span> <span class="n">diffuse_horizontal_radiation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
-
-<div class="viewcode-block" id="Wea.from_epw_file"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.from_epw_file">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_epw_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">epwfile</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a wea object from an epw file.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            epwfile: Full path to epw weather file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">epw</span> <span class="o">=</span> <span class="n">EPW</span><span class="p">(</span><span class="n">epwfile</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">epw</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">epw</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">),</span>
-                   <span class="nb">tuple</span><span class="p">(</span><span class="n">epw</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">))</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">isWea</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return True.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">True</span>
-
-<div class="viewcode-block" id="Wea.get_radiation_values"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.get_radiation_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_radiation_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get direct and diffuse radiation values for a point in time.&quot;&quot;&quot;</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">)</span>
-        <span class="n">hoy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">hoy</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">[</span><span class="n">hoy</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">[</span><span class="n">hoy</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="Wea.get_radiation_values_for_hoy"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.get_radiation_values_for_hoy">[docs]</a>    <span class="k">def</span> <span class="nf">get_radiation_values_for_hoy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get direct and diffuse radiation values for an hoy.&quot;&quot;&quot;</span>
-        <span class="n">hoy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">[</span><span class="n">hoy</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">[</span><span class="n">hoy</span><span class="p">]</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wea header.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;place </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">city</span> <span class="o">+</span> \
-            <span class="s2">&quot;latitude </span><span class="si">%.2f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">latitude</span> <span class="o">+</span> \
-            <span class="s2">&quot;longitude </span><span class="si">%.2f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">longitude</span> <span class="o">+</span> \
-            <span class="s2">&quot;time_zone </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">time_zone</span> <span class="o">*</span> <span class="mi">15</span><span class="p">)</span> <span class="o">+</span> \
-            <span class="s2">&quot;site_elevation </span><span class="si">%.1f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">elevation</span> <span class="o">+</span> \
-            <span class="s2">&quot;weather_data_file_units </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span>
-
-<div class="viewcode-block" id="Wea.write"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">hoys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_hours</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Write the wea file.</span>
-
-<span class="sd">        WEA carries radiation values from epw and is what gendaymtx uses to</span>
-<span class="sd">        generate the sky.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">hoys</span> <span class="o">=</span> <span class="n">hoys</span> <span class="ow">or</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">8760</span><span class="p">)</span>
-        <span class="n">dts</span> <span class="o">=</span> <span class="p">(</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">weaFile</span><span class="p">:</span>
-            <span class="c1"># write header</span>
-            <span class="n">weaFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
-            <span class="c1"># write values</span>
-            <span class="k">for</span> <span class="n">dt</span><span class="p">,</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">izip</span><span class="p">(</span><span class="n">dts</span><span class="p">,</span> <span class="n">hoys</span><span class="p">):</span>
-                <span class="n">dir_rad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct_normal_radiation</span><span class="p">[</span><span class="n">hoy</span><span class="p">]</span>
-                <span class="n">dif_rad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuse_horizontal_radiation</span><span class="p">[</span><span class="n">hoy</span><span class="p">]</span>
-                <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> \
-                    <span class="o">%</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dir_rad</span><span class="p">,</span> <span class="n">dif_rad</span><span class="p">)</span>
-
-                <span class="n">weaFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">write_hours</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.hrs&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outf</span><span class="p">:</span>
-                <span class="n">outf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">file_path</span></div>
-
-<div class="viewcode-block" id="Wea.ToString"><a class="viewcode-back" href="../../ladybug.html#ladybug.wea.Wea.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;epw file representation.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;WEA [</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">city</span></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

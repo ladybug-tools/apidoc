@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="honeybee.server package" href="honeybee.server.html" />
-    <link rel="prev" title="honeybee.radiance.recipe.threephase package" href="honeybee.radiance.recipe.threephase.html" />
+    <link rel="next" title="honeybee.radiance.texture package" href="honeybee.radiance.texture.html" />
+    <link rel="prev" title="honeybee.radiance.runmanager package" href="honeybee.radiance.runmanager.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,114 +33,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="index.html">
-    <img class="logo" src="_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="honeybee.html">honeybee package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="honeybee.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="honeybee.energyplus.html">honeybee.energyplus package</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="honeybee.radiance.html">honeybee.radiance package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="honeybee.radiance.html#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysisgrid">honeybee.radiance.analysisgrid module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysispoint">honeybee.radiance.analysispoint module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.datatype">honeybee.radiance.datatype module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.filemanager">honeybee.radiance.filemanager module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.geometry">honeybee.radiance.geometry module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.imagecollection">honeybee.radiance.imagecollection module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.properties">honeybee.radiance.properties module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radfile">honeybee.radiance.radfile module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.runmanager">honeybee.radiance.runmanager module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.scene">honeybee.radiance.scene module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.view">honeybee.radiance.view module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="honeybee.server.html">honeybee.server package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="honeybee.vectormath.html">honeybee.vectormath package</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.config">honeybee.config module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.dataoperation">honeybee.dataoperation module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.futil">honeybee.futil module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.geometryoperation">honeybee.geometryoperation module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbdynamicsurface">honeybee.hbdynamicsurface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbfensurface">honeybee.hbfensurface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbobject">honeybee.hbobject module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfacetype">honeybee.surfacetype module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.utilcol">honeybee.utilcol module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee">Module contents</a></li>
-</ul>
-</li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="honeybee.html">honeybee package</a><ul>
-  <li><a href="honeybee.radiance.html">honeybee.radiance package</a><ul>
-      <li>Previous: <a href="honeybee.radiance.recipe.threephase.html" title="previous chapter">honeybee.radiance.recipe.threephase package</a></li>
-      <li>Next: <a href="honeybee.server.html" title="next chapter">honeybee.server package</a></li>
-  </ul></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -149,6 +44,199 @@
 <h1>honeybee.radiance.sky package<a class="headerlink" href="#honeybee-radiance-sky-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-honeybee.radiance.sky.analemma">
+<span id="honeybee-radiance-sky-analemma-module"></span><h2>honeybee.radiance.sky.analemma module<a class="headerlink" href="#module-honeybee.radiance.sky.analemma" title="Permalink to this headline">¶</a></h2>
+<p>Solar analemma.</p>
+<dl class="class">
+<dt id="honeybee.radiance.sky.analemma.Analemma">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.sky.analemma.</code><code class="descname">Analemma</code><span class="sig-paren">(</span><em>sun_vectors</em>, <em>sun_up_hours</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.sky._skyBase.RadianceSky</span></code></p>
+<p>Generate a radiance-based analemma.</p>
+<dl class="docutils">
+<dt>Analemma consists of two files:</dt>
+<dd><ol class="first last arabic simple">
+<li><a href="#id1"><span class="problematic" id="id2">*</span></a>.ann file which includes sun geometries and materials.</li>
+<li><a href="#id3"><span class="problematic" id="id4">*</span></a>.mod file includes list of modifiers that are included in <a href="#id5"><span class="problematic" id="id6">*</span></a>.ann file.</li>
+</ol>
+</dd>
+</dl>
+<dl class="method">
+<dt id="honeybee.radiance.sky.analemma.Analemma.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.analemma.Analemma.analemma_file">
+<code class="descname">analemma_file</code><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.analemma_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analemma file name.</p>
+<p>Use this file to create the octree.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.sky.analemma.Analemma.duplicate">
+<code class="descname">duplicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma.duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duplicate this class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.sky.analemma.Analemma.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>working_dir</em>, <em>reuse=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.sky.analemma.Analemma.from_epw_file">
+<em class="property">classmethod </em><code class="descname">from_epw_file</code><span class="sig-paren">(</span><em>epw_file</em>, <em>hoys=None</em>, <em>north=0</em>, <em>is_leap_year=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma.from_epw_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.from_epw_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create sun matrix from an epw file.</p>
+<dl class="docutils">
+<dt>NOTE: Only the location from epw file will be used for creating analemma. For</dt>
+<dd>climate-based sun materix see SunMatrix class.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>epw_file</strong> – Full path to an epw file.</li>
+<li><strong>hoys</strong> – A list of hours of the year (default: range(8760)).</li>
+<li><strong>north</strong> – North angle from Y direction (default: 0).</li>
+<li><strong>is_leap_year</strong> – A boolean to indicate if hours are for a leap year
+(default: False).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.sky.analemma.Analemma.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>inp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an analemma from a dictionary.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.sky.analemma.Analemma.from_location">
+<em class="property">classmethod </em><code class="descname">from_location</code><span class="sig-paren">(</span><em>location</em>, <em>hoys=None</em>, <em>north=0</em>, <em>is_leap_year=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma.from_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.from_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a radiance-based analemma for a location.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location</strong> – A ladybug location.</li>
+<li><strong>hoys</strong> – A list of hours of the year (default: range(8760)).</li>
+<li><strong>north</strong> – North angle from Y direction (default: 0).</li>
+<li><strong>is_leap_year</strong> – A boolean to indicate if hours are for a leap year
+(default: False).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.sky.analemma.Analemma.from_wea">
+<em class="property">classmethod </em><code class="descname">from_wea</code><span class="sig-paren">(</span><em>wea</em>, <em>hoys=None</em>, <em>north=0</em>, <em>is_leap_year=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma.from_wea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.from_wea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a radiance-based analemma from a ladybug wea.</p>
+<dl class="docutils">
+<dt>NOTE: Only the location from wea will be used for creating analemma. For</dt>
+<dd>climate-based sun materix see SunMatrix class.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wea</strong> – A ladybug Wea.</li>
+<li><strong>hoys</strong> – A list of hours of the year (default: range(8760)).</li>
+<li><strong>north</strong> – North angle from Y direction (default: 0).</li>
+<li><strong>is_leap_year</strong> – A boolean to indicate if hours are for a leap year
+(default: False).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.analemma.Analemma.isAnalemma">
+<code class="descname">isAnalemma</code><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.isAnalemma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.analemma.Analemma.is_climate_based">
+<code class="descname">is_climate_based</code><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.is_climate_based" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the sky is generated from values from weather file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.analemma.Analemma.sun_up_hours">
+<code class="descname">sun_up_hours</code><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.sun_up_hours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of hours for sun vectors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.analemma.Analemma.sun_vectors">
+<code class="descname">sun_vectors</code><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.sun_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of sun vectors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.analemma.Analemma.sunlist_file">
+<code class="descname">sunlist_file</code><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.sunlist_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sun list file name.</p>
+<p>Use this file as the list of modifiers in rcontrib.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.sky.analemma.Analemma.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert analemma to a dictionary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.sky.analemma.Analemma.to_rad_string">
+<code class="descname">to_rad_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#Analemma.to_rad_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.Analemma.to_rad_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the radiance command line as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="honeybee.radiance.sky.analemma.AnalemmaReversed">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.sky.analemma.</code><code class="descname">AnalemmaReversed</code><span class="sig-paren">(</span><em>sun_vectors</em>, <em>sun_up_hours</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#AnalemmaReversed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.AnalemmaReversed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.sky.analemma.Analemma" title="honeybee.radiance.sky.analemma.Analemma"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.sky.analemma.Analemma</span></code></a></p>
+<p>Generate a radiance-based analemma.</p>
+<p>Reversed Analemma reverses direction of input sun vectors. Use reversed Analemma for
+radiation studies.</p>
+<dl class="docutils">
+<dt>Analemma consists of two files:</dt>
+<dd><ol class="first arabic simple">
+<li><a href="#id7"><span class="problematic" id="id8">*</span></a>_reversed.ann file which includes sun geometries and materials.</li>
+</ol>
+<p class="last">2. <a href="#id9"><span class="problematic" id="id10">*</span></a>_reversed.mod file includes list of modifiers that are included in
+<a href="#id11"><span class="problematic" id="id12">*</span></a>_reversed.ann file.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.analemma.AnalemmaReversed.analemma_file">
+<code class="descname">analemma_file</code><a class="headerlink" href="#honeybee.radiance.sky.analemma.AnalemmaReversed.analemma_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analemma file name.</p>
+<p>Use this file to create the octree.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.sky.analemma.AnalemmaReversed.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>working_dir</em>, <em>reuse=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/analemma.html#AnalemmaReversed.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.analemma.AnalemmaReversed.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-honeybee.radiance.sky.certainIlluminance">
 <span id="honeybee-radiance-sky-certainilluminance-module"></span><h2>honeybee.radiance.sky.certainIlluminance module<a class="headerlink" href="#module-honeybee.radiance.sky.certainIlluminance" title="Permalink to this headline">¶</a></h2>
@@ -194,6 +282,17 @@ sky.execute(“c:/ladybug/1000luxsky.sky”)</div></blockquote>
 <dd><p>Duplicate class.</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="honeybee.radiance.sky.certainIlluminance.CertainIlluminanceLevel.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>rec_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/certainIlluminance.html#CertainIlluminanceLevel.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.certainIlluminance.CertainIlluminanceLevel.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create sky from json file
+{</p>
+<blockquote>
+<div>“sky_type”: int // CIE Sky Type [0] cloudy sky, [1] uniform sky
+“illuminance_value”: int // Illuminance value of sky</div></blockquote>
+<p>}</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt>
 <code class="descname">illuminance_value</code></dt>
@@ -210,6 +309,17 @@ sky.execute(“c:/ladybug/1000luxsky.sky”)</div></blockquote>
 <dt id="honeybee.radiance.sky.certainIlluminance.CertainIlluminanceLevel.name">
 <code class="descname">name</code><a class="headerlink" href="#honeybee.radiance.sky.certainIlluminance.CertainIlluminanceLevel.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sky default name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.sky.certainIlluminance.CertainIlluminanceLevel.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/certainIlluminance.html#CertainIlluminanceLevel.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.certainIlluminance.CertainIlluminanceLevel.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create json from sky
+{</p>
+<blockquote>
+<div>“sky_type”: int // CIE Sky Type [0] cloudy sky, [1] uniform sky
+“illuminance_value”: int // Illuminance value of sky</div></blockquote>
+<p>}</p>
 </dd></dl>
 
 </dd></dl>
@@ -478,11 +588,11 @@ avoid sky being overwritten by other skymatrix components.</p>
 <dl class="docutils">
 <dt>This code is parts of genddaylit.c whic is copyrighted by:</dt>
 <dd><dl class="first last docutils">
-<dt>Copyright (c) 1994,2006 <a href="#id1"><span class="problematic" id="id2">*</span></a>Fraunhofer Institut for Solar Energy Systems</dt>
+<dt>Copyright (c) 1994,2006 <a href="#id13"><span class="problematic" id="id14">*</span></a>Fraunhofer Institut for Solar Energy Systems</dt>
 <dd>Heidenhofstr. 2, D-79110 Freiburg, Germany
 Agence de l’Environnement et de la Maitrise de l’Energie
 Centre de Valbonne, 500 route des Lucioles, 06565 Sophia Antipolis Cedex, France
-<a href="#id3"><span class="problematic" id="id4">*</span></a>BOUYGUES
+<a href="#id15"><span class="problematic" id="id16">*</span></a>BOUYGUES
 1 Avenue Eugene Freyssinet, Saint-Quentin-Yvelines, France</dd>
 </dl>
 </dd>
@@ -687,6 +797,20 @@ avoid sky being overwritten by other skymatrix components.</p>
 <dd><p>Create sky from an epw file.</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="honeybee.radiance.sky.skymatrix.SkyMatrix.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>rec_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/skymatrix.html#SkyMatrix.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.skymatrix.SkyMatrix.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create sky from json file
+{
+“wea”: {}, // ladybug wea schema
+“sky_density”: int, // [1] Tregenza Sky, [2] Reinhart Sky, etc. (Default: 1)
+“north”: float, // Angle in degrees between 0-360 to indicate North
+“hoys”: [], // List of hours for generating the sky
+“mode”: int, // Sky mode, integer between 0 and 2
+“suffix”: string //Suffix for sky matrix
+}</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="honeybee.radiance.sky.skymatrix.SkyMatrix.hours_match">
 <code class="descname">hours_match</code><span class="sig-paren">(</span><em>hours_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/skymatrix.html#SkyMatrix.hours_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.skymatrix.SkyMatrix.hours_match" title="Permalink to this definition">¶</a></dt>
@@ -713,7 +837,7 @@ avoid sky being overwritten by other skymatrix components.</p>
 <dl class="attribute">
 <dt>
 <code class="descname">mode</code></dt>
-<dd><p><a href="#id5"><span class="problematic" id="id6">**</span></a>Sky mode 0* – total, 1* – direct-only, 2: diffuse-only (Default: 0).</p>
+<dd><p><a href="#id17"><span class="problematic" id="id18">**</span></a>Sky mode 0* – total, 1* – direct-only, 2: diffuse-only (Default: 0).</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -756,6 +880,20 @@ avoid sky being overwritten by other skymatrix components.</p>
 <dt>
 <code class="descname">suffix</code></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.sky.skymatrix.SkyMatrix.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/skymatrix.html#SkyMatrix.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.skymatrix.SkyMatrix.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create json file from sky matrix
+{
+“wea”: {}, // ladybug wea schema
+“sky_density”: int, // [1] Tregenza Sky, [2] Reinhart Sky, etc. (Default: 1)
+“north”: float, // Angle in degrees between 0-360 to indicate North
+“hoys”: [], // List of hours for generating the sky
+“mode”: int, // Sky mode, integer between 0 and 2
+“suffix”: string //Suffix for sky matrix
+}</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="honeybee.radiance.sky.skymatrix.SkyMatrix.to_rad_string">
@@ -936,40 +1074,42 @@ sure how to create them use one of the classmethods.</p>
 <span id="honeybee-radiance-sky-sunmatrix-module"></span><h2>honeybee.radiance.sky.sunmatrix module<a class="headerlink" href="#module-honeybee.radiance.sky.sunmatrix" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="honeybee.radiance.sky.sunmatrix.SunMatrix">
-<em class="property">class </em><code class="descclassname">honeybee.radiance.sky.sunmatrix.</code><code class="descname">SunMatrix</code><span class="sig-paren">(</span><em>wea</em>, <em>north=0</em>, <em>hoys=None</em>, <em>sky_type=0</em>, <em>suffix=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/sunmatrix.html#SunMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">honeybee.radiance.sky.sunmatrix.</code><code class="descname">SunMatrix</code><span class="sig-paren">(</span><em>wea</em>, <em>north=0</em>, <em>hoys=None</em>, <em>output_type=0</em>, <em>suffix=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/sunmatrix.html#SunMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.sky._skyBase.RadianceSky</span></code></p>
-<p>Radiance sun matrix (analemma) created from weather file.</p>
-<dl class="attribute">
-<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.wea">
-<code class="descname">wea</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.wea" title="Permalink to this definition">¶</a></dt>
-<dd><p>An instance of ladybug Wea.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.north">
-<code class="descname">north</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.north" title="Permalink to this definition">¶</a></dt>
-<dd><p>An angle in degrees between 0-360 to indicate north direction
-(Default: 0).</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.hoys">
-<code class="descname">hoys</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.hoys" title="Permalink to this definition">¶</a></dt>
-<dd><p>The list of hours for generating the sky matrix (Default: 0..8759)</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.sky_type">
-<code class="descname">sky_type</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.sky_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Specify 0 for visible radiation, 1 for total solar radiation.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.suffix">
-<code class="descname">suffix</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.suffix" title="Permalink to this definition">¶</a></dt>
-<dd><p>An optional suffix for sky name. The suffix will be added at the
+<p>Radiance direct sun matrix.</p>
+<p>This class generates a sky matrix similar to gendaymtx -5 with the difference that
+unlike gendaymtx that uses the approximate position of the sun it uses the exact
+sun position for each timestep.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wea</strong> – An instance of ladybug Wea.</li>
+<li><strong>north</strong> – An angle in degrees between 0-360 to indicate north direction
+(Default: 0).</li>
+<li><strong>hoys</strong> – The list of hours for generating the sky matrix (Default: 0..8759)</li>
+<li><strong>output_type</strong> – Specify 0 for visible radiation, 1 for total solar radiation.</li>
+<li><strong>suffix</strong> – An optional suffix for sky name. The suffix will be added at the
 end of the standard name. Use this input to customize the new and
-avoid sky being overwritten by other skymatrix components.</p>
+avoid sky being overwritten by other skymatrix components.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.solar_values">
+<code class="descname">solar_values</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.solar_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of radiance values for each sun_up_hour. These values
+can be visible or total solar radiation based on output_type input.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.sun_up_hours">
+<code class="descname">sun_up_hours</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.sun_up_hours" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of sun up hours as hours of the year. Values will be between
+0..8759.</p>
 </dd></dl>
 
 <p>Usage:</p>
@@ -1019,7 +1159,7 @@ analemma, sunlist, sunmtxfile = sunmtx.execute(‘c:/ladybug’)</div></blockquo
 
 <dl class="classmethod">
 <dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.from_epw_file">
-<em class="property">classmethod </em><code class="descname">from_epw_file</code><span class="sig-paren">(</span><em>epw_file</em>, <em>north=0</em>, <em>hoys=None</em>, <em>suffix=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/sunmatrix.html#SunMatrix.from_epw_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.from_epw_file" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_epw_file</code><span class="sig-paren">(</span><em>epw_file</em>, <em>north=0</em>, <em>hoys=None</em>, <em>output_type=0</em>, <em>suffix=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/sky/sunmatrix.html#SunMatrix.from_epw_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.from_epw_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create sun matrix from an epw file.</p>
 </dd></dl>
 
@@ -1048,21 +1188,41 @@ analemma, sunlist, sunmtxfile = sunmtx.execute(‘c:/ladybug’)</div></blockquo
 </dd></dl>
 
 <dl class="attribute">
-<dt>
-<code class="descname">north</code></dt>
+<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.north">
+<code class="descname">north</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.north" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>An angle in degrees between 0-360 to indicate north direction (Default</em> – 0).</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt>
-<code class="descname">sky_type</code></dt>
+<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.output_header">
+<code class="descname">output_header</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.output_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sun matrix file header output.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.output_type">
+<code class="descname">output_type</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.output_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specify 0 for visible radiation, 1 for solar radiation and 2 for luminance.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.sky_type_human_readable">
-<code class="descname">sky_type_human_readable</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.sky_type_human_readable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Human readable sky type.</p>
+<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.output_type_human_readable">
+<code class="descname">output_type_human_readable</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.output_type_human_readable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Human readable output type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">solar_values</code></dt>
+<dd><p>List of radiance values for each sun_up_hour.</p>
+<p>These values can be visible or total solar radiation based on output_type input.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sun_up_hours</code></dt>
+<dd><p>List of sun up hours as hours of the year.</p>
+<p>Values will be between 0..8759.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1084,8 +1244,8 @@ analemma, sunlist, sunmtxfile = sunmtx.execute(‘c:/ladybug’)</div></blockquo
 </dd></dl>
 
 <dl class="attribute">
-<dt>
-<code class="descname">wea</code></dt>
+<dt id="honeybee.radiance.sky.sunmatrix.SunMatrix.wea">
+<code class="descname">wea</code><a class="headerlink" href="#honeybee.radiance.sky.sunmatrix.SunMatrix.wea" title="Permalink to this definition">¶</a></dt>
 <dd><p>An instance of ladybug Wea.</p>
 </dd></dl>
 
@@ -1102,8 +1262,116 @@ analemma, sunlist, sunmtxfile = sunmtx.execute(‘c:/ladybug’)</div></blockquo
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee.html">honeybee package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee.energyplus.html">honeybee.energyplus package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee.radiance.html">honeybee.radiance package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="honeybee.radiance.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysisgrid">honeybee.radiance.analysisgrid module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysispoint">honeybee.radiance.analysispoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.datatype">honeybee.radiance.datatype module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.factory">honeybee.radiance.factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.imagecollection">honeybee.radiance.imagecollection module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.primitive">honeybee.radiance.primitive module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.properties">honeybee.radiance.properties module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radfile">honeybee.radiance.radfile module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radparser">honeybee.radiance.radparser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.scene">honeybee.radiance.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.staticscene">honeybee.radiance.staticscene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.view">honeybee.radiance.view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.server.html">honeybee.server package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.vectormath.html">honeybee.vectormath package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.config">honeybee.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.dataoperation">honeybee.dataoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.futil">honeybee.futil module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.geometryoperation">honeybee.geometryoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbdynamicsurface">honeybee.hbdynamicsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbfensurface">honeybee.hbfensurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbobject">honeybee.hbobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.plus">honeybee.plus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfacetype">honeybee.surfacetype module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.utilcol">honeybee.utilcol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="honeybee.html">honeybee package</a><ul>
+  <li><a href="honeybee.radiance.html">honeybee.radiance package</a><ul>
+      <li>Previous: <a href="honeybee.radiance.runmanager.html" title="previous chapter">honeybee.radiance.runmanager package</a></li>
+      <li>Next: <a href="honeybee.radiance.texture.html" title="next chapter">honeybee.radiance.texture package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

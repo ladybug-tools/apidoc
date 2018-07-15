@@ -31,68 +31,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../../../index.html">
-    <img class="logo" src="../../../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -128,7 +69,7 @@
         <span class="sd">&quot;&quot;&quot;Create sky.&quot;&quot;&quot;</span>
         <span class="n">RadianceSky</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wea</span> <span class="o">=</span> <span class="n">wea</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span> <span class="o">=</span> <span class="n">hoys</span> <span class="ow">or</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8760</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span> <span class="o">=</span> <span class="n">hoys</span> <span class="ow">or</span> <span class="n">wea</span><span class="o">.</span><span class="n">hoys</span>
         <span class="n">sky_density</span> <span class="o">=</span> <span class="n">sky_density</span> <span class="ow">or</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sky_type</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># default to visible radiation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sky_matrixParameters</span> <span class="o">=</span> <span class="n">GendaymtxParameters</span><span class="p">(</span><span class="n">output_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sky_type</span><span class="p">)</span>
@@ -136,6 +77,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sky_density</span> <span class="o">=</span> <span class="n">sky_density</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="n">suffix</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
+
+<div class="viewcode-block" id="SkyMatrix.from_json"><a class="viewcode-back" href="../../../../honeybee.radiance.sky.html#honeybee.radiance.sky.skymatrix.SkyMatrix.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create sky from json file</span>
+<span class="sd">            {</span>
+<span class="sd">            &quot;wea&quot;: {}, // ladybug wea schema</span>
+<span class="sd">            &quot;sky_density&quot;: int, // [1] Tregenza Sky, [2] Reinhart Sky, etc. (Default: 1)</span>
+<span class="sd">            &quot;north&quot;: float, // Angle in degrees between 0-360 to indicate North</span>
+<span class="sd">            &quot;hoys&quot;: [], // List of hours for generating the sky</span>
+<span class="sd">            &quot;mode&quot;: int, // Sky mode, integer between 0 and 2</span>
+<span class="sd">            &quot;suffix&quot;: string //Suffix for sky matrix</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wea</span> <span class="o">=</span> <span class="n">Wea</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;wea&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">wea</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;sky_density&quot;</span><span class="p">],</span> <span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;north&quot;</span><span class="p">],</span>
+                   <span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;hoys&quot;</span><span class="p">],</span> <span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">],</span> <span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;suffix&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SkyMatrix.from_epw_file"><a class="viewcode-back" href="../../../../honeybee.radiance.sky.html#honeybee.radiance.sky.skymatrix.SkyMatrix.from_epw_file">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_epw_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">epw_file</span><span class="p">,</span> <span class="n">sky_density</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">north</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -235,6 +192,26 @@
         <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;vis&#39;</span><span class="p">,</span> <span class="s1">&#39;sol&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_type</span><span class="p">]</span>
 
+<div class="viewcode-block" id="SkyMatrix.to_json"><a class="viewcode-back" href="../../../../honeybee.radiance.sky.html#honeybee.radiance.sky.skymatrix.SkyMatrix.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create json file from sky matrix</span>
+<span class="sd">            {</span>
+<span class="sd">            &quot;wea&quot;: {}, // ladybug wea schema</span>
+<span class="sd">            &quot;sky_density&quot;: int, // [1] Tregenza Sky, [2] Reinhart Sky, etc. (Default: 1)</span>
+<span class="sd">            &quot;north&quot;: float, // Angle in degrees between 0-360 to indicate North</span>
+<span class="sd">            &quot;hoys&quot;: [], // List of hours for generating the sky</span>
+<span class="sd">            &quot;mode&quot;: int, // Sky mode, integer between 0 and 2</span>
+<span class="sd">            &quot;suffix&quot;: string //Suffix for sky matrix</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;wea&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wea</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s2">&quot;sky_density&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky_density</span><span class="p">),</span>
+            <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">north</span><span class="p">),</span>
+            <span class="s2">&quot;hoys&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span><span class="p">,</span>
+            <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+            <span class="s2">&quot;suffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span>
+        <span class="p">}</span></div>
+
 <div class="viewcode-block" id="SkyMatrix.hours_match"><a class="viewcode-back" href="../../../../honeybee.radiance.sky.html#honeybee.radiance.sky.skymatrix.SkyMatrix.hours_match">[docs]</a>    <span class="k">def</span> <span class="nf">hours_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hours_file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if hours in the hours file matches the hours of wea.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">hours_file</span><span class="p">):</span>
@@ -309,8 +286,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../../index.html">
+    <img class="logo" src="../../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

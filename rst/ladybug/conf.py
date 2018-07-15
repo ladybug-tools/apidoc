@@ -98,7 +98,7 @@ html_theme_options = {
 	'description': 'Ladybug performs detailed analysis of climate data to produce customized, interactive visualizations for environmentally-informed design.',
 	'extra_nav_links': {'Ladybug Tools': 'http://www.ladybug.tools', 'Discussion Forum': 'http://discourse.ladybug.tools'},
 	'show_related': True,
-	'fixed_sidebar': True,
+	'fixed_sidebar': False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

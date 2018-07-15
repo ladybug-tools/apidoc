@@ -52,18 +52,10 @@ honeybee\.radiance\.parameters\.gensky module
     :undoc-members:
     :show-inheritance:
 
-honeybee\.radiance\.parameters\.gridbased module
-------------------------------------------------
+honeybee\.radiance\.parameters\.mkpmap module
+---------------------------------------------
 
-.. automodule:: honeybee.radiance.parameters.gridbased
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-honeybee\.radiance\.parameters\.imagebased module
--------------------------------------------------
-
-.. automodule:: honeybee.radiance.parameters.imagebased
+.. automodule:: honeybee.radiance.parameters.mkpmap
     :members:
     :undoc-members:
     :show-inheritance:
@@ -136,6 +128,22 @@ honeybee\.radiance\.parameters\.rmtxop module
 ---------------------------------------------
 
 .. automodule:: honeybee.radiance.parameters.rmtxop
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+honeybee\.radiance\.parameters\.rpict module
+--------------------------------------------
+
+.. automodule:: honeybee.radiance.parameters.rpict
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+honeybee\.radiance\.parameters\.rtrace module
+---------------------------------------------
+
+.. automodule:: honeybee.radiance.parameters.rtrace
     :members:
     :undoc-members:
     :show-inheritance:

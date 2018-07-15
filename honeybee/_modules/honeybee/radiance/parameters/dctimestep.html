@@ -31,8 +31,48 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.parameters.dctimestep</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+
+<span class="kn">from</span> <span class="nn">._advancedparametersbase</span> <span class="k">import</span> <span class="n">AdvancedRadianceParameters</span>
+<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
+
+
+<div class="viewcode-block" id="DctimestepParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.dctimestep.DctimestepParameters">[docs]</a><span class="nd">@frozen</span>
+<span class="k">class</span> <span class="nc">DctimestepParameters</span><span class="p">(</span><span class="n">AdvancedRadianceParameters</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_time_steps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">suppress_header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">input_data_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_data_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init paramters.&quot;&quot;&quot;</span>
+        <span class="n">AdvancedRadianceParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;number of time steps&#39;</span><span class="p">,</span>
+                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;num_time_steps&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_time_steps</span> <span class="o">=</span> <span class="n">num_time_steps</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;suppress header&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;suppress_header&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suppress_header</span> <span class="o">=</span> <span class="n">suppress_header</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;input data format&#39;</span><span class="p">,</span> <span class="n">is_joined</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;input_data_format&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_data_format</span> <span class="o">=</span> <span class="n">input_data_format</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;output data format&#39;</span><span class="p">,</span> <span class="n">is_joined</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;output_data_format&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_data_format</span> <span class="o">=</span> <span class="n">output_data_format</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,47 +133,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.parameters.dctimestep</h1><div class="highlight"><pre>
-<span></span><span class="c1"># coding=utf-8</span>
-
-<span class="kn">from</span> <span class="nn">._advancedparametersbase</span> <span class="k">import</span> <span class="n">AdvancedRadianceParameters</span>
-<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
-
-
-<div class="viewcode-block" id="DctimestepParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.dctimestep.DctimestepParameters">[docs]</a><span class="nd">@frozen</span>
-<span class="k">class</span> <span class="nc">DctimestepParameters</span><span class="p">(</span><span class="n">AdvancedRadianceParameters</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_time_steps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">suppress_header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">input_data_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_data_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Init paramters.&quot;&quot;&quot;</span>
-        <span class="n">AdvancedRadianceParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;number of time steps&#39;</span><span class="p">,</span>
-                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;num_time_steps&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_time_steps</span> <span class="o">=</span> <span class="n">num_time_steps</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;suppress header&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;suppress_header&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">suppress_header</span> <span class="o">=</span> <span class="n">suppress_header</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;input data format&#39;</span><span class="p">,</span> <span class="n">is_joined</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;input_data_format&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">input_data_format</span> <span class="o">=</span> <span class="n">input_data_format</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;output data format&#39;</span><span class="p">,</span> <span class="n">is_joined</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;output_data_format&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output_data_format</span> <span class="o">=</span> <span class="n">output_data_format</span></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

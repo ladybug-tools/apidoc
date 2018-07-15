@@ -31,68 +31,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../index.html">
-    <img class="logo" src="../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -106,8 +47,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">surfacetype</span>
 <span class="kn">import</span> <span class="nn">utilcol</span> <span class="k">as</span> <span class="nn">util</span>
-<span class="kn">from</span> <span class="nn">radiance.properties</span> <span class="k">import</span> <span class="n">RadianceProperties</span>
-<span class="kn">from</span> <span class="nn">radiance.radfile</span> <span class="k">import</span> <span class="n">RadFile</span>
+<span class="kn">from</span> <span class="nn">.radiance.properties</span> <span class="k">import</span> <span class="n">RadianceProperties</span>
+<span class="kn">from</span> <span class="nn">.radiance.radfile</span> <span class="k">import</span> <span class="n">RadFile</span>
 
 
 <div class="viewcode-block" id="SurfaceProperties"><a class="viewcode-back" href="../../honeybee.html#honeybee.surfaceproperties.SurfaceProperties">[docs]</a><span class="k">class</span> <span class="nc">SurfaceProperties</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -130,7 +71,7 @@
     <span class="c1"># TODO: add default ep_properties - based on surface type.</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rad_properties</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ep_properties</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span> <span class="o">=</span> <span class="n">surface_type</span> <span class="ow">or</span> <span class="n">surfacetype</span><span class="o">.</span><span class="n">Wall</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rad_properties</span> <span class="o">=</span> <span class="n">rad_properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radiance_properties</span> <span class="o">=</span> <span class="n">rad_properties</span>
         <span class="k">if</span> <span class="n">ep_properties</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;EnergyPlus properties is not implemented yet!&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ep_properties</span> <span class="o">=</span> <span class="n">ep_properties</span>
@@ -154,23 +95,23 @@
 
         <span class="c1"># update radiance material</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rad_properties</span><span class="o">.</span><span class="n">radiance_material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="o">.</span><span class="n">radiance_material</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">radiance_properties</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="o">.</span><span class="n">radiance_material</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="k">pass</span>  <span class="c1"># surface rad properties is not set yet!</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rad_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">radiance_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get and set Radiance properties.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rad_properties</span>
 
-    <span class="nd">@rad_properties</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">rad_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rad_properties</span><span class="p">):</span>
+    <span class="nd">@radiance_properties</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">radiance_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rad_properties</span><span class="p">):</span>
         <span class="n">rad_properties</span> <span class="o">=</span> <span class="n">rad_properties</span> <span class="ow">or</span> \
             <span class="n">RadianceProperties</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="o">.</span><span class="n">radiance_material</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">rad_properties</span><span class="p">,</span> <span class="s1">&#39;isRadianceProperties&#39;</span><span class="p">),</span> \
             <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is not a valid RadianceProperties&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">rad_properties</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">rad_properties</span><span class="o">.</span><span class="n">radiance_material</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">rad_properties</span><span class="o">.</span><span class="n">radiance_material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="o">.</span><span class="n">radiance_material</span>
+        <span class="k">if</span> <span class="n">rad_properties</span><span class="o">.</span><span class="n">material</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rad_properties</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="o">.</span><span class="n">radiance_material</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rad_properties</span> <span class="o">=</span> <span class="n">rad_properties</span>
 
 <div class="viewcode-block" id="SurfaceProperties.rad_material_from_type"><a class="viewcode-back" href="../../honeybee.html#honeybee.surfaceproperties.SurfaceProperties.rad_material_from_type">[docs]</a>    <span class="k">def</span> <span class="nf">rad_material_from_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -260,21 +201,31 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_surfaces</span> <span class="o">=</span> <span class="n">srfs</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rad_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">radiance_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get Radiance material from SurfaceProperties.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surface_properties</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surface_properties</span><span class="o">.</span><span class="n">rad_properties</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surface_properties</span><span class="o">.</span><span class="n">radiance_properties</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">radiance_material</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get Radiance material from SurfaceProperties.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surface_properties</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_properties</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surface_properties</span><span class="o">.</span><span class="n">rad_properties</span><span class="o">.</span><span class="n">radiance_material</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_properties</span><span class="o">.</span><span class="n">material</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">radiance_black_material</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get Radiance black material from SurfaceProperties.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_properties</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_properties</span><span class="o">.</span><span class="n">balck_material</span>
+
+    <span class="c1"># TODO(mostapha): Each surface should only have a single material. This method</span>
+    <span class="c1"># can be really confusing.</span>
 <div class="viewcode-block" id="SurfaceState.radiance_materials"><a class="viewcode-back" href="../../honeybee.html#honeybee.surfaceproperties.SurfaceState.radiance_materials">[docs]</a>    <span class="k">def</span> <span class="nf">radiance_materials</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blacked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">to_rad_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the full list of materials for surfaces.&quot;&quot;&quot;</span>
         <span class="n">mt_base</span> <span class="o">=</span> <span class="p">[</span><span class="n">srf</span><span class="o">.</span><span class="n">radiance_material</span> <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">surfaces</span><span class="p">]</span>
@@ -316,7 +267,7 @@
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">sp</span> <span class="o">=</span> <span class="n">SurfaceProperties</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">rad_properties</span><span class="o">.</span><span class="n">radiance_material</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">radiance_properties</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
 
     <span class="n">st</span> <span class="o">=</span> <span class="n">SurfaceState</span><span class="p">(</span><span class="s1">&#39;newState&#39;</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>
 </pre></div>
@@ -324,8 +275,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

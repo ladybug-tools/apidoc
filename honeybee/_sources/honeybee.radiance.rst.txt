@@ -7,10 +7,15 @@ Subpackages
 .. toctree::
 
     honeybee.radiance.command
+    honeybee.radiance.geometry
     honeybee.radiance.material
+    honeybee.radiance.mixture
     honeybee.radiance.parameters
+    honeybee.radiance.pattern
     honeybee.radiance.recipe
+    honeybee.radiance.runmanager
     honeybee.radiance.sky
+    honeybee.radiance.texture
 
 Submodules
 ----------
@@ -39,18 +44,10 @@ honeybee\.radiance\.datatype module
     :undoc-members:
     :show-inheritance:
 
-honeybee\.radiance\.filemanager module
---------------------------------------
+honeybee\.radiance\.factory module
+----------------------------------
 
-.. automodule:: honeybee.radiance.filemanager
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-honeybee\.radiance\.geometry module
------------------------------------
-
-.. automodule:: honeybee.radiance.geometry
+.. automodule:: honeybee.radiance.factory
     :members:
     :undoc-members:
     :show-inheritance:
@@ -59,6 +56,14 @@ honeybee\.radiance\.imagecollection module
 ------------------------------------------
 
 .. automodule:: honeybee.radiance.imagecollection
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+honeybee\.radiance\.primitive module
+------------------------------------
+
+.. automodule:: honeybee.radiance.primitive
     :members:
     :undoc-members:
     :show-inheritance:
@@ -79,10 +84,10 @@ honeybee\.radiance\.radfile module
     :undoc-members:
     :show-inheritance:
 
-honeybee\.radiance\.runmanager module
--------------------------------------
+honeybee\.radiance\.radparser module
+------------------------------------
 
-.. automodule:: honeybee.radiance.runmanager
+.. automodule:: honeybee.radiance.radparser
     :members:
     :undoc-members:
     :show-inheritance:
@@ -91,6 +96,14 @@ honeybee\.radiance\.scene module
 --------------------------------
 
 .. automodule:: honeybee.radiance.scene
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+honeybee\.radiance\.staticscene module
+--------------------------------------
+
+.. automodule:: honeybee.radiance.staticscene
     :members:
     :undoc-members:
     :show-inheritance:

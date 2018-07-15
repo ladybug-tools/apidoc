@@ -31,79 +31,27 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../index.html">
-    <img class="logo" src="../../_static/ladybug.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Ladybug performs detailed analysis of climate data to produce customized, interactive visualizations for environmentally-informed design.</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=ladybug&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../ladybug.html">ladybug package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
             
   <h1>Source code for ladybug.sunpath</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">location</span> <span class="k">import</span> <span class="n">Location</span>
-<span class="kn">from</span> <span class="nn">dt</span> <span class="k">import</span> <span class="n">DateTime</span>
-<span class="kn">from</span> <span class="nn">euclid</span> <span class="k">import</span> <span class="n">Vector3</span>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">.location</span> <span class="k">import</span> <span class="n">Location</span>
+<span class="kn">from</span> <span class="nn">.dt</span> <span class="k">import</span> <span class="n">DateTime</span>
 
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+    <span class="c1"># python 3</span>
+    <span class="kn">from</span> <span class="nn">euclid3</span> <span class="k">import</span> <span class="n">Vector3</span>
+    <span class="n">xrange</span> <span class="o">=</span> <span class="nb">range</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">euclid</span> <span class="k">import</span> <span class="n">Vector3</span>
 
 <span class="kn">import</span> <span class="nn">ladybug</span>
 <span class="k">try</span><span class="p">:</span>
@@ -141,7 +89,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;_latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;north_angle&#39;</span><span class="p">,</span> <span class="s1">&#39;time_zone&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;daylight_saving_period&#39;</span><span class="p">)</span>
+                 <span class="s1">&#39;daylight_saving_period&#39;</span><span class="p">,</span> <span class="s1">&#39;_is_leap_year&#39;</span><span class="p">)</span>
     <span class="n">PI</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">time_zone</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">north_angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -168,6 +116,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">longitude</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">north_angle</span> <span class="o">=</span> <span class="n">north_angle</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">daylight_saving_period</span> <span class="o">=</span> <span class="n">daylight_saving_period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_leap_year</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="Sunpath.from_location"><a class="viewcode-back" href="../../ladybug.html#ladybug.sunpath.Sunpath.from_location">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_location</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">north_angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">daylight_saving_period</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -203,6 +152,16 @@
             <span class="c1"># if time_zone doesn&#39;t match the longitude update the time_zone</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">time_zone</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="mf">15.0</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_leap_year</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate is sunpath calculated for a leap year.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_leap_year</span>
+
+    <span class="nd">@is_leap_year</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">is_leap_year</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;set sunpath to be calculated for a leap year.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_leap_year</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Sunpath.is_daylight_saving_hour"><a class="viewcode-back" href="../../ladybug.html#ladybug.sunpath.Sunpath.is_daylight_saving_hour">[docs]</a>    <span class="k">def</span> <span class="nf">is_daylight_saving_hour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if a datetime is a daylight saving time.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">daylight_saving_period</span><span class="p">:</span>
@@ -222,8 +181,9 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            A sun object for this particular time</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">datetime</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">hour</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_sun_from_data_time</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">is_solar_time</span><span class="p">)</span></div>
+        <span class="n">datetime</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">hour</span><span class="p">),</span>
+                            <span class="n">leap_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_sun_from_date_time</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">is_solar_time</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Sunpath.calculate_sun_from_hoy"><a class="viewcode-back" href="../../ladybug.html#ladybug.sunpath.Sunpath.calculate_sun_from_hoy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_sun_from_hoy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">,</span> <span class="n">is_solar_time</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get Sun data for an hour of the year.</span>
@@ -236,10 +196,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            A sun object for this particular time</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">datetime</span> <span class="o">=</span> <span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_sun_from_data_time</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">is_solar_time</span><span class="p">)</span></div>
+        <span class="n">datetime</span> <span class="o">=</span> <span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_sun_from_date_time</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">is_solar_time</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Sunpath.calculate_sun_from_data_time"><a class="viewcode-back" href="../../ladybug.html#ladybug.sunpath.Sunpath.calculate_sun_from_data_time">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_sun_from_data_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">is_solar_time</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Sunpath.calculate_sun_from_date_time"><a class="viewcode-back" href="../../ladybug.html#ladybug.sunpath.Sunpath.calculate_sun_from_date_time">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_sun_from_date_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">is_solar_time</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get Sun for an hour of the year.</span>
 
 <span class="sd">        This code is originally written by Trygve Wastvedt \</span>
@@ -254,6 +214,11 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            A sun object for this particular time</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO(mostapha): This should be more generic and based on a method</span>
+        <span class="k">if</span> <span class="n">datetime</span><span class="o">.</span><span class="n">year</span> <span class="o">!=</span> <span class="mi">2016</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">:</span>
+            <span class="n">datetime</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span>
+                                <span class="n">datetime</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
         <span class="n">sol_dec</span><span class="p">,</span> <span class="n">eq_of_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_solar_geometry</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
 
         <span class="n">hour</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">float_hour</span>
@@ -271,7 +236,6 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">hour_angle</span> <span class="o">=</span> <span class="n">sol_time</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">-</span> <span class="mi">180</span>
 
-
         <span class="c1"># Degrees</span>
         <span class="n">zenith</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">acos</span>
                               <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_latitude</span><span class="p">)</span> <span class="o">*</span>
@@ -279,7 +243,6 @@
                                <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_latitude</span><span class="p">)</span> <span class="o">*</span>
                                <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">sol_dec</span><span class="p">))</span> <span class="o">*</span>
                                <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">hour_angle</span><span class="p">))))</span>
-
 
         <span class="n">altitude</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">-</span> <span class="n">zenith</span>
 
@@ -342,7 +305,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            A dictionary. Keys are (&quot;sunrise&quot;, &quot;noon&quot;, &quot;sunset&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">datetime</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">datetime</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">leap_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_sunrise_sunset_from_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span>
                                                            <span class="n">depression</span><span class="p">,</span>
@@ -352,6 +315,10 @@
 <div class="viewcode-block" id="Sunpath.calculate_sunrise_sunset_from_datetime"><a class="viewcode-back" href="../../ladybug.html#ladybug.sunpath.Sunpath.calculate_sunrise_sunset_from_datetime">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_sunrise_sunset_from_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">depression</span><span class="o">=</span><span class="mf">0.833</span><span class="p">,</span>
                                                <span class="n">is_solar_time</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate sunrise, sunset and noon for a day of year.&quot;&quot;&quot;</span>
+        <span class="c1"># TODO(mostapha): This should be more generic and based on a method</span>
+        <span class="k">if</span> <span class="n">datetime</span><span class="o">.</span><span class="n">year</span> <span class="o">!=</span> <span class="mi">2016</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">:</span>
+            <span class="n">datetime</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span>
+                                <span class="n">datetime</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="n">sol_dec</span><span class="p">,</span> <span class="n">eq_of_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_solar_geometry</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
         <span class="c1"># calculate sunrise and sunset hour</span>
         <span class="k">if</span> <span class="n">is_solar_time</span><span class="p">:</span>
@@ -372,7 +339,8 @@
             <span class="k">return</span> <span class="p">{</span>
                 <span class="s2">&quot;sunrise&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="s2">&quot;noon&quot;</span><span class="p">:</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
-                                 <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">noon</span><span class="p">)),</span>
+                                 <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">noon</span><span class="p">),</span>
+                                 <span class="n">leap_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">),</span>
                 <span class="s2">&quot;sunset&quot;</span><span class="p">:</span> <span class="kc">None</span>
             <span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
@@ -384,14 +352,17 @@
 
             <span class="k">return</span> <span class="p">{</span>
                 <span class="s2">&quot;sunrise&quot;</span><span class="p">:</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
-                                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">sunrise</span><span class="p">)),</span>
+                                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">sunrise</span><span class="p">),</span>
+                                    <span class="n">leap_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">),</span>
                 <span class="s2">&quot;noon&quot;</span><span class="p">:</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
-                                 <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">noon</span><span class="p">)),</span>
+                                 <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">noon</span><span class="p">),</span>
+                                 <span class="n">leap_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">),</span>
                 <span class="s2">&quot;sunset&quot;</span><span class="p">:</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
-                                   <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">sunset</span><span class="p">))</span>
+                                   <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_calculate_hour_and_minute</span><span class="p">(</span><span class="n">sunset</span><span class="p">),</span>
+                                   <span class="n">leap_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">)</span>
             <span class="p">}</span></div>
 
-    <span class="k">def</span> <span class="nf">_calculate_solar_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="mi">2017</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_calculate_solar_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate Solar geometry for an hour of the year.</span>
 
 <span class="sd">        Attributes:</span>
@@ -405,6 +376,7 @@
         <span class="n">day</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">day</span>
         <span class="n">hour</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">hour</span>
         <span class="n">minute</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">minute</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="mi">2016</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span> <span class="k">else</span> <span class="mi">2017</span>
 
         <span class="k">def</span> <span class="nf">find_fraction_of_24</span><span class="p">(</span><span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;</span>
@@ -459,7 +431,7 @@
 
             <span class="sd">&quot;&quot;&quot;Making the total of all the days in preceding months\</span>
 <span class="sd">            in the same year&quot;&quot;&quot;</span>
-            <span class="n">keys</span> <span class="o">=</span> <span class="n">month_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">month_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="n">days_in_precending_months</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">days_in_precending_months</span> <span class="o">+=</span> <span class="n">month_dict</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
@@ -535,8 +507,8 @@
         <span class="sd">&quot;&quot;&quot;Calculate hour angle for sunrise time in degrees.&quot;&quot;&quot;</span>
 
         <span class="n">hour_angle_arg</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span>
-            <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span> <span class="o">+</span> <span class="n">depression</span><span class="p">))</span>
-            <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span>
+            <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span> <span class="o">+</span> <span class="n">depression</span><span class="p">))</span> <span class="o">/</span>
+            <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span>
                 <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">solar_dec</span><span class="p">)))</span> <span class="o">-</span>
             <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span> <span class="o">*</span>
             <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">solar_dec</span><span class="p">))</span>
@@ -569,7 +541,6 @@
         <span class="sd">&quot;&quot;&quot;Calculate hour and minutes as integers from a float hour.&quot;&quot;&quot;</span>
         <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">float_hour</span><span class="p">)</span>
         <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">float_hour</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">float_hour</span><span class="p">))</span> <span class="o">*</span> <span class="mi">60</span><span class="p">))</span>
-
 
         <span class="k">if</span> <span class="n">minute</span> <span class="o">==</span> <span class="mi">60</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">hour</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
@@ -692,12 +663,13 @@
                 <span class="n">chours</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="c1"># this is an hour that not all the hours are day or night</span>
                 <span class="n">prevhour</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">&lt;=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mi">8760</span><span class="p">,</span> <span class="mi">24</span><span class="p">):</span>
+                <span class="n">num_of_days</span> <span class="o">=</span> <span class="mi">8760</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span> <span class="k">else</span> <span class="mi">8760</span> <span class="o">+</span> <span class="mi">24</span>
+                <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">num_of_days</span><span class="p">,</span> <span class="mi">24</span><span class="p">):</span>
                     <span class="n">thishour</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_sun_from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)</span><span class="o">.</span><span class="n">is_during_day</span>
                     <span class="k">if</span> <span class="n">thishour</span> <span class="o">!=</span> <span class="n">prevhour</span><span class="p">:</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">thishour</span><span class="p">:</span>
                             <span class="n">hoy</span> <span class="o">-=</span> <span class="mi">24</span>
-                        <span class="n">dt</span> <span class="o">=</span> <span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)</span>
+                        <span class="n">dt</span> <span class="o">=</span> <span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">)</span>
                         <span class="n">chours</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span><span class="p">))</span>
                     <span class="n">prevhour</span> <span class="o">=</span> <span class="n">thishour</span>
                 <span class="n">tt</span> <span class="o">=</span> <span class="p">[]</span>
@@ -744,7 +716,7 @@
                     <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Arc</span>
-                <span class="k">yield</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_sun_from_data_time</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">dts</span><span class="p">),</span> <span class="kc">True</span></div>
+                <span class="k">yield</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_sun_from_date_time</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">dts</span><span class="p">),</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="Sun"><a class="viewcode-back" href="../../ladybug.html#ladybug.sunpath.Sun">[docs]</a><span class="k">class</span> <span class="nc">Sun</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -873,7 +845,14 @@
             <span class="o">.</span><span class="n">rotate_around</span><span class="p">(</span><span class="n">z_axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">azimuth_in_radians</span><span class="p">)</span> \
             <span class="o">.</span><span class="n">rotate_around</span><span class="p">(</span><span class="n">z_axis</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">north_angle</span><span class="p">))</span>
 
-        <span class="n">_sun_vector</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+        <span class="n">_sun_vector</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_sun_vector</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="c1"># euclid3</span>
+            <span class="n">_sun_vector</span> <span class="o">=</span> <span class="n">Vector3</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">_sun_vector</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                  <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">_sun_vector</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                                  <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">_sun_vector</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_sun_vector</span> <span class="o">=</span> <span class="n">_sun_vector</span>
 
@@ -895,8 +874,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/ladybug.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Ladybug performs detailed analysis of climate data to produce customized, interactive visualizations for environmentally-informed design.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=ladybug&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ladybug.html">ladybug package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

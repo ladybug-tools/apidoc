@@ -31,8 +31,128 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.material.light</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Radiance Light Material.</span>
+
+<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Light</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceNumber</span>
+<span class="kn">from</span> <span class="nn">.materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
+
+
+<div class="viewcode-block" id="Light"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.light.Light">[docs]</a><span class="k">class</span> <span class="nc">Light</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
+
+    <span class="n">red</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">blue</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">green</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">red</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">green</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">blue</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s1">&#39;void&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create light material</span>
+<span class="sd">        Attributes:</span>
+
+<span class="sd">            name: Material name as a string. The name should not have whitespaces or</span>
+<span class="sd">                special characters.</span>
+<span class="sd">            red: A positive value for the Red channel of the light (default: 0).</span>
+<span class="sd">            green: A positive value for the Green channel of the light (default: 0).</span>
+<span class="sd">            blue: A positive value for the Blue channel of the light (default: 0).</span>
+<span class="sd">            modifier: Material modifier. The default value is void.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">RadianceMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">red</span> <span class="o">=</span> <span class="n">red</span>
+        <span class="sd">&quot;&quot;&quot;A positive value for the Red channel of the light&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">green</span> <span class="o">=</span> <span class="n">green</span>
+        <span class="sd">&quot;&quot;&quot;A positive value for the Green channel of the light&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blue</span> <span class="o">=</span> <span class="n">blue</span>
+        <span class="sd">&quot;&quot;&quot;A positive value for the Blue channel of the light&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_values</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Light.from_string"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.light.Light.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a Radiance material from a string.</span>
+
+<span class="sd">        If the material has a modifier the modifier material should also be partof the</span>
+<span class="sd">        string or should be provided using modifier argument.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">modifier</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">base_material_data</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_string_input</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span> <span class="o">=</span> <span class="n">base_material_data</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Light.from_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.light.Light.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make radiance material from json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // Material Name</span>
+<span class="sd">            &quot;red&quot;: float, // A positive value for the Red channel of the glow</span>
+<span class="sd">            &quot;green&quot;: float, // A positive value for the Green channel of the glow</span>
+<span class="sd">            &quot;blue&quot;: float, // A positive value for the Blue channel of the glow</span>
+<span class="sd">            &quot;radius&quot;: float // Maximum radius for shadow testing</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_json_input</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">rec_json</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                   <span class="n">red</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">],</span>
+                   <span class="n">green</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">],</span>
+                   <span class="n">blue</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">],</span>
+                   <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Light.by_single_reflect_value"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.light.Light.by_single_reflect_value">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">by_single_reflect_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">rgb</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create light material with single value.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            name: Material name as a string. Do not use white space and special</span>
+<span class="sd">                character.</span>
+<span class="sd">            rgb: Input for red, green and blue. The value should be</span>
+<span class="sd">                between 0 and 1 (Default: 0).</span>
+<span class="sd">            modifier: Material modifier (Default: &quot;void&quot;).</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            sample_light = Light.by_single_reflect_value(&quot;sample_light&quot;, 1)</span>
+<span class="sd">            print(sample_light)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">red</span><span class="o">=</span><span class="n">rgb</span><span class="p">,</span> <span class="n">green</span><span class="o">=</span><span class="n">rgb</span><span class="p">,</span> <span class="n">blue</span><span class="o">=</span><span class="n">rgb</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;update value dictionaries.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">red</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">green</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">blue</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Light.to_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.light.Light.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate radiance material to json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;modifier&quot;: modifier,</span>
+<span class="sd">            &quot;type&quot;: &quot;light&quot;, // Material type</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // Material Name</span>
+<span class="sd">            &quot;red&quot;: float, // A positive value for the Red channel of the glow</span>
+<span class="sd">            &quot;green&quot;: float, // A positive value for the Green channel of the glow</span>
+<span class="sd">            &quot;blue&quot;: float // A positive value for the Blue channel of the glow</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;modifier&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;light&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;red&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">red</span><span class="p">,</span>
+            <span class="s2">&quot;green&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">green</span><span class="p">,</span>
+            <span class="s2">&quot;blue&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">blue</span>
+        <span class="p">}</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,61 +213,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.material.light</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Radiance Light Material.</span>
-
-<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Light</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceNumber</span>
-<span class="kn">from</span> <span class="nn">._materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
-
-
-<div class="viewcode-block" id="LightMaterial"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.light.LightMaterial">[docs]</a><span class="k">class</span> <span class="nc">LightMaterial</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
-
-    <span class="n">red</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">blue</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">green</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">red</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">green</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">blue</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create light material</span>
-<span class="sd">        Attributes:</span>
-
-<span class="sd">            name: Material name as a string. The name should not have whitespaces or</span>
-<span class="sd">                special characters.</span>
-<span class="sd">            red: A positive value for the Red channel of the light</span>
-<span class="sd">            green: A positive value for the Green channel of the light</span>
-<span class="sd">            blue: A positive value for the Blue channel of the light</span>
-<span class="sd">            modifer: Material modifier. The default value is void.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">RadianceMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">material_type</span><span class="o">=</span><span class="s1">&#39;light&#39;</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s1">&#39;void&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">red</span> <span class="o">=</span> <span class="n">red</span>
-        <span class="sd">&quot;&quot;&quot;A positive value for the Red channel of the light&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">green</span> <span class="o">=</span> <span class="n">green</span>
-        <span class="sd">&quot;&quot;&quot;A positive value for the Green channel of the light&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">blue</span> <span class="o">=</span> <span class="n">blue</span>
-        <span class="sd">&quot;&quot;&quot;A positive value for the Blue channel of the light&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="LightMaterial.to_rad_string"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.light.LightMaterial.to_rad_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_rad_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return full Radiance definition&quot;&quot;&quot;</span>
-        <span class="n">__base_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_line</span> <span class="o">+</span> <span class="s2">&quot;0</span><span class="se">\n</span><span class="s2">0</span><span class="se">\n</span><span class="s2">3 </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2">&quot;</span>
-
-        <span class="n">light_definition</span> <span class="o">=</span> <span class="n">__base_string</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">green</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">light_definition</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">minimal</span> <span class="k">else</span> <span class="n">light_definition</span></div></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

@@ -31,68 +31,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../../../../index.html">
-    <img class="logo" src="../../../../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -101,7 +42,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;Radiance Grid-based Analysis Recipe.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">.._gridbasedbase</span> <span class="k">import</span> <span class="n">GenericGridBased</span>
 <span class="kn">from</span> <span class="nn">..recipeutil</span> <span class="k">import</span> <span class="n">write_rad_files</span><span class="p">,</span> <span class="n">write_extra_files</span>
-<span class="kn">from</span> <span class="nn">...parameters.gridbased</span> <span class="k">import</span> <span class="n">LowQuality</span>
+<span class="kn">from</span> <span class="nn">...parameters.rtrace</span> <span class="k">import</span> <span class="n">LowQuality</span>
 <span class="kn">from</span> <span class="nn">...command.oconv</span> <span class="k">import</span> <span class="n">Oconv</span>
 <span class="kn">from</span> <span class="nn">...command.rtrace</span> <span class="k">import</span> <span class="n">Rtrace</span>
 <span class="kn">from</span> <span class="nn">...command.rcalc</span> <span class="k">import</span> <span class="n">Rcalc</span>
@@ -109,6 +50,7 @@
 <span class="kn">from</span> <span class="nn">...analysisgrid</span> <span class="k">import</span> <span class="n">AnalysisGrid</span>
 <span class="kn">from</span> <span class="nn">....hbsurface</span> <span class="k">import</span> <span class="n">HBSurface</span>
 <span class="kn">from</span> <span class="nn">...sky.cie</span> <span class="k">import</span> <span class="n">CIE</span>
+<span class="kn">from</span> <span class="nn">...parameters.rtrace</span> <span class="k">import</span> <span class="n">RtraceParameters</span>
 
 <span class="kn">from</span> <span class="nn">ladybug.dt</span> <span class="k">import</span> <span class="n">DateTime</span>
 
@@ -174,7 +116,8 @@
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the solar access recipe from json.</span>
 <span class="sd">        {</span>
-<span class="sd">          &quot;id&quot;: 1, // do NOT overwrite this id</span>
+<span class="sd">          &quot;id&quot;: &quot;point_in_time&quot;,</span>
+<span class="sd">          &quot;type&quot;: &quot;gridbased&quot;,</span>
 <span class="sd">          &quot;sky&quot;: null, // a honeybee sky</span>
 <span class="sd">          &quot;surfaces&quot;: [], // list of honeybee surfaces</span>
 <span class="sd">          &quot;analysis_grids&quot;: [] // list of analysis grids</span>
@@ -186,7 +129,9 @@
         <span class="n">analysis_grids</span> <span class="o">=</span> \
             <span class="nb">tuple</span><span class="p">(</span><span class="n">AnalysisGrid</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">ag</span><span class="p">)</span> <span class="k">for</span> <span class="n">ag</span> <span class="ow">in</span> <span class="n">rec_json</span><span class="p">[</span><span class="s1">&#39;analysis_grids&#39;</span><span class="p">])</span>
         <span class="n">hb_objects</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">HBSurface</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">srf</span><span class="p">)</span> <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="n">rec_json</span><span class="p">[</span><span class="s1">&#39;surfaces&#39;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">sky</span><span class="p">,</span> <span class="n">analysis_grids</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">[</span><span class="s1">&#39;analysis_type&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hb_objects</span><span class="p">)</span></div>
+        <span class="n">rad_parameters</span> <span class="o">=</span> <span class="n">RtraceParameters</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;rad_parameters&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">sky</span><span class="p">,</span> <span class="n">analysis_grids</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">[</span><span class="s1">&#39;analysis_type&#39;</span><span class="p">],</span> <span class="n">rad_parameters</span><span class="p">,</span>
+                   <span class="n">hb_objects</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GridBased.from_points_and_vectors"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.pointintime.html#honeybee.radiance.recipe.pointintime.gridbased.GridBased.from_points_and_vectors">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points_and_vectors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sky</span><span class="p">,</span> <span class="n">point_groups</span><span class="p">,</span> <span class="n">vector_groups</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -325,8 +270,17 @@
             <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sky</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;sky&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">output_file</span><span class="p">)),</span>
              <span class="n">skyground</span><span class="p">]</span> <span class="o">+</span> <span class="n">opqfiles</span> <span class="o">+</span> <span class="n">glzfiles</span> <span class="o">+</span> <span class="n">wgsfiles</span> <span class="o">+</span> <span class="n">extrafiles</span><span class="o">.</span><span class="n">fp</span>
 
+        <span class="n">oct_scene_files_items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">oct_scene_files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Point-in-time recipes cannot currently handle dynamic window&#39;</span>
+                      <span class="s1">&#39; groups. The first state will be used for simulation.&#39;</span><span class="p">)</span>
+                <span class="n">oct_scene_files_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">oct_scene_files_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="n">oc</span> <span class="o">=</span> <span class="n">Oconv</span><span class="p">(</span><span class="n">project_name</span><span class="p">)</span>
-        <span class="n">oc</span><span class="o">.</span><span class="n">scene_files</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">oct_scene_files</span><span class="p">)</span>
+        <span class="n">oc</span><span class="o">.</span><span class="n">scene_files</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">oct_scene_files_items</span><span class="p">)</span>
 
         <span class="c1"># # 4.2.prepare rtrace</span>
         <span class="n">rt</span> <span class="o">=</span> <span class="n">Rtrace</span><span class="p">(</span><span class="s1">&#39;result/&#39;</span> <span class="o">+</span> <span class="n">project_name</span><span class="p">,</span>
@@ -392,7 +346,8 @@
 <div class="viewcode-block" id="GridBased.to_json"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.pointintime.html#honeybee.radiance.recipe.pointintime.gridbased.GridBased.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create point-in-time recipe from json.</span>
 <span class="sd">            {</span>
-<span class="sd">              &quot;id&quot;: 1, // do NOT overwrite this id</span>
+<span class="sd">              &quot;id&quot;: &quot;point_in_time&quot;,</span>
+<span class="sd">              &quot;type&quot;: &quot;gridbased&quot;,</span>
 <span class="sd">              &quot;sky&quot;: null, // a honeybee sky</span>
 <span class="sd">              &quot;surfaces&quot;: [], // list of honeybee surfaces</span>
 <span class="sd">              &quot;analysis_grids&quot;: [] // list of analysis grids</span>
@@ -401,11 +356,13 @@
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;point_in_time&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;gridbased&quot;</span><span class="p">,</span>
             <span class="s2">&quot;sky&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
             <span class="s2">&quot;surfaces&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">srf</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hb_objects</span><span class="p">],</span>
             <span class="s2">&quot;analysis_grids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ag</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">ag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_grids</span><span class="p">],</span>
-            <span class="s2">&quot;analysis_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation_type</span>
+            <span class="s2">&quot;analysis_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation_type</span><span class="p">,</span>
+            <span class="s2">&quot;rad_parameters&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_parameters</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="p">}</span></div>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -423,8 +380,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../../../index.html">
+    <img class="logo" src="../../../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

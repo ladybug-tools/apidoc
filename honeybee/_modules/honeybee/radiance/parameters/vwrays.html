@@ -31,8 +31,59 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.parameters.vwrays</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">from</span> <span class="nn">._advancedparametersbase</span> <span class="k">import</span> <span class="n">AdvancedRadianceParameters</span>
+<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
+
+
+<div class="viewcode-block" id="VwraysParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.vwrays.VwraysParameters">[docs]</a><span class="nd">@frozen</span>
+<span class="k">class</span> <span class="nc">VwraysParameters</span><span class="p">(</span><span class="n">AdvancedRadianceParameters</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixel_positions_stdin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unbuffered_output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">calc_image_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">sampling_rays_count</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">AdvancedRadianceParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span>
+                                    <span class="s1">&#39;pixel position specified through standard input&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;pixel_positions_stdin&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pixel_positions_stdin</span> <span class="o">=</span> <span class="n">pixel_positions_stdin</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;unbuffered output&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;unbuffered_output&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unbuffered_output</span> <span class="o">=</span> <span class="n">unbuffered_output</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;calculate image dimensions&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;calc_image_dim&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc_image_dim</span> <span class="o">=</span> <span class="n">calc_image_dim</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;x resolution&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;x_resolution&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_resolution</span> <span class="o">=</span> <span class="n">x_resolution</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y resolution&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;y_resolution&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_resolution</span> <span class="o">=</span> <span class="n">y_resolution</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;pj&#39;</span><span class="p">,</span> <span class="s1">&#39;anti-alias jittering&#39;</span><span class="p">,</span>
+                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;jitter&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jitter</span> <span class="o">=</span> <span class="n">jitter</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;sampling rays count&#39;</span><span class="p">,</span>
+                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;sampling_rays_count&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling_rays_count</span> <span class="o">=</span> <span class="n">sampling_rays_count</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,58 +144,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.parameters.vwrays</h1><div class="highlight"><pre>
-<span></span><span class="c1"># coding=utf-8</span>
-<span class="kn">from</span> <span class="nn">._advancedparametersbase</span> <span class="k">import</span> <span class="n">AdvancedRadianceParameters</span>
-<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
-
-
-<div class="viewcode-block" id="VwraysParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.vwrays.VwraysParameters">[docs]</a><span class="nd">@frozen</span>
-<span class="k">class</span> <span class="nc">VwraysParameters</span><span class="p">(</span><span class="n">AdvancedRadianceParameters</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixel_positions_stdin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unbuffered_output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">calc_image_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">sampling_rays_count</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">AdvancedRadianceParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span>
-                                    <span class="s1">&#39;pixel position specified through standard input&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;pixel_positions_stdin&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pixel_positions_stdin</span> <span class="o">=</span> <span class="n">pixel_positions_stdin</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;unbuffered output&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;unbuffered_output&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unbuffered_output</span> <span class="o">=</span> <span class="n">unbuffered_output</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;calculate image dimensions&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;calc_image_dim&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">calc_image_dim</span> <span class="o">=</span> <span class="n">calc_image_dim</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;x resolution&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;x_resolution&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x_resolution</span> <span class="o">=</span> <span class="n">x_resolution</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y resolution&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;y_resolution&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y_resolution</span> <span class="o">=</span> <span class="n">y_resolution</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;pj&#39;</span><span class="p">,</span> <span class="s1">&#39;anti-alias jittering&#39;</span><span class="p">,</span>
-                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;jitter&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">jitter</span> <span class="o">=</span> <span class="n">jitter</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;sampling rays count&#39;</span><span class="p">,</span>
-                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;sampling_rays_count&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sampling_rays_count</span> <span class="o">=</span> <span class="n">sampling_rays_count</span></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

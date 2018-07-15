@@ -31,8 +31,191 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.material.glass</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Radiance Glass Material.</span>
+
+<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Glass</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
+<span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceNumber</span>
+
+
+<div class="viewcode-block" id="Glass"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.Glass">[docs]</a><span class="k">class</span> <span class="nc">Glass</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Radiance glass material.&quot;&quot;&quot;</span>
+
+    <span class="n">r_transmittance</span> <span class="o">=</span> \
+        <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;r_transmittance&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">g_transmittance</span> <span class="o">=</span> \
+        <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;g_transmittance&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">b_transmittance</span> <span class="o">=</span> \
+        <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;b_transmittance&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">refraction_index</span> <span class="o">=</span> \
+        <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;refraction_index&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">r_transmittance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g_transmittance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">b_transmittance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">refraction_index</span><span class="o">=</span><span class="mf">1.52</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create glass material.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            name: Material name as a string. Do not use white space and special character</span>
+<span class="sd">            r_transmittance: Transmittance for red. The value should be between 0 and 1</span>
+<span class="sd">                (Default: 0).</span>
+<span class="sd">            g_transmittance: Transmittance for green. The value should be between 0 and 1</span>
+<span class="sd">                (Default: 0).</span>
+<span class="sd">            b_transmittance: Transmittance for blue. The value should be between 0 and 1</span>
+<span class="sd">                (Default: 0).</span>
+<span class="sd">            refraction: Index of refraction. 1.52 for glass and 1.4 for ETFE</span>
+<span class="sd">                (Default: 1.52).</span>
+<span class="sd">            modifier: Material modifier (Default: &quot;void&quot;).</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            glassMaterial = Glass(&quot;generic glass&quot;, .65, .65, .65)</span>
+<span class="sd">            print(glassMaterial)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">RadianceMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r_transmittance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">r_transmittance</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;Transmittance for red. The value should be between 0 and 1 (Default: 0).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_transmittance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">g_transmittance</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;Transmittance for green. The value should be between 0 and 1 (Default: 0).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_transmittance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">b_transmittance</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;Transmittance for blue. The value should be between 0 and 1 (Default: 0).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refraction_index</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">refraction_index</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;Index of refraction. 1.52 for glass and 1.4 for ETFE (Default: 1.52).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_values</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Glass.from_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.Glass.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make radiance material from json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // Material Name</span>
+<span class="sd">            &quot;r_transmittance&quot;: float, // Transmittance for red</span>
+<span class="sd">            &quot;g_transmittance&quot;: float, // Transmittance for green</span>
+<span class="sd">            &quot;b_transmittance&quot;: float, // Transmittance for blue</span>
+<span class="sd">            &quot;refraction&quot;: float, // Index of refraction</span>
+<span class="sd">            &quot;modifier&quot;: &quot;&quot; // material modifier (Default: &quot;void&quot;)</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_json_input</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">rec_json</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                   <span class="n">r_transmittance</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;r_transmittance&quot;</span><span class="p">],</span>
+                   <span class="n">g_transmittance</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;g_transmittance&quot;</span><span class="p">],</span>
+                   <span class="n">b_transmittance</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;b_transmittance&quot;</span><span class="p">],</span>
+                   <span class="n">refraction_index</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;refraction_index&quot;</span><span class="p">],</span>
+                   <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Glass.by_single_trans_value"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.Glass.by_single_trans_value">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">by_single_trans_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">rgb_transmittance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                              <span class="n">refraction_index</span><span class="o">=</span><span class="mf">1.52</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create glass material with single transmittance value.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            name: Material name as a string. Do not use white space and special</span>
+<span class="sd">                character.</span>
+<span class="sd">            rgb_transmittance: Transmittance for red, green and blue. The value should be</span>
+<span class="sd">                between 0 and 1 (Default: 0).</span>
+<span class="sd">            refraction: Index of refraction. 1.52 for glass and 1.4 for ETFE</span>
+<span class="sd">                (Default: 1.52).</span>
+<span class="sd">            modifier: Material modifier (Default: &quot;void&quot;).</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            glassMaterial = Glass.by_single_trans_value(&quot;generic glass&quot;, .65)</span>
+<span class="sd">            print(glassMaterial)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">r_transmittance</span><span class="o">=</span><span class="n">rgb_transmittance</span><span class="p">,</span> <span class="n">g_transmittance</span><span class="o">=</span><span class="n">rgb_transmittance</span><span class="p">,</span>
+            <span class="n">b_transmittance</span><span class="o">=</span><span class="n">rgb_transmittance</span><span class="p">,</span> <span class="n">refraction_index</span><span class="o">=</span><span class="n">refraction_index</span><span class="p">,</span>
+            <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Glass.from_string"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.Glass.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a Radiance material from a string.</span>
+
+<span class="sd">        If the material has a modifier the modifier material should also be part of the</span>
+<span class="sd">        string or should be provided using modifier argument.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">modifier</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">base_material_data</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_string_input</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">base_material_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="n">r_transmittance</span><span class="p">,</span> <span class="n">g_transmittance</span><span class="p">,</span> <span class="n">b_transmittance</span> <span class="o">=</span> <span class="n">base_material_data</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+            <span class="n">refraction</span> <span class="o">=</span> <span class="mf">1.52</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r_transmittance</span><span class="p">,</span> <span class="n">g_transmittance</span><span class="p">,</span> <span class="n">b_transmittance</span><span class="p">,</span> <span class="n">refraction</span> <span class="o">=</span> \
+                <span class="n">base_material_data</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">r_transmittance</span><span class="p">,</span> <span class="n">g_transmittance</span><span class="p">,</span> <span class="n">b_transmittance</span><span class="p">,</span> <span class="n">refraction</span><span class="p">,</span>
+                   <span class="n">modifier</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">average_transmittance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate average transmittance.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">0.265</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_transmittance</span> <span class="o">+</span> \
+            <span class="mf">0.670</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_transmittance</span> <span class="o">+</span> <span class="mf">0.065</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_transmittance</span>
+
+<div class="viewcode-block" id="Glass.get_transmissivity"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.Glass.get_transmissivity">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_transmissivity</span><span class="p">(</span><span class="n">transmittance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate transmissivity based on transmittance value.</span>
+
+<span class="sd">        &quot;Transmissivity is the amount of light not absorbed in one traversal of</span>
+<span class="sd">        the material. Transmittance -- the value usually measured - is the total</span>
+<span class="sd">        light transmitted through the pane including multiple reflections.&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">transmittance</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.8402528435</span> <span class="o">+</span> <span class="mf">0.0072522239</span> <span class="o">*</span> <span class="p">(</span><span class="n">transmittance</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">-</span>
+                <span class="mf">0.9166530661</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.0036261119</span> <span class="o">/</span> <span class="n">transmittance</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;update value dictionaries.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_transmissivity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">r_transmittance</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_transmissivity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_transmittance</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_transmissivity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b_transmittance</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refraction_index</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="Glass.to_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.Glass.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate radiance material to json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;type&quot;: &quot;glass&quot;, // Material type</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // Material Name</span>
+<span class="sd">            &quot;r_transmittance&quot;: float, // Transmittance for red</span>
+<span class="sd">            &quot;g_transmittance&quot;: float, // Transmittance for green</span>
+<span class="sd">            &quot;b_transmittance&quot;: float, // Transmittance for blue</span>
+<span class="sd">            &quot;refraction_index&quot;: float, // Index of refraction</span>
+<span class="sd">            &quot;modifier&quot;: &quot;&quot; // material modifier (Default: &quot;void&quot;)</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;modifier&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;glass&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;r_transmittance&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_transmittance</span><span class="p">,</span>
+            <span class="s2">&quot;g_transmittance&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_transmittance</span><span class="p">,</span>
+            <span class="s2">&quot;b_transmittance&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_transmittance</span><span class="p">,</span>
+            <span class="s2">&quot;refraction_index&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">refraction_index</span>
+        <span class="p">}</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># some test code</span>
+    <span class="n">glassMaterial</span> <span class="o">=</span> <span class="n">Glass</span><span class="o">.</span><span class="n">by_single_trans_value</span><span class="p">(</span><span class="s2">&quot;generic glass&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">65</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">glassMaterial</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">glassMaterial</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,158 +276,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.material.glass</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Radiance Glass Material.</span>
-
-<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Glass</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">_materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
-
-
-<div class="viewcode-block" id="GlassMaterial"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.GlassMaterial">[docs]</a><span class="k">class</span> <span class="nc">GlassMaterial</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Radiance glass material.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">r_transmittance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">g_transmittance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b_transmittance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                 <span class="n">refraction</span><span class="o">=</span><span class="mf">1.52</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create glass material.</span>
-
-<span class="sd">        Attributes:</span>
-<span class="sd">            name: Material name as a string. Do not use white space and special character</span>
-<span class="sd">            r_transmittance: Transmittance for red. The value should be between 0 and 1</span>
-<span class="sd">                (Default: 0).</span>
-<span class="sd">            g_transmittance: Transmittance for green. The value should be between 0 and 1</span>
-<span class="sd">                (Default: 0).</span>
-<span class="sd">            b_transmittance: Transmittance for blue. The value should be between 0 and 1</span>
-<span class="sd">                (Default: 0).</span>
-<span class="sd">            refraction: Index of refraction. 1.52 for glass and 1.4 for ETFE</span>
-<span class="sd">                (Default: 1.52).</span>
-<span class="sd">            modifier: Material modifier (Default: &quot;void&quot;).</span>
-
-<span class="sd">        Usage:</span>
-<span class="sd">            glassMaterial = GlassMaterial(&quot;generic glass&quot;, .65, .65, .65)</span>
-<span class="sd">            print(glassMaterial)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">RadianceMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">material_type</span><span class="o">=</span><span class="s2">&quot;glass&quot;</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">r_transmittance</span> <span class="o">=</span> <span class="n">r_transmittance</span>
-        <span class="sd">&quot;&quot;&quot;Transmittance for red. The value should be between 0 and 1 (Default: 0).&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">g_transmittance</span> <span class="o">=</span> <span class="n">g_transmittance</span>
-        <span class="sd">&quot;&quot;&quot;Transmittance for green. The value should be between 0 and 1 (Default: 0).&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">b_transmittance</span> <span class="o">=</span> <span class="n">b_transmittance</span>
-        <span class="sd">&quot;&quot;&quot;Transmittance for blue. The value should be between 0 and 1 (Default: 0).&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">refractionIndex</span> <span class="o">=</span> <span class="n">refraction</span>
-        <span class="sd">&quot;&quot;&quot;Index of refraction. 1.52 for glass and 1.4 for ETFE (Default: 1.52).&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="GlassMaterial.by_single_trans_value"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.GlassMaterial.by_single_trans_value">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">by_single_trans_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">rgb_transmittance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                              <span class="n">refraction</span><span class="o">=</span><span class="mf">1.52</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create glass material with single transmittance value.</span>
-
-<span class="sd">        Attributes:</span>
-<span class="sd">            name: Material name as a string. Do not use white space and special</span>
-<span class="sd">                character.</span>
-<span class="sd">            rgb_transmittance: Transmittance for red, green and blue. The value should be</span>
-<span class="sd">                between 0 and 1 (Default: 0).</span>
-<span class="sd">            refraction: Index of refraction. 1.52 for glass and 1.4 for ETFE</span>
-<span class="sd">                (Default: 1.52).</span>
-<span class="sd">            modifier: Material modifier (Default: &quot;void&quot;).</span>
-
-<span class="sd">        Usage:</span>
-<span class="sd">            glassMaterial = GlassMaterial.by_single_trans_value(&quot;generic glass&quot;, .65)</span>
-<span class="sd">            print(glassMaterial)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">name</span><span class="p">,</span> <span class="n">r_transmittance</span><span class="o">=</span><span class="n">rgb_transmittance</span><span class="p">,</span> <span class="n">g_transmittance</span><span class="o">=</span><span class="n">rgb_transmittance</span><span class="p">,</span>
-            <span class="n">b_transmittance</span><span class="o">=</span><span class="n">rgb_transmittance</span><span class="p">,</span> <span class="n">refraction</span><span class="o">=</span><span class="mf">1.52</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">)</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">isGlassMaterial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Indicate if this object has glass Material.</span>
-
-<span class="sd">        This property will be used to separate the glass surfaces in a separate</span>
-<span class="sd">        file than the opaque surfaces.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">True</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">r_transmittance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Red transmittance.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__r</span>
-
-    <span class="nd">@r_transmittance</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">r_transmittance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Red transmittance should be between 0 and 1&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__r</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">g_transmittance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Green transmittance.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__g</span>
-
-    <span class="nd">@g_transmittance</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">g_transmittance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Green transmittance should be between 0 and 1&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__g</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">b_transmittance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Blue transmittance.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__b</span>
-
-    <span class="nd">@b_transmittance</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">b_transmittance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Blue transmittance should be between 0 and 1&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__b</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">average_transmittance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate average transmittance.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="mf">0.265</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_transmittance</span> <span class="o">+</span> \
-            <span class="mf">0.670</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_transmittance</span> <span class="o">+</span> <span class="mf">0.065</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_transmittance</span>
-
-<div class="viewcode-block" id="GlassMaterial.get_transmissivity"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.GlassMaterial.get_transmissivity">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_transmissivity</span><span class="p">(</span><span class="n">transmittance</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate transmissivity based on transmittance value.</span>
-
-<span class="sd">        &quot;Transmissivity is the amount of light not absorbed in one traversal of</span>
-<span class="sd">        the material. Transmittance -- the value usually measured - is the total</span>
-<span class="sd">        light transmitted through the pane including multiple reflections.&quot;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">transmittance</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">0</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.8402528435</span> <span class="o">+</span> <span class="mf">0.0072522239</span> <span class="o">*</span> <span class="p">(</span><span class="n">transmittance</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">-</span>
-                <span class="mf">0.9166530661</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.0036261119</span> <span class="o">/</span> <span class="n">transmittance</span></div>
-
-<div class="viewcode-block" id="GlassMaterial.to_rad_string"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.surfacetype.GlassMaterial.to_rad_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_rad_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return full radiance definition.&quot;&quot;&quot;</span>
-        <span class="n">__base_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_line</span> <span class="o">+</span> <span class="s2">&quot;0</span><span class="se">\n</span><span class="s2">0</span><span class="se">\n</span><span class="s2">4 </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2">&quot;</span>
-
-        <span class="n">glass_definition</span> <span class="o">=</span> <span class="n">__base_string</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_transmissivity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">r_transmittance</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_transmissivity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_transmittance</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_transmissivity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b_transmittance</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">refractionIndex</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">glass_definition</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">minimal</span> <span class="k">else</span> <span class="n">glass_definition</span></div></div>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="c1"># some test code</span>
-    <span class="n">glassMaterial</span> <span class="o">=</span> <span class="n">GlassMaterial</span><span class="o">.</span><span class="n">by_single_trans_value</span><span class="p">(</span><span class="s2">&quot;generic glass&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">65</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">glassMaterial</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">glassMaterial</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

@@ -98,7 +98,7 @@ html_theme_options = {
 	'description': 'Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).',
 	'extra_nav_links': {'Ladybug Tools': 'http://www.ladybug.tools', 'Discussion Forum': 'http://discourse.ladybug.tools'},
 	'show_related': True,
-	'fixed_sidebar': True,
+	'fixed_sidebar': False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

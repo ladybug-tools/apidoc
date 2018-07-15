@@ -31,68 +31,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../../index.html">
-    <img class="logo" src="../../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -284,6 +225,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_values</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">key</span> <span class="o">/</span> <span class="mf">60.0</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">moys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return minutes of the year for results if any.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_values</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
     <span class="nd">@staticmethod</span>
@@ -380,7 +329,7 @@
         <span class="k">if</span> <span class="n">is_direct</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_is_directLoaded</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">ind</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">is_direct</span> <span class="k">else</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)][</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.set_values"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.set_values">[docs]</a>    <span class="k">def</span> <span class="nf">set_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_direct</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set values for several hours of the year.</span>
@@ -412,7 +361,7 @@
             <span class="k">if</span> <span class="n">hoy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)][</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s1">&#39;Failed to load </span><span class="si">{}</span><span class="s1"> results for window_group [</span><span class="si">{}</span><span class="s1">], state[</span><span class="si">{}</span><span class="s1">]&#39;</span>
@@ -436,7 +385,7 @@
             <span class="k">return</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;Wrong input: </span><span class="si">{}</span><span class="s2">. Input values must be of length of 2.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -472,7 +421,7 @@
             <span class="k">if</span> <span class="n">hoy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s2">&quot;Wrong input: </span><span class="si">{}</span><span class="s2">. Input values must be of length of 2.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -490,10 +439,10 @@
         <span class="c1"># find the state id</span>
         <span class="n">stateid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blind_state_id</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.direct_value"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.direct_value">[docs]</a>    <span class="k">def</span> <span class="nf">direct_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get direct value for an hour of the year.&quot;&quot;&quot;</span>
@@ -502,10 +451,10 @@
         <span class="c1"># find the state id</span>
         <span class="n">stateid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blind_state_id</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span></div>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.values"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.values">[docs]</a>    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get values for several hours of the year.&quot;&quot;&quot;</span>
@@ -516,11 +465,11 @@
 
         <span class="n">hoys</span> <span class="o">=</span> <span class="n">hoys</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
         <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.direct_values"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.direct_values">[docs]</a>    <span class="k">def</span> <span class="nf">direct_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get direct values for several hours of the year.&quot;&quot;&quot;</span>
@@ -532,10 +481,10 @@
         <span class="n">hoys</span> <span class="o">=</span> <span class="n">hoys</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
 
         <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.coupled_value"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.coupled_value">[docs]</a>    <span class="k">def</span> <span class="nf">coupled_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get total and direct values for an hoy.&quot;&quot;&quot;</span>
@@ -544,10 +493,10 @@
         <span class="c1"># find the state id</span>
         <span class="n">stateid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blind_state_id</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span></div>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.coupled_values"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.coupled_values">[docs]</a>    <span class="k">def</span> <span class="nf">coupled_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get total and direct values for several hours of year.&quot;&quot;&quot;</span>
@@ -559,11 +508,11 @@
         <span class="n">hoys</span> <span class="o">=</span> <span class="n">hoys</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
 
         <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.coupled_value_by_id"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.coupled_value_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">coupled_value_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">,</span> <span class="n">source_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get total and direct values for an hoy.&quot;&quot;&quot;</span>
@@ -572,11 +521,11 @@
         <span class="c1"># find the state id</span>
         <span class="n">stateid</span> <span class="o">=</span> <span class="n">state_id</span> <span class="ow">or</span> <span class="mi">0</span>
 
-        <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.coupled_values_by_id"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.coupled_values_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">coupled_values_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get total and direct values for several hours of year by source id.</span>
@@ -594,11 +543,11 @@
         <span class="n">hoys</span> <span class="o">=</span> <span class="n">hoys</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
 
         <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span> <span class="k">for</span> <span class="n">hoy</span> <span class="ow">in</span> <span class="n">hoys</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AnalysisPoint.combined_value_by_id"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.combined_value_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">combined_value_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hoy</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get combined value from all sources based on state_id.</span>
@@ -627,10 +576,10 @@
                 <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
-                <span class="n">t</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span>
+                                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                <span class="n">t</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">total</span> <span class="o">+=</span> <span class="n">t</span>
@@ -675,10 +624,10 @@
                     <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">hoy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">]:</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Hourly values are not available for </span><span class="si">{}</span><span class="s1">.&#39;</span>
-                                         <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">fromHoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
-                    <span class="n">t</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="n">hoy</span><span class="p">]</span>
+                                         <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)))</span>
+                    <span class="n">t</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">sid</span><span class="p">][</span><span class="n">stateid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">hoy</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)]</span>
 
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">total</span> <span class="o">+=</span> <span class="n">t</span>
@@ -845,7 +794,7 @@
         <span class="n">udi_min_max</span> <span class="o">=</span> <span class="n">udi_min_max</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
         <span class="n">udiMin</span><span class="p">,</span> <span class="n">udiMax</span> <span class="o">=</span> <span class="n">udi_min_max</span>
         <span class="n">hours</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
-        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">eight_am_to_six_pm</span><span class="p">()</span>
         <span class="n">udi</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">udi_l</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">udi_m</span> <span class="o">=</span> <span class="mi">0</span>
@@ -883,7 +832,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">da_threshhold</span> <span class="o">=</span> <span class="n">da_threshhold</span> <span class="ow">or</span> <span class="mi">300</span>
         <span class="n">hours</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
-        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">eight_am_to_six_pm</span><span class="p">()</span>
         <span class="n">DA</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">cda</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">total_hour_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span>
@@ -903,8 +852,8 @@
 
         <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">DA</span> <span class="o">/</span> <span class="n">total_hour_count</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">cda</span> <span class="o">/</span> <span class="n">total_hour_count</span></div>
 
-<div class="viewcode-block" id="AnalysisPoint.annual_solar_exposure"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.annual_solar_exposure">[docs]</a>    <span class="k">def</span> <span class="nf">annual_solar_exposure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshhold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                              <span class="n">occ_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_hours</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="AnalysisPoint.annual_sunlight_exposure"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.analysispoint.AnalysisPoint.annual_sunlight_exposure">[docs]</a>    <span class="k">def</span> <span class="nf">annual_sunlight_exposure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshhold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">occ_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_hours</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Annual Solar Exposure (ASE).</span>
 
 <span class="sd">        Calculate number of hours that this point is exposed to more than 1000lux</span>
@@ -929,16 +878,16 @@
 
         <span class="n">hoys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
         <span class="n">values</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">combined_values_by_id</span><span class="p">(</span><span class="n">hoys</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_annual_solar_exposure</span><span class="p">(</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_annual_sunlight_exposure</span><span class="p">(</span>
             <span class="n">values</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">threshhold</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="p">,</span> <span class="n">occ_schedule</span><span class="p">,</span> <span class="n">target_hours</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_calculate_annual_solar_exposure</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">_calculate_annual_sunlight_exposure</span><span class="p">(</span>
             <span class="n">values</span><span class="p">,</span> <span class="n">hoys</span><span class="p">,</span> <span class="n">threshhold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">blinds_state_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">occ_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">target_hours</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">threshhold</span> <span class="o">=</span> <span class="n">threshhold</span> <span class="ow">or</span> <span class="mi">1000</span>
         <span class="n">target_hours</span> <span class="o">=</span> <span class="n">target_hours</span> <span class="ow">or</span> <span class="mi">250</span>
-        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">hoys</span><span class="p">)</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">eight_am_to_six_pm</span><span class="p">()</span>
         <span class="n">ase</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">problematic_hours</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">hoys</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
@@ -958,7 +907,7 @@
         <span class="n">udiMin</span><span class="p">,</span> <span class="n">udiMax</span> <span class="o">=</span> <span class="n">udi_min_max</span>
         <span class="n">udi_min_max</span> <span class="o">=</span> <span class="n">udi_min_max</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
         <span class="n">da_threshhold</span> <span class="o">=</span> <span class="n">da_threshhold</span> <span class="ow">or</span> <span class="mf">300.0</span>
-        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">from_workday_hours</span><span class="p">()</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">eight_am_to_six_pm</span><span class="p">()</span>
         <span class="n">DA</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">cda</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">udi</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1004,7 +953,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">da_threshhold</span> <span class="o">=</span> <span class="n">da_threshhold</span> <span class="ow">or</span> <span class="mi">300</span>
         <span class="n">hours</span> <span class="o">=</span> <span class="n">hoys</span>
-        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">occ_schedule</span> <span class="ow">or</span> <span class="n">Schedule</span><span class="o">.</span><span class="n">eight_am_to_six_pm</span><span class="p">()</span>
         <span class="n">DA</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">cda</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">total_hour_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span>
@@ -1087,8 +1036,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

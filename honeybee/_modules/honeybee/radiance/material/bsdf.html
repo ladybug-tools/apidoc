@@ -31,8 +31,173 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.material.bsdf</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Radiance BSDF Material.</span>
+
+<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Glass</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
+
+
+<span class="c1"># TODO(): Add function file, transform and additional diffuse reflectance front and back</span>
+<span class="c1"># and additional diffuse transmittance</span>
+<div class="viewcode-block" id="BSDF"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.bsdf.BSDF">[docs]</a><span class="k">class</span> <span class="nc">BSDF</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Radiance BSDF material.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        xmlfile: Path to an xml file. Data will not be cached in memory.</span>
+<span class="sd">        up_orientation: (x, y ,z) vector that sets the hemisphere that the</span>
+<span class="sd">            BSDF material faces.  For materials that are symmetrical about</span>
+<span class="sd">            the HBSrf plane (like non-angled venitian blinds), this can be</span>
+<span class="sd">            any vector that is not perfectly normal to the HBSrf. For</span>
+<span class="sd">            asymmetrical materials like angled veneitan blinds, this variable</span>
+<span class="sd">            should be coordinated with the direction the HBSrfs are facing.</span>
+<span class="sd">            The default is set to (0.01, 0.01, 1.00), which should hopefully</span>
+<span class="sd">            not be perpendicular to any typical HBSrf.</span>
+<span class="sd">        thickness: Optional number to set the thickness of the BSDF material.</span>
+<span class="sd">            (default: 0).</span>
+<span class="sd">        modifier: Material modifier (Default: &quot;void&quot;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># TODO(): compress file content: https://stackoverflow.com/a/15529390/4394669</span>
+    <span class="c1"># TODO(): restructure the code to include xml data and not the file.</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xmlfile</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">up_orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create BSDF material.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">),</span> <span class="s1">&#39;Invalid path: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">xmlfile</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xml&#39;</span><span class="p">),</span> <span class="s1">&#39;Invalid xml file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">xmlfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">RadianceMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">up_orientation</span> <span class="ow">or</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Dynamo!</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">up_orientation</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">up_orientation</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">up_orientation</span><span class="o">.</span><span class="n">Z</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1"># raise the original error</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">up_orientation</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span> <span class="ow">or</span> <span class="mi">0</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlfile</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inf</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inf</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;AngleBasisName&gt;&#39;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_angle_basis</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;AngleBasisName&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> \
+                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;/AngleBasisName&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;LBNL/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">break</span>
+
+                <span class="k">assert</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;Failed to find AngleBasisName in first 100 lines.&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_values</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BSDF.from_file"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.bsdf.BSDF.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">xmlfile</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="BSDF.from_string"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.bsdf.BSDF.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a Radiance material from a string.</span>
+
+<span class="sd">        If the material has a modifier the modifier material should also be part of the</span>
+<span class="sd">        string or should be provided using modifier argument.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">modifier</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">base_material_data</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_string_input</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">base_material_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;6&#39;</span> <span class="ow">and</span> <span class="n">base_material_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> \
+            <span class="s1">&#39;BSDF currently does not support function file and transform. &#39;</span> \
+            <span class="s1">&#39;You can use Custom material to create this BSDF material.&#39;</span>
+
+        <span class="k">assert</span> <span class="n">base_material_data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> \
+            <span class="s1">&#39;BSDF currently does not support additional transmissions or reflections. &#39;</span> \
+            <span class="s1">&#39;You can use Custom material to create this BSDF material.&#39;</span>
+
+        <span class="n">thickness</span><span class="p">,</span> <span class="n">xmlfile</span><span class="p">,</span> <span class="n">upx</span><span class="p">,</span> <span class="n">upy</span><span class="p">,</span> <span class="n">upz</span> <span class="o">=</span> <span class="n">base_material_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">upx</span><span class="p">,</span> <span class="n">upy</span><span class="p">,</span> <span class="n">upz</span><span class="p">),</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BSDF.from_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.bsdf.BSDF.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make radiance material from json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;modifier&quot;: &quot;&quot;, // material modifier (Default: &quot;void&quot;)</span>
+<span class="sd">            &quot;type&quot;: &quot;custom&quot;, // Material type</span>
+<span class="sd">            &quot;base_type&quot;: &quot;type&quot;, // Material type</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // Material Name</span>
+<span class="sd">            &quot;values&quot;: {} // values</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s1">&#39;from_json is not currently implemented for BSDF materials.&#39;</span><span class="p">)</span>
+
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_json_input</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">json_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">xml_data</span><span class="o">=</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;xml_data&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">up_orientation</span><span class="o">=</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;up_orientation&quot;</span><span class="p">],</span>
+            <span class="n">thickness</span><span class="o">=</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">],</span>
+            <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">angle_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;XML file angle basis.</span>
+
+<span class="sd">        Klems full, Klems half, Klems Quarter or tensor tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_angle_basis</span>
+
+    <span class="k">def</span> <span class="nf">_update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;update value dictionaries.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">),</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlfile</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">up_orientation</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">up_orientation</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">up_orientation</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="BSDF.to_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.bsdf.BSDF.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s1">&#39;to_json is not currently implemented for BSDF materials.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;xml_data&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_data</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;up_orientation&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">up_orientation</span><span class="p">,</span>
+            <span class="s1">&#39;thickness&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">,</span>
+            <span class="s1">&#39;modifier&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="p">}</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># some test code</span>
+    <span class="n">material</span> <span class="o">=</span> <span class="n">BSDF</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s2">&quot;.../tests/room/xmls/clear.xml&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,94 +258,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.material.bsdf</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Radiance BSDF Material.</span>
-
-<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Glass</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">_materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
-
-
-<div class="viewcode-block" id="BSDFMaterial"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.bsdf.BSDFMaterial">[docs]</a><span class="k">class</span> <span class="nc">BSDFMaterial</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Radiance BSDF material.</span>
-
-<span class="sd">    Attributes:</span>
-<span class="sd">        xmlfile: Path to an xml file. Data will not be cached in memory.</span>
-<span class="sd">        up_orientation: (x, y ,z) vector that sets the hemisphere that the</span>
-<span class="sd">            BSDF material faces.  For materials that are symmetrical about</span>
-<span class="sd">            the HBSrf plane (like non-angled venitian blinds), this can be</span>
-<span class="sd">            any vector that is not perfectly normal to the HBSrf. For</span>
-<span class="sd">            asymmetrical materials like angled veneitan blinds, this variable</span>
-<span class="sd">            should be coordinated with the direction the HBSrfs are facing.</span>
-<span class="sd">            The default is set to (0.01, 0.01, 1.00), which should hopefully</span>
-<span class="sd">            not be perpendicular to any typical HBSrf.</span>
-<span class="sd">        thickness: Optional number to set the thickness of the BSDF material.</span>
-<span class="sd">            (default: 0)</span>
-<span class="sd">        modifier: Material modifier (Default: &quot;void&quot;).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xmlfile</span><span class="p">,</span> <span class="n">up_orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create BSDF material.&quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">),</span> <span class="s1">&#39;Invalid path: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">xmlfile</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xml&#39;</span><span class="p">),</span> <span class="s1">&#39;Invalid xml file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">xmlfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">)</span>
-
-        <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-
-        <span class="n">RadianceMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">material_type</span><span class="o">=</span><span class="s2">&quot;BSDF&quot;</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">up_orientation</span> <span class="ow">or</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># Dynamo!</span>
-                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">up_orientation</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">up_orientation</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">up_orientation</span><span class="o">.</span><span class="n">Z</span>
-            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-                <span class="c1"># raise the original error</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">up_orientation</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span> <span class="ow">or</span> <span class="mi">0</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">isGlassMaterial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Indicate if this object has glass Material.</span>
-
-<span class="sd">        This property will be used to separate the glass surfaces in a separate</span>
-<span class="sd">        file than the opaque surfaces.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">True</span>
-
-<div class="viewcode-block" id="BSDFMaterial.to_rad_string"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.bsdf.BSDFMaterial.to_rad_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_rad_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return full radiance definition.&quot;&quot;&quot;</span>
-        <span class="n">base_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_line</span> <span class="o">+</span> <span class="s2">&quot;6 </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> .</span><span class="se">\n</span><span class="s2">0</span><span class="se">\n</span><span class="s2">0</span><span class="se">\n</span><span class="s2">&quot;</span>
-
-        <span class="n">mat_def</span> <span class="o">=</span> <span class="n">base_string</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">,</span>
-                                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlfile</span><span class="p">),</span>
-                                 <span class="bp">self</span><span class="o">.</span><span class="n">up_orientation</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                                 <span class="bp">self</span><span class="o">.</span><span class="n">up_orientation</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                                 <span class="bp">self</span><span class="o">.</span><span class="n">up_orientation</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-
-        <span class="k">return</span> <span class="n">mat_def</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">minimal</span> <span class="k">else</span> <span class="n">mat_def</span></div></div>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="c1"># some test code</span>
-    <span class="n">material</span> <span class="o">=</span> <span class="n">BSDFMaterial</span><span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;C:/Users/Administrator/Documents/GitHub/honeybee/tests/room/xmls/clear.xml&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

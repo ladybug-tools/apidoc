@@ -1,0 +1,374 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.radiance.material.trans &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.material.trans</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Radiance Trans Material.</span>
+
+<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#Trans</span>
+<span class="sd">https://radiance-online.org//community/workshops/2010-freiburg/PDF/DavidMead.pdf</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
+<span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceNumber</span>
+
+
+<div class="viewcode-block" id="Trans"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.trans.Trans">[docs]</a><span class="k">class</span> <span class="nc">Trans</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Radiance translucent material.&quot;&quot;&quot;</span>
+
+    <span class="n">r_reflectance</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;r_reflectance&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">g_reflectance</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;g_reflectance&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">b_reflectance</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;b_reflectance&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">specularity</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;specularity&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">roughness</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;roughness&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">transmitted_diff</span> <span class="o">=</span> \
+        <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;transmitted_diff&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">transmitted_spec</span> <span class="o">=</span> \
+        <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;transmitted_spec&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">valid_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">r_reflectance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g_reflectance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b_reflectance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">specularity</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">roughness</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">transmitted_diff</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">transmitted_spec</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create trans material.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            name: Material name as a string. Do not use white space and special</span>
+<span class="sd">                character.</span>
+<span class="sd">            r_reflectance: Reflectance for red. The value should be between 0 and 1</span>
+<span class="sd">                (Default: 0).</span>
+<span class="sd">            g_reflectance: Reflectance for green. The value should be between 0 and 1</span>
+<span class="sd">                (Default: 0).</span>
+<span class="sd">            b_reflectance: Reflectance for blue. The value should be between 0 and 1</span>
+<span class="sd">                (Default: 0).</span>
+<span class="sd">            specularity: Fraction of specularity. Specularity fractions greater than 0.1</span>
+<span class="sd">                are not realistic (Default: 0).</span>
+<span class="sd">            roughness: Roughness is specified as the rms slope of surface facets. A</span>
+<span class="sd">                value of 0 corresponds to a perfectly smooth surface, and a value of 1</span>
+<span class="sd">                would be a very rough surface. Roughness values greater than 0.2 are not</span>
+<span class="sd">                very realistic. (Default: 0).</span>
+<span class="sd">            transmitted_diff: The transmitted diffuse component is the fraction of</span>
+<span class="sd">                transmitted light that is transmitted diffusely in as scattering fashion.</span>
+<span class="sd">            transmitted_spec: The transmitted specular component is the fraction of</span>
+<span class="sd">                transmitted light that is not diffusely scattered.</span>
+<span class="sd">            modifier: Material modifier (Default: &quot;void&quot;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">RadianceMaterial</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r_reflectance</span> <span class="o">=</span> <span class="n">r_reflectance</span>
+        <span class="sd">&quot;&quot;&quot;Reflectance for red. The value should be between 0 and 1 (Default: 0).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_reflectance</span> <span class="o">=</span> <span class="n">g_reflectance</span>
+        <span class="sd">&quot;&quot;&quot;Reflectance for green. The value should be between 0 and 1 (Default: 0).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_reflectance</span> <span class="o">=</span> <span class="n">b_reflectance</span>
+        <span class="sd">&quot;&quot;&quot;Reflectance for blue. The value should be between 0 and 1 (Default: 0).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">specularity</span> <span class="o">=</span> <span class="n">specularity</span>
+        <span class="sd">&quot;&quot;&quot;Fraction of specularity. Specularity fractions greater than 0.1 are not</span>
+<span class="sd">           realistic (Default: 0).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roughness</span> <span class="o">=</span> <span class="n">roughness</span>
+        <span class="sd">&quot;&quot;&quot;Roughness is specified as the rms slope of surface facets. A value of 0</span>
+<span class="sd">           corresponds to a perfectly smooth surface, and a value of 1 would be a</span>
+<span class="sd">           very rough surface. Roughness values greater than 0.2 are not very realistic.</span>
+<span class="sd">           (Default: 0).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transmitted_diff</span> <span class="o">=</span> <span class="n">transmitted_diff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transmitted_spec</span> <span class="o">=</span> <span class="n">transmitted_spec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_values</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Trans.from_reflected_spacularity"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.trans.Trans.from_reflected_spacularity">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_reflected_spacularity</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">r_reflectance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g_reflectance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b_reflectance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">reflected_spacularity</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">roughness</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">transmitted_diff</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">transmitted_spec</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create trans material from reflected spacularityself.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://radiance-online.org//community/workshops/2010-freiburg/PDF/DavidMead.pdf</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            name: Material name as a string. Do not use white space and special</span>
+<span class="sd">                character.</span>
+<span class="sd">            r_reflectance: Reflectance for red. The value should be between 0 and 1</span>
+<span class="sd">                (Default: 0).</span>
+<span class="sd">            g_reflectance: Reflectance for green. The value should be between 0 and 1</span>
+<span class="sd">                (Default: 0).</span>
+<span class="sd">            b_reflectance: Reflectance for blue. The value should be between 0 and 1</span>
+<span class="sd">                (Default: 0).</span>
+<span class="sd">            reflected_spacularity: Fraction of reflected spacular. The reflected</span>
+<span class="sd">                specularity of common uncoated glass is around .06, Matte = min 0,</span>
+<span class="sd">                Satin = suggested max 0.07 (Default: 0).</span>
+<span class="sd">            roughness: Roughness is specified as the rms slope of surface facets. A</span>
+<span class="sd">                value of 0 corresponds to a perfectly smooth surface, and a value of 1</span>
+<span class="sd">                would be a very rough surface. Roughness values greater than 0.2 are not</span>
+<span class="sd">                very realistic. (Default: 0).</span>
+<span class="sd">            transmitted_diff: The transmitted diffuse component is the fraction of</span>
+<span class="sd">                transmitted light that is transmitted diffusely in as scattering fashion.</span>
+<span class="sd">            transmitted_spec: The transmitted specular component is the fraction of</span>
+<span class="sd">                transmitted light that is not diffusely scattered.</span>
+<span class="sd">            modifier: Material modifier (Default: &quot;void&quot;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cr</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">cb</span><span class="p">,</span> <span class="n">rs</span><span class="p">,</span> <span class="n">roughness</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">ts</span> <span class="o">=</span> \
+            <span class="n">r_reflectance</span><span class="p">,</span> <span class="n">g_reflectance</span><span class="p">,</span> <span class="n">b_reflectance</span><span class="p">,</span> <span class="n">reflected_spacularity</span><span class="p">,</span> \
+            <span class="n">roughness</span><span class="p">,</span> <span class="n">transmitted_diff</span><span class="p">,</span> <span class="n">transmitted_spec</span>
+
+        <span class="n">rd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.265</span> <span class="o">*</span> <span class="n">cr</span> <span class="o">+</span> <span class="mf">0.670</span> <span class="o">*</span> <span class="n">cg</span> <span class="o">+</span> <span class="mf">0.065</span> <span class="o">*</span> <span class="n">cb</span><span class="p">)</span>
+
+        <span class="n">absorb</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">td</span> <span class="o">-</span> <span class="n">ts</span> <span class="o">-</span> <span class="n">rd</span> <span class="o">-</span> <span class="n">rs</span>
+
+        <span class="k">if</span> <span class="n">absorb</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">summ</span> <span class="o">=</span> <span class="n">td</span> <span class="o">+</span> <span class="n">ts</span> <span class="o">+</span> <span class="n">rd</span> <span class="o">+</span> <span class="n">rs</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Sum of Diffuse Transmission (</span><span class="si">%.3f</span><span class="s1">), Specular Transmission (</span><span class="si">%.3f</span><span class="s1">),&#39;</span> \
+                <span class="s1">&#39;Specular Reflection (</span><span class="si">%.3f</span><span class="s1">) and Diffuse Reflection (</span><span class="si">%.3f</span><span class="s1">) cannot be &#39;</span> \
+                <span class="s1">&#39;more than 1 (</span><span class="si">%.3f</span><span class="s1">).&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">rs</span><span class="p">,</span> <span class="n">rd</span><span class="p">,</span> <span class="n">summ</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># calculate the material</span>
+        <span class="n">a7</span> <span class="o">=</span> <span class="n">ts</span> <span class="o">/</span> <span class="p">(</span><span class="n">td</span> <span class="o">+</span> <span class="n">ts</span><span class="p">)</span>
+        <span class="n">a6</span> <span class="o">=</span> <span class="p">(</span><span class="n">td</span> <span class="o">+</span> <span class="n">ts</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">rd</span> <span class="o">+</span> <span class="n">td</span> <span class="o">+</span> <span class="n">ts</span><span class="p">)</span>
+        <span class="n">a5</span> <span class="o">=</span> <span class="n">roughness</span>
+        <span class="n">a4</span> <span class="o">=</span> <span class="n">rs</span>
+        <span class="n">a3</span> <span class="o">=</span> <span class="n">cb</span> <span class="o">/</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rs</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a6</span><span class="p">))</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="n">cg</span> <span class="o">/</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rs</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a6</span><span class="p">))</span>
+        <span class="n">a1</span> <span class="o">=</span> <span class="n">cr</span> <span class="o">/</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rs</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a6</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">a3</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">a2</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">a1</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;This material is physically impossible to create!</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="s1">&#39;You need to adjust the inputs for diffuse reflectance values.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">a4</span><span class="p">,</span> <span class="n">a5</span><span class="p">,</span> <span class="n">a6</span><span class="p">,</span> <span class="n">a7</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trans.from_string"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.trans.Trans.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a Radiance material from a string.</span>
+
+<span class="sd">        If the material has a modifier the modifier material should also be partof the</span>
+<span class="sd">        string or should be provided using modifier argument.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">modifier</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">base_material_data</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_string_input</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">material_string</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">r_reflectance</span><span class="p">,</span> <span class="n">g_reflectance</span><span class="p">,</span> <span class="n">b_reflectance</span><span class="p">,</span> <span class="n">specularity</span><span class="p">,</span> \
+            <span class="n">roughness</span><span class="p">,</span> <span class="n">transmitted_diff</span><span class="p">,</span> <span class="n">transmitted_spec</span> <span class="o">=</span> <span class="n">base_material_data</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">r_reflectance</span><span class="p">,</span> <span class="n">g_reflectance</span><span class="p">,</span> <span class="n">b_reflectance</span><span class="p">,</span> <span class="n">specularity</span><span class="p">,</span>
+                   <span class="n">roughness</span><span class="p">,</span> <span class="n">transmitted_diff</span><span class="p">,</span> <span class="n">transmitted_spec</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trans.from_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.trans.Trans.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make radiance material from json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;modifier&quot;: {} or void, // Material modifier</span>
+<span class="sd">            &quot;type&quot;: &quot;trans&quot;, // Material type</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // Material Name</span>
+<span class="sd">            &quot;r_reflectance&quot;: float, // Reflectance for red</span>
+<span class="sd">            &quot;g_reflectance&quot;: float, // Reflectance for green</span>
+<span class="sd">            &quot;b_reflectance&quot;: float, // Reflectance for blue</span>
+<span class="sd">            &quot;specularity&quot;: float, // Material specularity</span>
+<span class="sd">            &quot;roughness&quot;: float, // Material roughness</span>
+<span class="sd">            &quot;transmitted_diff&quot;: float,</span>
+<span class="sd">            &quot;transmitted_spec&quot;: float</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">modifier</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_analyze_json_input</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">rec_json</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                   <span class="n">r_reflectance</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;r_reflectance&quot;</span><span class="p">],</span>
+                   <span class="n">g_reflectance</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;g_reflectance&quot;</span><span class="p">],</span>
+                   <span class="n">b_reflectance</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;b_reflectance&quot;</span><span class="p">],</span>
+                   <span class="n">specularity</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;specularity&quot;</span><span class="p">],</span>
+                   <span class="n">roughness</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;roughness&quot;</span><span class="p">],</span>
+                   <span class="n">transmitted_diff</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;transmitted_diff&quot;</span><span class="p">],</span>
+                   <span class="n">transmitted_spec</span><span class="o">=</span><span class="n">rec_json</span><span class="p">[</span><span class="s2">&quot;transmitted_spec&quot;</span><span class="p">],</span>
+                   <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trans.by_single_reflect_value"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.trans.Trans.by_single_reflect_value">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">by_single_reflect_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">rgb_reflectance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">specularity</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                <span class="n">roughness</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">transmitted_diff</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                <span class="n">transmitted_spec</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;void&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create trans material with single reflectance value.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            name: Material name as a string. Do not use white space and special character</span>
+<span class="sd">            rgb_reflectance: Reflectance for red, green and blue. The value should be</span>
+<span class="sd">                between 0 and 1 (Default: 0).</span>
+<span class="sd">            specularity: Fraction of specularity. Specularity fractions greater than 0.1</span>
+<span class="sd">                are not realistic (Default: 0).</span>
+<span class="sd">            roughness: Roughness is specified as the rms slope of surface facets. A value</span>
+<span class="sd">                of 0 corresponds to a perfectly smooth surface, and a value of 1 would be</span>
+<span class="sd">                a very rough surface. Roughness values greater than 0.2 are not very</span>
+<span class="sd">                realistic. (Default: 0).</span>
+<span class="sd">            transmitted_diff: The transmitted diffuse component is the fraction of</span>
+<span class="sd">                transmitted light that is transmitted diffusely in as scattering fashion.</span>
+<span class="sd">            transmitted_spec: The transmitted specular component is the fraction of</span>
+<span class="sd">                transmitted light that is not diffusely scattered.</span>
+<span class="sd">            modifier: Material modifier (Default: &quot;void&quot;).</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            wallMaterial = trans.by_single_reflect_value(&quot;generic wall&quot;, .55)</span>
+<span class="sd">            print(wallMaterial)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">r_reflectance</span><span class="o">=</span><span class="n">rgb_reflectance</span><span class="p">,</span> <span class="n">g_reflectance</span><span class="o">=</span><span class="n">rgb_reflectance</span><span class="p">,</span>
+                   <span class="n">b_reflectance</span><span class="o">=</span><span class="n">rgb_reflectance</span><span class="p">,</span> <span class="n">specularity</span><span class="o">=</span><span class="n">specularity</span><span class="p">,</span>
+                   <span class="n">roughness</span><span class="o">=</span><span class="n">roughness</span><span class="p">,</span> <span class="n">transmitted_diff</span><span class="o">=</span><span class="n">transmitted_diff</span><span class="p">,</span>
+                   <span class="n">transmitted_spec</span><span class="o">=</span><span class="n">transmitted_spec</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="n">modifier</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">average_reflectance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate average reflectance of trans material.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">0.265</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_reflectance</span> <span class="o">+</span> <span class="mf">0.670</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_reflectance</span> <span class="o">+</span>
+                <span class="mf">0.065</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_reflectance</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">specularity</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">specularity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">specular_sampling_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Specular sampling threshold (-st).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transmitted_diff</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">transmitted_spec</span> <span class="o">*</span> \
+            <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.265</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_reflectance</span> <span class="o">+</span> <span class="mf">0.670</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_reflectance</span> <span class="o">+</span>
+                  <span class="mf">0.065</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_reflectance</span><span class="p">))</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">specularity</span>
+
+    <span class="k">def</span> <span class="nf">_update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;update value dictionaries.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">r_reflectance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_reflectance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_reflectance</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">specularity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">roughness</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transmitted_diff</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transmitted_spec</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="Trans.to_json"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.trans.Trans.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate radiance material to json</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;type&quot;: &quot;trans&quot;, // Material type</span>
+<span class="sd">            &quot;name&quot;: &quot;&quot;, // Material Name</span>
+<span class="sd">            &quot;r_reflectance&quot;: float, // Reflectance for red</span>
+<span class="sd">            &quot;g_reflectance&quot;: float, // Reflectance for green</span>
+<span class="sd">            &quot;b_reflectance&quot;: float, // Reflectance for blue</span>
+<span class="sd">            &quot;specularity&quot;: float, // Material specularity</span>
+<span class="sd">            &quot;roughness&quot;: float, // Material roughness</span>
+<span class="sd">            &quot;transmitted_diff&quot;: float,</span>
+<span class="sd">            &quot;transmitted_spec&quot;: float</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;modifier&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;trans&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;r_reflectance&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_reflectance</span><span class="p">,</span>
+            <span class="s2">&quot;g_reflectance&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_reflectance</span><span class="p">,</span>
+            <span class="s2">&quot;b_reflectance&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_reflectance</span><span class="p">,</span>
+            <span class="s2">&quot;specularity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">specularity</span><span class="p">,</span>
+            <span class="s2">&quot;roughness&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">roughness</span><span class="p">,</span>
+            <span class="s2">&quot;transmitted_diff&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">transmitted_diff</span><span class="p">,</span>
+            <span class="s2">&quot;transmitted_spec&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">transmitted_spec</span>
+        <span class="p">}</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../../index.html">
+    <img class="logo" src="../../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

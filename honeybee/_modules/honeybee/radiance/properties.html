@@ -31,8 +31,179 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.properties</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Radiance Properties for HBSurfaces.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">.material.plastic</span> <span class="k">import</span> <span class="n">BlackMaterial</span>
+<span class="kn">from</span> <span class="nn">.material.glow</span> <span class="k">import</span> <span class="n">WhiteGlow</span>
+
+
+<div class="viewcode-block" id="RadianceProperties"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.properties.RadianceProperties">[docs]</a><span class="k">class</span> <span class="nc">RadianceProperties</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Radiance properties for HBSurface.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        material: Radiance material. Use honeybee.radiace.material to create a</span>
+<span class="sd">            radiance material (Default: None).</span>
+<span class="sd">        black_material: A material that will be used for blacking out this surface or in</span>
+<span class="sd">            direct daylight calculations. By default black material is set to black color</span>
+<span class="sd">            with no reflectance. In cases such as interior glass black material should be</span>
+<span class="sd">            set to the original glass material.</span>
+<span class="sd">        glow_material: A material that will be used for daylight coefficeint calculation.</span>
+<span class="sd">            By default black material is set to whitw glow.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_material&#39;</span><span class="p">,</span> <span class="s1">&#39;_black_material&#39;</span><span class="p">,</span> <span class="s1">&#39;_glow_material&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_is_black_material_modified&#39;</span><span class="p">,</span> <span class="s1">&#39;_is_glow_material_modified&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">black_material</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">glow_material</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create radiance properties for surface.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_black_material_modified</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_glow_material_modified</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">material</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">black_material</span> <span class="o">=</span> <span class="n">black_material</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">glow_material</span> <span class="o">=</span> <span class="n">glow_material</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isRadianceProperties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate this object is RadianceProperties.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_black_material_set_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if black material is set by user.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_black_material_modified</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_glow_material_set_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if glow material is set by user.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_glow_material_modified</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">material</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return Radiance Material.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_material</span>
+
+    <span class="nd">@material</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">material</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">material</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set Radiance material.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">material</span><span class="p">:</span>
+            <span class="c1"># chek if radiance material is radiance material</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="s1">&#39;isRadianceMaterial&#39;</span><span class="p">),</span> \
+                <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Expected RadianceMaterial not </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">material</span><span class="p">)))</span>
+            <span class="c1"># set new material</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_material</span> <span class="o">=</span> <span class="n">material</span>
+            <span class="c1"># update name for black and glow materials</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_black_material_set_by_user</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">black_material</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">material</span><span class="o">.</span><span class="n">name</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="c1"># black material is not assigned yet</span>
+                    <span class="k">pass</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_glow_material_set_by_user</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">glow_material</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">material</span><span class="o">.</span><span class="n">name</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="c1"># glow material is not assigned yet</span>
+                    <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_material</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">black_material</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Radiance black material.</span>
+
+<span class="sd">        This material is used for direct daylight calculation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_black_material</span>
+
+    <span class="nd">@black_material</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">black_material</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">material</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set Radiance black_materialblack material.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            material: A radiance material. Default material is BlackMaterial.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">material</span><span class="p">:</span>
+            <span class="c1"># chek if radiance material is radiance material</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="s1">&#39;isRadianceMaterial&#39;</span><span class="p">),</span> \
+                <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Expected RadianceMaterial not </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">material</span><span class="p">)))</span>
+            <span class="c1"># set new material</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_black_material</span> <span class="o">=</span> <span class="n">material</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_black_material_modified</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_black_material</span> <span class="o">=</span> <span class="n">BlackMaterial</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_black_material</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_black_material_modified</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">glow_material</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Radiance glow material.</span>
+
+<span class="sd">        This material will be used for daylight coefficeint calculation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_glow_material</span>
+
+    <span class="nd">@glow_material</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">glow_material</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">material</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set Radiance glow material material.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            material: A radiance material. Default material is GlowMaterial.</span>
+<span class="sd">            rename_glow_material: Rename default glow material to the same name as</span>
+<span class="sd">            radiance material (Default: True).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">material</span><span class="p">:</span>
+            <span class="c1"># chek if radiance material is radiance material</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="s1">&#39;isRadianceMaterial&#39;</span><span class="p">),</span> \
+                <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Expected RadianceMaterial not </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">material</span><span class="p">)))</span>
+            <span class="c1"># set new material</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_glow_material</span> <span class="o">=</span> <span class="n">material</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_glow_material_modified</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_glow_material</span> <span class="o">=</span> <span class="n">WhiteGlow</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_glow_material</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_glow_material_modified</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="RadianceProperties.duplicate"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.properties.RadianceProperties.duplicate">[docs]</a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Duplicate RadianceProperties.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RadianceProperties.to_rad_string"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.properties.RadianceProperties.to_rad_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_rad_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get Radiance definition for honeybee surfaces if any.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RadianceProperties.ToString"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.properties.RadianceProperties.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represnt Radiance properties.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;RadianceProp::Material.Unset&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;RadianceProp::</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">rp</span> <span class="o">=</span> <span class="n">RadianceProperties</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rp</span><span class="o">.</span><span class="n">is_material_set_by_user</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,119 +264,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.properties</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Radiance Properties for HBSurfaces.&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-
-
-<div class="viewcode-block" id="RadianceProperties"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.properties.RadianceProperties">[docs]</a><span class="k">class</span> <span class="nc">RadianceProperties</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Radiance properties for HBSurface.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        radiance_material: Radiance material for this surfcae.Use</span>
-<span class="sd">            honeybee.radiace.material to create a radiance material (Default: None).</span>
-<span class="sd">        is_material_set_by_user: Set to True if you don&#39;t want material automatically</span>
-<span class="sd">            overwritten by honeybee in cases like solve adjacencies.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_radiance_material&#39;</span><span class="p">,</span> <span class="s1">&#39;_is_material_set_by_user&#39;</span><span class="p">,</span> <span class="s1">&#39;_hb_surfaces&#39;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radiance_material</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_material_set_by_user</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create radiance properties for surface.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">radiance_material</span> <span class="o">=</span> <span class="p">(</span><span class="n">radiance_material</span><span class="p">,</span> <span class="n">is_material_set_by_user</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">isRadianceProperties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Indicate this object is RadianceProperties.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">True</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">radiance_material</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return Radiance Material.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_radiance_material</span>
-
-    <span class="nd">@radiance_material</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">radiance_material</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set Radiance material and if it is set by user.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            values: A name or a tuple as (radiance_material, isSetByUser)</span>
-
-<span class="sd">        Usage:</span>
-
-<span class="sd">            radiance_material = PlasticMaterial.by_single_reflect_value(</span>
-<span class="sd">                &#39;wall_material&#39;, 0.55)</span>
-<span class="sd">            HBSrf.radiance_material = (radiance_material, True)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># check if user passed a tuple</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="s1">&#39;isRadianceMaterial&#39;</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span>  <span class="c1"># The user passed only Radiance Material</span>
-            <span class="n">_newMaterial</span><span class="p">,</span> <span class="n">_is_material_set_by_user</span> <span class="o">=</span> <span class="n">values</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="c1"># user is passing a list or tuple with one ValueError</span>
-            <span class="n">_newMaterial</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="c1"># if not indicated assume it is not set by user</span>
-            <span class="n">_is_material_set_by_user</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-            <span class="c1"># user just passed a single value which is the material</span>
-            <span class="n">_newMaterial</span> <span class="o">=</span> <span class="n">values</span>
-            <span class="c1"># if not indicated assume it is not set by user</span>
-            <span class="n">_is_material_set_by_user</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">finally</span><span class="p">:</span>
-
-            <span class="k">if</span> <span class="n">_newMaterial</span><span class="p">:</span>
-                <span class="c1"># chek if radiance material is radiance material</span>
-                <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_newMaterial</span><span class="p">,</span> <span class="s1">&#39;isRadianceMaterial&#39;</span><span class="p">),</span> \
-                    <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Expected RadianceMaterial not </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_newMaterial</span><span class="p">))</span>
-
-                <span class="c1"># set new material</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_radiance_material</span> <span class="o">=</span> <span class="n">_newMaterial</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_is_material_set_by_user</span> <span class="o">=</span> <span class="n">_is_material_set_by_user</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_radiance_material</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_is_material_set_by_user</span> <span class="o">=</span> <span class="kc">False</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_material_set_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check if material is set by user.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_material_set_by_user</span>
-
-<div class="viewcode-block" id="RadianceProperties.duplicate"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.properties.RadianceProperties.duplicate">[docs]</a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Duplicate RadianceProperties.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="RadianceProperties.to_rad_string"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.properties.RadianceProperties.to_rad_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_rad_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get radianace definition for honeybee surfaces if any.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="RadianceProperties.ToString"><a class="viewcode-back" href="../../../honeybee.radiance.html#honeybee.radiance.properties.RadianceProperties.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString method.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Represnt Radiance properties.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_material</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;RadianceProp::Material.Unset&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;RadianceProp::</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">radiance_material</span><span class="o">.</span><span class="n">name</span></div>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">rp</span> <span class="o">=</span> <span class="n">RadianceProperties</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">rp</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">rp</span><span class="o">.</span><span class="n">is_material_set_by_user</span><span class="p">)</span>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

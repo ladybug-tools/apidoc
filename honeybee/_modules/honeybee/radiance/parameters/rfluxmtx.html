@@ -31,8 +31,40 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.parameters.rfluxmtx</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;Radiance rfluxmtx parameters.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.rtrace</span> <span class="k">import</span> <span class="n">RtraceParameters</span>
+<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
+<span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceNumber</span>
+
+
+<div class="viewcode-block" id="RfluxmtxParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.rfluxmtx.RfluxmtxParameters">[docs]</a><span class="nd">@frozen</span>
+<span class="k">class</span> <span class="nc">RfluxmtxParameters</span><span class="p">(</span><span class="n">RtraceParameters</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rfluxmtx parameters.&quot;&quot;&quot;</span>
+
+    <span class="n">sampling_rays_count</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;number of sampling rays&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init parameters.&quot;&quot;&quot;</span>
+        <span class="n">RtraceParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quality</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">descriptive_name</span><span class="o">=</span><span class="s1">&#39;Sampling Rays Count&#39;</span><span class="p">,</span>
+                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s2">&quot;sampling_rays_count&quot;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling_rays_count</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;-c int Number of sampling ray counts.&quot;&quot;&quot;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,39 +125,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.parameters.rfluxmtx</h1><div class="highlight"><pre>
-<span></span><span class="c1"># coding=utf-8</span>
-<span class="sd">&quot;&quot;&quot;Radiance rfluxmtx parameters.&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">.gridbased</span> <span class="k">import</span> <span class="n">GridBasedParameters</span>
-<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
-<span class="kn">from</span> <span class="nn">..datatype</span> <span class="k">import</span> <span class="n">RadianceNumber</span>
-
-
-<div class="viewcode-block" id="RfluxmtxParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.rfluxmtx.RfluxmtxParameters">[docs]</a><span class="nd">@frozen</span>
-<span class="k">class</span> <span class="nc">RfluxmtxParameters</span><span class="p">(</span><span class="n">GridBasedParameters</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Rfluxmtx parameters.&quot;&quot;&quot;</span>
-
-    <span class="n">sampling_rays_count</span> <span class="o">=</span> <span class="n">RadianceNumber</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;number of sampling rays&#39;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Init parameters.&quot;&quot;&quot;</span>
-        <span class="n">GridBasedParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quality</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">descriptive_name</span><span class="o">=</span><span class="s1">&#39;Sampling Rays Count&#39;</span><span class="p">,</span>
-                                 <span class="n">attribute_name</span><span class="o">=</span><span class="s2">&quot;sampling_rays_count&quot;</span><span class="p">,</span> <span class="n">num_type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sampling_rays_count</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="sd">&quot;&quot;&quot;-c int Number of sampling ray counts.&quot;&quot;&quot;</span></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

@@ -31,8 +31,54 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.parameters.raBmp</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">from</span> <span class="nn">._advancedparametersbase</span> <span class="k">import</span> <span class="n">AdvancedRadianceParameters</span>
+<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
+
+
+<div class="viewcode-block" id="RaBmpParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.raBmp.RaBmpParameters">[docs]</a><span class="nd">@frozen</span>
+<span class="k">class</span> <span class="nc">RaBmpParameters</span><span class="p">(</span><span class="n">AdvancedRadianceParameters</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_grayscale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reverse_conversion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exposure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crt_primaries</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="n">AdvancedRadianceParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;create an 8-bit gray scale image&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;create_grayscale&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_grayscale</span> <span class="o">=</span> <span class="n">create_grayscale</span>
+        <span class="sd">&quot;&quot;&quot;Create an eight bit grayscale image instead of a color image.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;convert a bitmap to hdr&#39;</span><span class="p">,</span>
+                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;reverse_conversion&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reverse_conversion</span> <span class="o">=</span> <span class="n">reverse_conversion</span>
+        <span class="sd">&quot;&quot;&quot;Do a reverse conversion and convert bitmap to hdr&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;exposure value&#39;</span><span class="p">,</span> <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;exposure&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exposure</span> <span class="o">=</span> <span class="n">exposure</span>
+        <span class="sd">&quot;&quot;&quot;Specify tonemapping method or exposure value. Accepted tone mapping methods</span>
+<span class="sd">        are &#39;auto&#39;, &#39;human&#39; or &#39;linear. Accepted exposure values are any number prefixed</span>
+<span class="sd">        with a + or - sign (e.g. -1.2, +1.4, -3.4 etc).&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma correction&#39;</span><span class="p">,</span> <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;gamma&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
+        <span class="sd">&quot;&quot;&quot;Gamma correction for the monitor. Default value is 2.2&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_tuple</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;crt primaries&#39;</span><span class="p">,</span> <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;crt_primaries&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crt_primaries</span> <span class="o">=</span> <span class="n">crt_primaries</span>
+        <span class="sd">&quot;&quot;&quot;CRT color output primaries.&quot;&quot;&quot;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,53 +139,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for honeybee.radiance.parameters.raBmp</h1><div class="highlight"><pre>
-<span></span><span class="c1"># coding=utf-8</span>
-<span class="kn">from</span> <span class="nn">._advancedparametersbase</span> <span class="k">import</span> <span class="n">AdvancedRadianceParameters</span>
-<span class="kn">from</span> <span class="nn">._frozen</span> <span class="k">import</span> <span class="n">frozen</span>
-
-
-<div class="viewcode-block" id="RaBmpParameters"><a class="viewcode-back" href="../../../../honeybee.radiance.parameters.html#honeybee.radiance.parameters.raBmp.RaBmpParameters">[docs]</a><span class="nd">@frozen</span>
-<span class="k">class</span> <span class="nc">RaBmpParameters</span><span class="p">(</span><span class="n">AdvancedRadianceParameters</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_grayscale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reverse_conversion</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exposure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crt_primaries</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-
-        <span class="n">AdvancedRadianceParameters</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;create an 8-bit gray scale image&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;create_grayscale&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_grayscale</span> <span class="o">=</span> <span class="n">create_grayscale</span>
-        <span class="sd">&quot;&quot;&quot;Create an eight bit grayscale image instead of a color image.&quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_bool_flag</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;convert a bitmap to hdr&#39;</span><span class="p">,</span>
-                                    <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;reverse_conversion&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reverse_conversion</span> <span class="o">=</span> <span class="n">reverse_conversion</span>
-        <span class="sd">&quot;&quot;&quot;Do a reverse conversion and convert bitmap to hdr&quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_value</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;exposure value&#39;</span><span class="p">,</span> <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;exposure&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">exposure</span> <span class="o">=</span> <span class="n">exposure</span>
-        <span class="sd">&quot;&quot;&quot;Specify tonemapping method or exposure value. Accepted tone mapping methods</span>
-<span class="sd">        are &#39;auto&#39;, &#39;human&#39; or &#39;linear. Accepted exposure values are any number prefixed</span>
-<span class="sd">        with a + or - sign (e.g. -1.2, +1.4, -3.4 etc).&quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_number</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma correction&#39;</span><span class="p">,</span> <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;gamma&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
-        <span class="sd">&quot;&quot;&quot;Gamma correction for the monitor. Default value is 2.2&quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_radiance_tuple</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;crt primaries&#39;</span><span class="p">,</span> <span class="n">attribute_name</span><span class="o">=</span><span class="s1">&#39;crt_primaries&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">crt_primaries</span> <span class="o">=</span> <span class="n">crt_primaries</span>
-        <span class="sd">&quot;&quot;&quot;CRT color output primaries.&quot;&quot;&quot;</span></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

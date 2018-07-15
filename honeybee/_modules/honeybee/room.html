@@ -31,68 +31,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../index.html">
-    <img class="logo" src="../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -110,6 +51,7 @@
 <span class="kn">from</span> <span class="nn">.hbzone</span> <span class="k">import</span> <span class="n">HBZone</span>
 <span class="kn">from</span> <span class="nn">.vectormath.euclid</span> <span class="k">import</span> <span class="n">Point3</span><span class="p">,</span> <span class="n">Vector3</span>
 <span class="kn">from</span> <span class="nn">.radiance.view</span> <span class="k">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">.radiance.analysisgrid</span> <span class="k">import</span> <span class="n">AnalysisGrid</span>
 
 
 <span class="c1"># TODO: Room should be re-calculated on change of origin, width, depth, height,</span>
@@ -136,9 +78,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_z_axis</span> <span class="o">=</span> <span class="n">Vector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_x_axis</span> <span class="o">=</span> <span class="n">Vector3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotate_around</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_zAxis</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">rotation_angle</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_z_axis</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">rotation_angle</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y_axis</span> <span class="o">=</span> <span class="n">Vector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rotate_around</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_zAxis</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">rotation_angle</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_z_axis</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">rotation_angle</span><span class="p">))</span>
 
         <span class="c1"># create 8 points</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__calculate_vertices</span><span class="p">()</span>
@@ -206,19 +148,21 @@
 
         <span class="n">z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span>
 
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_location</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
-                     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">v_values</span>
-                     <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">u_values</span>
-                     <span class="p">)</span></div>
+        <span class="n">points</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_location</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">v_values</span>
+                       <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">u_values</span>
+                       <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">AnalysisGrid</span><span class="o">.</span><span class="n">from_points_and_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Room.get_location"><a class="viewcode-back" href="../../honeybee.html#honeybee.room.Room.get_location">[docs]</a>    <span class="k">def</span> <span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get location as a point based on u, v, z.</span>
 
 <span class="sd">        u, v, z must be between 0..1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xAxis</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yAxis</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zAxis</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_axis</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_axis</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_axis</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span></div>
 
 <div class="viewcode-block" id="Room.generate_interior_view"><a class="viewcode-back" href="../../honeybee.html#honeybee.room.Room.generate_interior_view">[docs]</a>    <span class="k">def</span> <span class="nf">generate_interior_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -261,7 +205,7 @@
 <span class="sd">                actual image will be lifted up from the specified view.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">View</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_location</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span>
-                 <span class="bp">self</span><span class="o">.</span><span class="n">_yAxis</span><span class="o">.</span><span class="n">rotate_around</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_zAxis</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">)),</span>
+                 <span class="bp">self</span><span class="o">.</span><span class="n">_y_axis</span><span class="o">.</span><span class="n">rotate_around</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_z_axis</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">)),</span>
                  <span class="n">view_up_vector</span><span class="p">,</span> <span class="n">view_type</span><span class="p">,</span> <span class="n">view_h_size</span><span class="p">,</span> <span class="n">view_v_size</span><span class="p">,</span>
                  <span class="n">x_resolution</span><span class="p">,</span> <span class="n">y_resolution</span><span class="p">,</span> <span class="n">view_shift</span><span class="p">,</span> <span class="n">view_lift</span><span class="p">)</span>
 
@@ -281,13 +225,13 @@
 
     <span class="k">def</span> <span class="nf">__calculate_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pt0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pt1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xAxis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pt2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yAxis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pt3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yAxis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pt4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zAxis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pt5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zAxis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pt6</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zAxis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pt7</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt3</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zAxis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt6</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt7</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt3</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z_axis</span>
 
     <span class="k">def</span> <span class="nf">__create_hb_surfaces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">floor</span> <span class="o">=</span> <span class="n">HBSurface</span><span class="p">(</span>
@@ -312,8 +256,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

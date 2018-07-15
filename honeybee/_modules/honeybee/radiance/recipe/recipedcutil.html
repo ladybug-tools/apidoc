@@ -31,84 +31,27 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../../../index.html">
-    <img class="logo" src="../../../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
             
   <h1>Source code for honeybee.radiance.recipe.recipedcutil</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;A collection of useful methods for daylight-coeff recipes.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">...futil</span> <span class="k">import</span> <span class="n">preparedir</span><span class="p">,</span> <span class="n">copy_files_to_folder</span>
 <span class="kn">from</span> <span class="nn">..command.rfluxmtx</span> <span class="k">import</span> <span class="n">Rfluxmtx</span>
 <span class="kn">from</span> <span class="nn">..command.dctimestep</span> <span class="k">import</span> <span class="n">Dctimestep</span>
 <span class="kn">from</span> <span class="nn">..command.rmtxop</span> <span class="k">import</span> <span class="n">Rmtxop</span><span class="p">,</span> <span class="n">RmtxopMatrix</span>
 <span class="kn">from</span> <span class="nn">..command.gendaymtx</span> <span class="k">import</span> <span class="n">Gendaymtx</span>
 <span class="kn">from</span> <span class="nn">..sky.sunmatrix</span> <span class="k">import</span> <span class="n">SunMatrix</span>
+<span class="kn">from</span> <span class="nn">..sky.analemma</span> <span class="k">import</span> <span class="n">AnalemmaReversed</span> <span class="k">as</span> <span class="n">Analemma</span>
 <span class="kn">from</span> <span class="nn">..command.oconv</span> <span class="k">import</span> <span class="n">Oconv</span>
 <span class="kn">from</span> <span class="nn">..command.rpict</span> <span class="k">import</span> <span class="n">Rpict</span>
 <span class="kn">from</span> <span class="nn">..command.rcontrib</span> <span class="k">import</span> <span class="n">Rcontrib</span>
 <span class="kn">from</span> <span class="nn">..command.vwrays</span> <span class="k">import</span> <span class="n">Vwrays</span>
-<span class="kn">from</span> <span class="nn">..parameters.imagebased</span> <span class="k">import</span> <span class="n">ImageBasedParameters</span>
+<span class="kn">from</span> <span class="nn">..parameters.rpict</span> <span class="k">import</span> <span class="n">RpictParameters</span>
 <span class="kn">from</span> <span class="nn">.recipeutil</span> <span class="k">import</span> <span class="n">glz_srf_to_window_group</span>
 <span class="kn">from</span> <span class="nn">.parameters</span> <span class="k">import</span> <span class="n">get_radiance_parameters_grid_based</span><span class="p">,</span> \
     <span class="n">get_radiance_parameters_image_based</span>
@@ -152,6 +95,9 @@
 
     <span class="n">wgfs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="s1">&#39;wgroup&#39;</span><span class="p">)</span>
+    <span class="n">bsdfs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">bsdffolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="s1">&#39;bsdf&#39;</span><span class="p">)</span>
+    <span class="n">preparedir</span><span class="p">(</span><span class="n">bsdffolder</span><span class="p">,</span> <span class="n">remove_content</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="c1"># write black material to folder</span>
     <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">wgf</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">wgs</span><span class="p">):</span>
         <span class="c1"># write it as a black geometry</span>
@@ -166,10 +112,16 @@
         <span class="n">wgfstate</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">scount</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">wg</span><span class="o">.</span><span class="n">states</span><span class="p">):</span>
             <span class="n">wg</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">scount</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">wg</span><span class="o">.</span><span class="n">radiance_material</span><span class="p">,</span> <span class="s1">&#39;xmlfile&#39;</span><span class="p">):</span>
+                <span class="n">bsdfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wg</span><span class="o">.</span><span class="n">radiance_material</span><span class="o">.</span><span class="n">xmlfile</span><span class="p">)</span>
+
             <span class="n">wgfst</span> <span class="o">=</span> <span class="n">wgf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">..</span><span class="si">%s</span><span class="s1">.rad&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
             <span class="n">wgfstate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wgfst</span><span class="p">)</span>
+
         <span class="n">wg</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># set the state back to 0</span>
         <span class="n">wgfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Files</span><span class="p">(</span><span class="n">wgfstate</span><span class="p">,</span> <span class="p">(</span><span class="n">wgbm</span><span class="p">,</span> <span class="n">wgbf</span><span class="p">)))</span>
+
+        <span class="n">copy_files_to_folder</span><span class="p">(</span><span class="n">bsdfs</span><span class="p">,</span> <span class="n">bsdffolder</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">opqf</span><span class="p">,</span> <span class="n">glzf</span><span class="p">,</span> <span class="n">wgfs</span></div>
 
@@ -218,15 +170,19 @@
     <span class="c1"># # 2.2. Create sun matrix</span>
     <span class="n">sm</span> <span class="o">=</span> <span class="n">SunMatrix</span><span class="p">(</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">wea</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">north</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">hoys</span><span class="p">,</span>
                    <span class="n">sky_matrix</span><span class="o">.</span><span class="n">sky_type</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">suffix</span><span class="p">)</span>
-    <span class="n">analemma</span><span class="p">,</span> <span class="n">sunlist</span><span class="p">,</span> <span class="n">analemmaMtx</span> <span class="o">=</span> \
-        <span class="n">sm</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s1">&#39;sky&#39;</span><span class="p">),</span> <span class="n">reuse</span><span class="o">=</span><span class="n">reuse</span><span class="p">)</span>
 
-    <span class="n">of</span> <span class="o">=</span> <span class="n">OutputFiles</span><span class="p">(</span><span class="n">sky_mtx_total</span><span class="p">,</span> <span class="n">sky_mtx_direct</span><span class="p">,</span> <span class="n">analemma</span><span class="p">,</span> <span class="n">sunlist</span><span class="p">,</span> <span class="n">analemmaMtx</span><span class="p">)</span>
+    <span class="n">analemma_mtx</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s1">&#39;sky&#39;</span><span class="p">),</span> <span class="n">reuse</span><span class="o">=</span><span class="n">reuse</span><span class="p">)</span>
+    <span class="n">ann</span> <span class="o">=</span> <span class="n">Analemma</span><span class="o">.</span><span class="n">from_wea</span><span class="p">(</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">wea</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">hoys</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">north</span><span class="p">)</span>
+    <span class="n">ann</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s1">&#39;sky&#39;</span><span class="p">))</span>
+    <span class="n">sunlist</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/sky&#39;</span><span class="p">,</span> <span class="n">ann</span><span class="o">.</span><span class="n">sunlist_file</span><span class="p">)</span>
+    <span class="n">analemma</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/sky&#39;</span><span class="p">,</span> <span class="n">ann</span><span class="o">.</span><span class="n">analemma_file</span><span class="p">)</span>
+
+    <span class="n">of</span> <span class="o">=</span> <span class="n">OutputFiles</span><span class="p">(</span><span class="n">sky_mtx_total</span><span class="p">,</span> <span class="n">sky_mtx_direct</span><span class="p">,</span> <span class="n">analemma</span><span class="p">,</span> <span class="n">sunlist</span><span class="p">,</span> <span class="n">analemma_mtx</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">SkyCommands</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">of</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_commands_radiation_sky"><a class="viewcode-back" href="../../../../honeybee.radiance.recipe.html#honeybee.radiance.recipe.recipedcutil.get_commands_radiation_sky">[docs]</a><span class="k">def</span> <span class="nf">get_commands_radiation_sky</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="get_commands_radiation_sky"><a class="viewcode-back" href="../../../../honeybee.radiance.recipe.html#honeybee.radiance.recipe.recipedcutil.get_commands_radiation_sky">[docs]</a><span class="k">def</span> <span class="nf">get_commands_radiation_sky</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">simplified</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get list of commands to generate the skies.</span>
 
 <span class="sd">    1. sky matrix diffuse</span>
@@ -238,9 +194,14 @@
 <span class="sd">    Returns a namedtuple for (output_files, commands)</span>
 <span class="sd">    output_files in a namedtuple itself (sky_mtx_total, sky_mtx_direct, analemma,</span>
 <span class="sd">        sunlist, analemmaMtx).</span>
+
+<span class="sd">    Simplified method will only calculate radiation under patched sky.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">OutputFiles</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;OutputFiles&#39;</span><span class="p">,</span>
-                             <span class="s1">&#39;sky_mtxDiff analemma sunlist analemmaMtx&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">simplified</span><span class="p">:</span>
+        <span class="n">OutputFiles</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;OutputFiles&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;sky_mtxDiff analemma sunlist analemmaMtx&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">OutputFiles</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;OutputFiles&#39;</span><span class="p">,</span> <span class="s1">&#39;sky_mtxDiff&#39;</span><span class="p">)</span>
 
     <span class="n">SkyCommands</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;SkyCommands&#39;</span><span class="p">,</span> <span class="s1">&#39;output_files commands&#39;</span><span class="p">)</span>
 
@@ -251,21 +212,27 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;You must use a SkyMatrix to generate the sky.&#39;</span><span class="p">)</span>
 
     <span class="c1"># # 2.1.Create sky matrix.</span>
-    <span class="n">sky_matrix</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">sky_matrix</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">simplified</span> <span class="k">else</span> <span class="mi">0</span>
     <span class="n">sky_mtx_diff</span> <span class="o">=</span> <span class="s1">&#39;sky/</span><span class="si">{}</span><span class="s1">.smx&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="n">gdm</span> <span class="o">=</span> <span class="n">skymtx_to_gendaymtx</span><span class="p">(</span><span class="n">sky_matrix</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">gdm</span><span class="p">:</span>
-        <span class="n">note</span> <span class="o">=</span> <span class="s1">&#39;:: diffuse sky matrix&#39;</span>
+        <span class="n">note</span> <span class="o">=</span> <span class="s1">&#39;:: diffuse sky matrix&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">simplified</span> <span class="k">else</span> <span class="s1">&#39;:: total sky matrix&#39;</span>
         <span class="n">commands</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">note</span><span class="p">,</span> <span class="n">gdm</span><span class="p">))</span>
     <span class="n">sky_matrix</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="c1"># # 2.2. Create sun matrix</span>
-    <span class="n">sm</span> <span class="o">=</span> <span class="n">SunMatrix</span><span class="p">(</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">wea</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">north</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">hoys</span><span class="p">,</span>
-                   <span class="n">sky_matrix</span><span class="o">.</span><span class="n">sky_type</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">suffix</span><span class="p">)</span>
-    <span class="n">analemma</span><span class="p">,</span> <span class="n">sunlist</span><span class="p">,</span> <span class="n">analemmaMtx</span> <span class="o">=</span> \
-        <span class="n">sm</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s1">&#39;sky&#39;</span><span class="p">),</span> <span class="n">reuse</span><span class="o">=</span><span class="n">reuse</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">simplified</span><span class="p">:</span>
+        <span class="c1"># # 2.2. Create sun matrix</span>
+        <span class="n">sm</span> <span class="o">=</span> <span class="n">SunMatrix</span><span class="p">(</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">wea</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">north</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">hoys</span><span class="p">,</span>
+                       <span class="n">sky_matrix</span><span class="o">.</span><span class="n">sky_type</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">suffix</span><span class="p">)</span>
+        <span class="n">analemma_mtx</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s1">&#39;sky&#39;</span><span class="p">),</span> <span class="n">reuse</span><span class="o">=</span><span class="n">reuse</span><span class="p">)</span>
+        <span class="n">ann</span> <span class="o">=</span> <span class="n">Analemma</span><span class="o">.</span><span class="n">from_wea</span><span class="p">(</span><span class="n">sky_matrix</span><span class="o">.</span><span class="n">wea</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">hoys</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">.</span><span class="n">north</span><span class="p">)</span>
+        <span class="n">ann</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s1">&#39;sky&#39;</span><span class="p">))</span>
+        <span class="n">sunlist</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/sky&#39;</span><span class="p">,</span> <span class="n">ann</span><span class="o">.</span><span class="n">sunlist_file</span><span class="p">)</span>
+        <span class="n">analemma</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/sky&#39;</span><span class="p">,</span> <span class="n">ann</span><span class="o">.</span><span class="n">analemma_file</span><span class="p">)</span>
 
-    <span class="n">of</span> <span class="o">=</span> <span class="n">OutputFiles</span><span class="p">(</span><span class="n">sky_mtx_diff</span><span class="p">,</span> <span class="n">analemma</span><span class="p">,</span> <span class="n">sunlist</span><span class="p">,</span> <span class="n">analemmaMtx</span><span class="p">)</span>
+        <span class="n">of</span> <span class="o">=</span> <span class="n">OutputFiles</span><span class="p">(</span><span class="n">sky_mtx_diff</span><span class="p">,</span> <span class="n">analemma</span><span class="p">,</span> <span class="n">sunlist</span><span class="p">,</span> <span class="n">analemma_mtx</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">of</span> <span class="o">=</span> <span class="n">OutputFiles</span><span class="p">(</span><span class="n">sky_mtx_diff</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">SkyCommands</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">of</span><span class="p">)</span></div>
 
@@ -275,7 +242,7 @@
 <div class="viewcode-block" id="get_commands_scene_daylight_coeff"><a class="viewcode-back" href="../../../../honeybee.radiance.recipe.html#honeybee.radiance.recipe.recipedcutil.get_commands_scene_daylight_coeff">[docs]</a><span class="k">def</span> <span class="nf">get_commands_scene_daylight_coeff</span><span class="p">(</span>
         <span class="n">project_name</span><span class="p">,</span> <span class="n">sky_density</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">,</span> <span class="n">skyfiles</span><span class="p">,</span> <span class="n">inputfiles</span><span class="p">,</span>
         <span class="n">points_file</span><span class="p">,</span> <span class="n">total_point_count</span><span class="p">,</span> <span class="n">rfluxmtx_parameters</span><span class="p">,</span> <span class="n">reuse_daylight_mtx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">total_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">radiation_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">total_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">radiation_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">simplified</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get commands for the static windows in the scene.</span>
 
 <span class="sd">    Use get_commands_w_groups_daylight_coeff to get the commands for the rest of the</span>
@@ -318,7 +285,7 @@
         <span class="n">project_name</span><span class="p">,</span> <span class="n">sky_density</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">,</span> <span class="n">window_group</span><span class="p">,</span> <span class="n">skyfiles</span><span class="p">,</span>
         <span class="n">inputfiles</span><span class="p">,</span> <span class="n">points_file</span><span class="p">,</span> <span class="n">total_point_count</span><span class="p">,</span> <span class="n">blkmaterial</span><span class="p">,</span> <span class="n">wgsblacked</span><span class="p">,</span>
         <span class="n">rfluxmtx_parameters</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">window_groupfiles</span><span class="p">,</span> <span class="n">reuse_daylight_mtx</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">total_count</span><span class="p">),</span>
-        <span class="n">radiation_only</span><span class="o">=</span><span class="n">radiation_only</span><span class="p">)</span>
+        <span class="n">radiation_only</span><span class="o">=</span><span class="n">radiation_only</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="n">transpose</span><span class="p">,</span> <span class="n">simplified</span><span class="o">=</span><span class="n">simplified</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">commands</span><span class="p">,</span> <span class="n">results</span></div>
 
@@ -326,7 +293,7 @@
 <div class="viewcode-block" id="get_commands_w_groups_daylight_coeff"><a class="viewcode-back" href="../../../../honeybee.radiance.recipe.html#honeybee.radiance.recipe.recipedcutil.get_commands_w_groups_daylight_coeff">[docs]</a><span class="k">def</span> <span class="nf">get_commands_w_groups_daylight_coeff</span><span class="p">(</span>
         <span class="n">project_name</span><span class="p">,</span> <span class="n">sky_density</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">,</span> <span class="n">window_groups</span><span class="p">,</span> <span class="n">skyfiles</span><span class="p">,</span> <span class="n">inputfiles</span><span class="p">,</span>
         <span class="n">points_file</span><span class="p">,</span> <span class="n">total_point_count</span><span class="p">,</span> <span class="n">rfluxmtx_parameters</span><span class="p">,</span> <span class="n">reuse_daylight_mtx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">total_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">radiation_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">total_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">radiation_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get commands for the static windows in the scene.</span>
 
 <span class="sd">    Use get_commands_w_groups_daylight_coeff to get the commands for the rest of the</span>
@@ -370,7 +337,7 @@
             <span class="n">inputfiles</span><span class="p">,</span> <span class="n">points_file</span><span class="p">,</span> <span class="n">total_point_count</span><span class="p">,</span> <span class="n">blkmaterial</span><span class="p">,</span> <span class="n">wgsblacked</span><span class="p">,</span>
             <span class="n">rfluxmtx_parameters</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">window_groupfiles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">reuse_daylight_mtx</span><span class="o">=</span><span class="n">reuse_daylight_mtx</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span> <span class="n">total_count</span><span class="p">),</span>
-            <span class="n">radiation_only</span><span class="o">=</span><span class="n">radiation_only</span><span class="p">)</span>
+            <span class="n">radiation_only</span><span class="o">=</span><span class="n">radiation_only</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="n">transpose</span><span class="p">)</span>
 
         <span class="n">commands</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cmds</span><span class="p">)</span>
         <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
@@ -382,7 +349,7 @@
         <span class="n">project_name</span><span class="p">,</span> <span class="n">sky_density</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">,</span> <span class="n">window_group</span><span class="p">,</span> <span class="n">skyfiles</span><span class="p">,</span> <span class="n">inputfiles</span><span class="p">,</span>
         <span class="n">points_file</span><span class="p">,</span> <span class="n">total_point_count</span><span class="p">,</span> <span class="n">blkmaterial</span><span class="p">,</span> <span class="n">wgsblacked</span><span class="p">,</span> <span class="n">rfluxmtx_parameters</span><span class="p">,</span>
         <span class="n">window_group_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">window_groupfiles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reuse_daylight_mtx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">counter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radiation_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">counter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radiation_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">simplified</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get commands for the daylight coefficient recipe.</span>
 
 <span class="sd">    This function is used by get_commands_scene_daylight_coeff and</span>
@@ -394,7 +361,10 @@
     <span class="c1"># unpack inputs</span>
     <span class="n">opqfiles</span><span class="p">,</span> <span class="n">glzfiles</span><span class="p">,</span> <span class="n">wgsfiles</span><span class="p">,</span> <span class="n">extrafiles</span> <span class="o">=</span> <span class="n">inputfiles</span>
     <span class="k">if</span> <span class="n">radiation_only</span><span class="p">:</span>
-        <span class="n">sky_mtxDiff</span><span class="p">,</span> <span class="n">analemma</span><span class="p">,</span> <span class="n">sunlist</span><span class="p">,</span> <span class="n">analemmaMtx</span> <span class="o">=</span> <span class="n">skyfiles</span>
+        <span class="k">if</span> <span class="n">simplified</span><span class="p">:</span>
+            <span class="n">sky_mtxDiff</span> <span class="o">=</span> <span class="n">skyfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sky_mtxDiff</span><span class="p">,</span> <span class="n">analemma</span><span class="p">,</span> <span class="n">sunlist</span><span class="p">,</span> <span class="n">analemmaMtx</span> <span class="o">=</span> <span class="n">skyfiles</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">sky_mtx_total</span><span class="p">,</span> <span class="n">sky_mtx_direct</span><span class="p">,</span> <span class="n">analemma</span><span class="p">,</span> <span class="n">sunlist</span><span class="p">,</span> <span class="n">analemmaMtx</span> <span class="o">=</span> <span class="n">skyfiles</span>
 
@@ -418,7 +388,7 @@
         <span class="p">)</span>
         <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">window_groupfiles</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">scount</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">window_groupfiles</span><span class="p">:</span>
             <span class="c1"># in case window group is not already provided</span>
             <span class="n">window_groupfiles</span> <span class="o">=</span> <span class="p">(</span><span class="n">wgsfiles</span><span class="p">[</span><span class="n">window_group_count</span><span class="p">]</span><span class="o">.</span><span class="n">fp</span><span class="p">[</span><span class="n">scount</span><span class="p">],)</span>
 
@@ -469,52 +439,59 @@
             <span class="p">)</span>
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rflux</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
 
-            <span class="n">rad_files_blacked</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span>
-                                      <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">rflux_scene_blacked</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">simplified</span><span class="p">:</span>
+                <span class="n">rad_files_blacked</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span>
+                                          <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">rflux_scene_blacked</span><span class="p">)</span>
 
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [2/3] black scene daylight matrix&#39;</span><span class="p">)</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="s1">&#39;:: :: rfluxmtx - [sky] [points] [wgroup] [blacked wgroups] &#39;</span>
-                <span class="s1">&#39;[blacked scene] ^&gt; [black dc.mtx]&#39;</span>
-            <span class="p">)</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [2/3] black scene daylight matrix&#39;</span><span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s1">&#39;:: :: rfluxmtx - [sky] [points] [wgroup] [blacked wgroups] &#39;</span>
+                    <span class="s1">&#39;[blacked scene] ^&gt; [black dc.mtx]&#39;</span>
+                <span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
 
-            <span class="n">original_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rfluxmtx_parameters</span><span class="o">.</span><span class="n">ambient_bounces</span><span class="p">)</span>
-            <span class="n">rfluxmtx_parameters</span><span class="o">.</span><span class="n">ambient_bounces</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">rflux_direct</span> <span class="o">=</span> <span class="n">coeff_matrix_commands</span><span class="p">(</span>
-                <span class="n">d_matrix_direct</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
-                <span class="n">rad_files_blacked</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">points_file</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
-                <span class="n">total_point_count</span><span class="p">,</span> <span class="n">rfluxmtx_parameters</span>
-            <span class="p">)</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rflux_direct</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
-            <span class="n">rfluxmtx_parameters</span><span class="o">.</span><span class="n">ambient_bounces</span> <span class="o">=</span> <span class="n">original_value</span>
+                <span class="n">original_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rfluxmtx_parameters</span><span class="o">.</span><span class="n">ambient_bounces</span><span class="p">)</span>
+                <span class="n">rfluxmtx_parameters</span><span class="o">.</span><span class="n">ambient_bounces</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">rflux_direct</span> <span class="o">=</span> <span class="n">coeff_matrix_commands</span><span class="p">(</span>
+                    <span class="n">d_matrix_direct</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
+                    <span class="n">rad_files_blacked</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">points_file</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
+                    <span class="n">total_point_count</span><span class="p">,</span> <span class="n">rfluxmtx_parameters</span>
+                <span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rflux_direct</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
+                <span class="n">rfluxmtx_parameters</span><span class="o">.</span><span class="n">ambient_bounces</span> <span class="o">=</span> <span class="n">original_value</span>
 
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [3/3] black scene analemma daylight matrix&#39;</span><span class="p">)</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="s1">&#39;:: :: rcontrib - [sun_matrix] [points] [wgroup] [blacked wgroups] &#39;</span>
-                <span class="s1">&#39;[blacked scene] ^&gt; [analemma dc.mtx]&#39;</span>
-            <span class="p">)</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
-            <span class="n">sun_commands</span> <span class="o">=</span> <span class="n">sun_coeff_matrix_commands</span><span class="p">(</span>
-                <span class="n">sun_matrix</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">points_file</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
-                <span class="n">rad_files_blacked</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">analemma</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">sunlist</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
-                <span class="n">rfluxmtx_parameters</span><span class="o">.</span><span class="n">irradiance_calc</span>
-            <span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [3/3] black scene analemma daylight matrix&#39;</span><span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s1">&#39;:: :: rcontrib - [sun_matrix] [points] [wgroup] [blacked wgroups] &#39;</span>
+                    <span class="s1">&#39;[blacked scene] ^&gt; [analemma dc.mtx]&#39;</span>
+                <span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
+                <span class="n">sun_commands</span> <span class="o">=</span> <span class="n">sun_coeff_matrix_commands</span><span class="p">(</span>
+                    <span class="n">sun_matrix</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">points_file</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
+                    <span class="n">rad_files_blacked</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">analemma</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">sunlist</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">),</span>
+                    <span class="n">rfluxmtx_parameters</span><span class="o">.</span><span class="n">irradiance_calc</span>
+                <span class="p">)</span>
 
-            <span class="n">commands</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">sun_commands</span><span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">sun_commands</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: 1. reusing daylight matrices&#39;</span><span class="p">)</span>
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
 
         <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: 2. matrix multiplication&#39;</span><span class="p">)</span>
         <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">simplified</span><span class="p">:</span>
+            <span class="n">rsky_type</span> <span class="o">=</span> <span class="s1">&#39;total&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsky_type</span> <span class="o">=</span> <span class="s1">&#39;diffuse&#39;</span>
         <span class="k">if</span> <span class="n">radiation_only</span><span class="p">:</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [1/2] calculating daylight mtx * diffuse sky&#39;</span><span class="p">)</span>
+            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [1/2] calculating daylight mtx * </span><span class="si">%s</span><span class="s1"> sky&#39;</span> <span class="o">%</span> <span class="n">rsky_type</span><span class="p">)</span>
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="s1">&#39;:: :: dctimestep [dc.mtx] [diffuse sky] ^&gt; [diffuse results.rgb]&#39;</span><span class="p">)</span>
+                <span class="s1">&#39;:: :: dctimestep [dc.mtx] [</span><span class="si">%s</span><span class="s1"> sky] ^&gt; [</span><span class="si">%s</span><span class="s1"> results.rgb]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rsky_type</span><span class="p">,</span>
+                                                                            <span class="n">rsky_type</span><span class="p">))</span>
             <span class="n">dct_total</span> <span class="o">=</span> <span class="n">matrix_calculation</span><span class="p">(</span>
-                <span class="s1">&#39;tmp/diffuse..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.rgb&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                <span class="s1">&#39;tmp/</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.rgb&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rsky_type</span><span class="p">,</span> <span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
                 <span class="n">d_matrix</span><span class="o">=</span><span class="n">d_matrix</span><span class="p">,</span> <span class="n">sky_matrix</span><span class="o">=</span><span class="n">sky_mtxDiff</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -531,11 +508,13 @@
 
         <span class="k">if</span> <span class="n">radiation_only</span><span class="p">:</span>
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="s1">&#39;:: :: rmtxop -c 47.4 119.9 11.6 [results.rgb] ^&gt; [diffuse results.ill]&#39;</span>
+                <span class="s1">&#39;:: :: rmtxop -c 47.4 119.9 11.6 [results.rgb] ^&gt; [</span><span class="si">%s</span><span class="s1"> results.ill]&#39;</span> <span class="o">%</span>
+                <span class="n">rsky_type</span>
             <span class="p">)</span>
             <span class="n">finalmtx</span> <span class="o">=</span> <span class="n">rgb_matrix_file_to_ill</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">dct_total</span><span class="o">.</span><span class="n">output_file</span><span class="p">,),</span>
-                <span class="s1">&#39;result/diffuse..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="s1">&#39;result/</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rsky_type</span><span class="p">,</span> <span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                <span class="n">transpose</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -543,7 +522,8 @@
             <span class="p">)</span>
             <span class="n">finalmtx</span> <span class="o">=</span> <span class="n">rgb_matrix_file_to_ill</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">dct_total</span><span class="o">.</span><span class="n">output_file</span><span class="p">,),</span>
-                <span class="s1">&#39;result/total..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="s1">&#39;result/total..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                <span class="n">transpose</span>
             <span class="p">)</span>
 
         <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
@@ -568,70 +548,79 @@
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
             <span class="n">finalmtx</span> <span class="o">=</span> <span class="n">rgb_matrix_file_to_ill</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">dct_direct</span><span class="o">.</span><span class="n">output_file</span><span class="p">,),</span>
-                <span class="s1">&#39;result/direct..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="s1">&#39;result/direct..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                <span class="n">transpose</span>
             <span class="p">)</span>
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">finalmtx</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">radiation_only</span><span class="p">:</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [3/3] calculating black daylight mtx * analemma&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [2/2] calculating black daylight mtx * analemma&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">simplified</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">radiation_only</span><span class="p">:</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [3/3] calculating black daylight mtx * analemma&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: [2/2] calculating black daylight mtx * analemma&#39;</span><span class="p">)</span>
 
-        <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="s1">&#39;:: :: dctimestep [black dc.mtx] [analemma only sky] ^&gt; [sun results.rgb]&#39;</span><span class="p">)</span>
-        <span class="n">dct_sun</span> <span class="o">=</span> <span class="n">sun_matrix_calculation</span><span class="p">(</span>
-            <span class="s1">&#39;tmp/sun..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.rgb&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-            <span class="n">dc_matrix</span><span class="o">=</span><span class="n">sun_matrix</span><span class="p">,</span>
-            <span class="n">sky_matrix</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">analemmaMtx</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dct_sun</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
-
-        <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="s1">&#39;:: :: rmtxop -c 47.4 119.9 11.6 [sun results.rgb] ^&gt; &#39;</span>
-            <span class="s1">&#39;[sun results.ill]&#39;</span>
-        <span class="p">)</span>
-        <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
-        <span class="n">finalmtx</span> <span class="o">=</span> <span class="n">rgb_matrix_file_to_ill</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">dct_sun</span><span class="o">.</span><span class="n">output_file</span><span class="p">,),</span>
-            <span class="s1">&#39;result/sun..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">finalmtx</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
-
-        <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: 3. calculating final results&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">radiation_only</span><span class="p">:</span>
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="s1">&#39;:: :: rmtxop [diff results.ill] &#39;</span>
-                <span class="s1">&#39;+ [sun results.ill] ^&gt; [final results.ill]&#39;</span>
+                <span class="s1">&#39;:: :: dctimestep [black dc.mtx] [analemma only sky] ^&gt; &#39;</span>
+                <span class="s1">&#39;[sun results.rgb]&#39;</span><span class="p">)</span>
+            <span class="n">dct_sun</span> <span class="o">=</span> <span class="n">sun_matrix_calculation</span><span class="p">(</span>
+                <span class="s1">&#39;tmp/sun..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.rgb&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                <span class="n">dc_matrix</span><span class="o">=</span><span class="n">sun_matrix</span><span class="p">,</span>
+                <span class="n">sky_matrix</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">analemmaMtx</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dct_sun</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
+
+            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s1">&#39;:: :: rmtxop -c 47.4 119.9 11.6 [sun results.rgb] ^&gt; &#39;</span>
+                <span class="s1">&#39;[sun results.ill]&#39;</span>
             <span class="p">)</span>
             <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
-            <span class="n">fmtx</span> <span class="o">=</span> <span class="n">final_matrix_addition_radiation</span><span class="p">(</span>
-                <span class="s1">&#39;result/diffuse..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+            <span class="n">finalmtx</span> <span class="o">=</span> <span class="n">rgb_matrix_file_to_ill</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">dct_sun</span><span class="o">.</span><span class="n">output_file</span><span class="p">,),</span>
                 <span class="s1">&#39;result/sun..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-                <span class="s1">&#39;result/</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">transpose</span>
             <span class="p">)</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmtx</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="s1">&#39;:: :: rmtxop [total results.ill] - [direct results.ill] &#39;</span>
-                <span class="s1">&#39;+ [sun results.ill] ^&gt; [final results.ill]&#39;</span>
-            <span class="p">)</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
-            <span class="n">fmtx</span> <span class="o">=</span> <span class="n">final_matrix_addition</span><span class="p">(</span>
-                <span class="s1">&#39;result/total..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-                <span class="s1">&#39;result/direct..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-                <span class="s1">&#39;result/sun..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-                <span class="s1">&#39;result/</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="p">)</span>
-            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmtx</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
+            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">finalmtx</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
+
+            <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:: :: 3. calculating final results&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">radiation_only</span><span class="p">:</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s1">&#39;:: :: rmtxop [diff results.ill] &#39;</span>
+                    <span class="s1">&#39;+ [sun results.ill] ^&gt; [final results.ill]&#39;</span>
+                <span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
+                <span class="n">fmtx</span> <span class="o">=</span> <span class="n">final_matrix_addition_radiation</span><span class="p">(</span>
+                    <span class="s1">&#39;result/diffuse..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="s1">&#39;result/sun..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="s1">&#39;result/</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmtx</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s1">&#39;:: :: rmtxop [total results.ill] - [direct results.ill] &#39;</span>
+                    <span class="s1">&#39;+ [sun results.ill] ^&gt; [final results.ill]&#39;</span>
+                <span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
+                <span class="n">fmtx</span> <span class="o">=</span> <span class="n">final_matrix_addition</span><span class="p">(</span>
+                    <span class="s1">&#39;result/total..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="s1">&#39;result/direct..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="s1">&#39;result/sun..</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="s1">&#39;result/</span><span class="si">{}</span><span class="s1">..</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmtx</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
 
         <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="s1">&#39;:: end of calculation for </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">window_group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
         <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
 
-        <span class="n">result_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fmtx</span><span class="o">.</span><span class="n">output_file</span><span class="p">))</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">simplified</span><span class="p">:</span>
+            <span class="n">result_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fmtx</span><span class="o">.</span><span class="n">output_file</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">finalmtx</span><span class="o">.</span><span class="n">output_file</span><span class="p">))</span>
+            <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">commands</span><span class="p">,</span> <span class="n">result_files</span>
 
@@ -663,7 +652,7 @@
 <div class="viewcode-block" id="create_reference_map_command"><a class="viewcode-back" href="../../../../honeybee.radiance.recipe.html#honeybee.radiance.recipe.recipedcutil.create_reference_map_command">[docs]</a><span class="k">def</span> <span class="nf">create_reference_map_command</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">view_file</span><span class="p">,</span> <span class="n">outputfolder</span><span class="p">,</span> <span class="n">octree_file</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a reference map to conver illuminance to luminance.&quot;&quot;&quot;</span>
     <span class="c1"># set the parameters / options</span>
-    <span class="n">img_par</span> <span class="o">=</span> <span class="n">ImageBasedParameters</span><span class="p">()</span>
+    <span class="n">img_par</span> <span class="o">=</span> <span class="n">RpictParameters</span><span class="p">()</span>
     <span class="n">img_par</span><span class="o">.</span><span class="n">ambient_accuracy</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">img_par</span><span class="o">.</span><span class="n">ambient_value</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.31831</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
     <span class="n">img_par</span><span class="o">.</span><span class="n">pixel_sampling</span> <span class="o">=</span> <span class="mi">1</span>
@@ -793,10 +782,24 @@
     <span class="k">return</span> <span class="n">rfluxmtx</span></div>
 
 
-<div class="viewcode-block" id="window_group_to_receiver"><a class="viewcode-back" href="../../../../honeybee.radiance.recipe.html#honeybee.radiance.recipe.recipedcutil.window_group_to_receiver">[docs]</a><span class="k">def</span> <span class="nf">window_group_to_receiver</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">upnormal</span><span class="p">,</span> <span class="n">material_name</span><span class="o">=</span><span class="s1">&#39;vmtx_glow&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="window_group_to_receiver"><a class="viewcode-back" href="../../../../honeybee.radiance.recipe.html#honeybee.radiance.recipe.recipedcutil.window_group_to_receiver">[docs]</a><span class="k">def</span> <span class="nf">window_group_to_receiver</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">upnormal</span><span class="p">,</span> <span class="n">material_name</span><span class="o">=</span><span class="s1">&#39;vmtx_glow&#39;</span><span class="p">,</span>
+                             <span class="n">angle_basis</span><span class="o">=</span><span class="s1">&#39;Kelms Full&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Take a filepath to a window group and create a receiver.&quot;&quot;&quot;</span>
+    <span class="n">hemi_type_mapper</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;klemsfull&#39;</span><span class="p">:</span> <span class="s1">&#39;kf&#39;</span><span class="p">,</span> <span class="s1">&#39;klemshalf&#39;</span><span class="p">:</span> <span class="s1">&#39;kh&#39;</span><span class="p">,</span> <span class="s1">&#39;klemsquarter&#39;</span><span class="p">:</span> <span class="s1">&#39;kq&#39;</span>
+    <span class="p">}</span>
+
+    <span class="k">assert</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">angle_basis</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;tensortree&#39;</span><span class="p">,</span> \
+        <span class="s1">&#39;Tensor Tree BSDF (</span><span class="si">{}</span><span class="s1">) can only be used for in-scene caluclation.&#39;</span> \
+        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">material_name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">hemi_type</span> <span class="o">=</span> <span class="n">hemi_type_mapper</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">angle_basis</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a valid angle basis.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">angle_basis</span><span class="p">))</span>
+
     <span class="n">rec_ctrl_par</span> <span class="o">=</span> <span class="n">Rfluxmtx</span><span class="o">.</span><span class="n">control_parameters</span><span class="p">(</span>
-        <span class="n">hemi_type</span><span class="o">=</span><span class="s1">&#39;kf&#39;</span><span class="p">,</span> <span class="n">hemi_up_direction</span><span class="o">=</span><span class="n">upnormal</span><span class="p">)</span>
+        <span class="n">hemi_type</span><span class="o">=</span><span class="n">hemi_type</span><span class="p">,</span> <span class="n">hemi_up_direction</span><span class="o">=</span><span class="n">upnormal</span><span class="p">)</span>
+
     <span class="n">wg_m</span> <span class="o">=</span> <span class="n">Rfluxmtx</span><span class="o">.</span><span class="n">add_control_parameters</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="p">{</span><span class="n">material_name</span><span class="p">:</span> <span class="n">rec_ctrl_par</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">wg_m</span></div>
 
@@ -945,12 +948,12 @@
     <span class="k">return</span> <span class="n">final_matrix</span></div>
 
 
-<div class="viewcode-block" id="rgb_matrix_file_to_ill"><a class="viewcode-back" href="../../../../honeybee.radiance.recipe.html#honeybee.radiance.recipe.recipedcutil.rgb_matrix_file_to_ill">[docs]</a><span class="k">def</span> <span class="nf">rgb_matrix_file_to_ill</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+<div class="viewcode-block" id="rgb_matrix_file_to_ill"><a class="viewcode-back" href="../../../../honeybee.radiance.recipe.html#honeybee.radiance.recipe.recipedcutil.rgb_matrix_file_to_ill">[docs]</a><span class="k">def</span> <span class="nf">rgb_matrix_file_to_ill</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert rgb values in matrix to illuminance values.&quot;&quot;&quot;</span>
     <span class="n">finalmtx</span> <span class="o">=</span> <span class="n">Rmtxop</span><span class="p">(</span><span class="n">matrix_files</span><span class="o">=</span><span class="nb">input</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
     <span class="n">finalmtx</span><span class="o">.</span><span class="n">rmtxop_parameters</span><span class="o">.</span><span class="n">output_format</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span>
     <span class="n">finalmtx</span><span class="o">.</span><span class="n">rmtxop_parameters</span><span class="o">.</span><span class="n">combine_values</span> <span class="o">=</span> <span class="p">(</span><span class="mf">47.4</span><span class="p">,</span> <span class="mf">119.9</span><span class="p">,</span> <span class="mf">11.6</span><span class="p">)</span>
-    <span class="n">finalmtx</span><span class="o">.</span><span class="n">rmtxop_parameters</span><span class="o">.</span><span class="n">transpose_matrix</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">finalmtx</span><span class="o">.</span><span class="n">rmtxop_parameters</span><span class="o">.</span><span class="n">transpose_matrix</span> <span class="o">=</span> <span class="n">transpose</span>
     <span class="k">return</span> <span class="n">finalmtx</span></div>
 
 
@@ -973,8 +976,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../../index.html">
+    <img class="logo" src="../../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

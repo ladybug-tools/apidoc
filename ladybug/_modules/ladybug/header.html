@@ -31,8 +31,142 @@
 
   </head>
   <body>
-  <div class="document">
-    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ladybug.header</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;Ladybug Header.</span>
+
+<span class="sd">Header is useful for creating list of ladybug data.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.location</span> <span class="k">import</span> <span class="n">Location</span>
+<span class="kn">from</span> <span class="nn">.analysisperiod</span> <span class="k">import</span> <span class="n">AnalysisPeriod</span>
+
+
+<div class="viewcode-block" id="Header"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header">[docs]</a><span class="k">class</span> <span class="nc">Header</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;data collection header.</span>
+
+<span class="sd">    Header carries data for location, data type, unit and analysis period</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        location: location data as a ladybug Location or location string</span>
+<span class="sd">            (Default: None).</span>
+<span class="sd">        data_type: Type of data (e.g. Temperature) (Default: None).</span>
+<span class="sd">        unit: data_type unit (Default: None).</span>
+<span class="sd">        analysis_period: A Ladybug analysis period (Defualt: None)</span>
+<span class="sd">        middle_hour: A boolean to set whether the values are interpreted</span>
+<span class="sd">            as falling on the middle of the hour (True) or the start of</span>
+<span class="sd">            the hour (False). (Default: False)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">analysis_period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">middle_hour</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initiate Ladybug header for lists.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            location: location data as a ladybug Location or location string</span>
+<span class="sd">                (Default: None).</span>
+<span class="sd">            data_type: Type of data (e.g. Temperature) (Default: None).</span>
+<span class="sd">            unit: data_type unit (Default: None).</span>
+<span class="sd">            analysis_period: A Ladybug analysis period (Defualt: None)</span>
+<span class="sd">            middle_hour: A boolean to set whether the values are interpreted</span>
+<span class="sd">                as falling on the middle of the hour (True) or the start of</span>
+<span class="sd">                the hour (False). (Default: False)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">data_type</span> <span class="k">if</span> <span class="n">data_type</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span> <span class="k">if</span> <span class="n">unit</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span> <span class="o">=</span> <span class="n">AnalysisPeriod</span><span class="o">.</span><span class="n">from_analysis_period</span><span class="p">(</span><span class="n">analysis_period</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">middle_hour</span> <span class="o">=</span> <span class="n">middle_hour</span> <span class="k">if</span> <span class="n">middle_hour</span> <span class="k">else</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Header.from_json"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a header from a dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data: {</span>
+<span class="sd">                &quot;location&quot;: {}, // A Ladybug location</span>
+<span class="sd">                &quot;data_type&quot;: string, //Type of data (e.g. Temperature) (Default: None).</span>
+<span class="sd">                &quot;unit&quot;: string,</span>
+<span class="sd">                &quot;analysis_period&quot;: {}, // A Ladybug AnalysisPeriod,</span>
+<span class="sd">                &quot;middle_hour&quot;: {} // Whether values fall in the middle of the hour</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># assign default values</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="s1">&#39;data_type&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">,</span> <span class="s1">&#39;analysis_period&#39;</span><span class="p">,</span> <span class="s1">&#39;middle_hour&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">])</span>
+        <span class="n">ap</span> <span class="o">=</span> <span class="n">AnalysisPeriod</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;analysis_period&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;unit&#39;</span><span class="p">],</span> <span class="n">ap</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;middle_hour&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Header.from_header"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.from_header">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_header</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">header</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Try to generate a header from a header or a header string.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="s1">&#39;isHeader&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">header</span>
+
+        <span class="c1"># &quot;%s|%s(%s)|%s&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_h</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot;**&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;**&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">_h</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;**&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to create a Header from </span><span class="si">%s</span><span class="s2">!</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isHeader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Header.duplicate"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.duplicate">[docs]</a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Duplicate header.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">middle_hour</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Header.to_tuple"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.to_tuple">[docs]</a>    <span class="k">def</span> <span class="nf">to_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return Ladybug header as a list.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">middle_hour</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return data as tuple.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Header.to_json"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a header as a dictionary.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+                <span class="s1">&#39;data_type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span>
+                <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span>
+                <span class="s1">&#39;analysis_period&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+                <span class="s1">&#39;middle_hour&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">middle_hour</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="Header.ToString"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return Ladybug header as a string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">)|</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">middle_hour</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
@@ -93,99 +227,8 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for ladybug.header</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Ladybug Header.</span>
-
-<span class="sd">Header is useful for creating list of ladybug data.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">.location</span> <span class="k">import</span> <span class="n">Location</span>
-<span class="kn">from</span> <span class="nn">.analysisperiod</span> <span class="k">import</span> <span class="n">AnalysisPeriod</span>
-
-
-<div class="viewcode-block" id="Header"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header">[docs]</a><span class="k">class</span> <span class="nc">Header</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;data collection header.</span>
-
-<span class="sd">    Header carries data for location, data type, unit and analysis period</span>
-
-<span class="sd">    Attributes:</span>
-<span class="sd">        location: location data as a ladybug Location or location string</span>
-<span class="sd">            (Default: None).</span>
-<span class="sd">        data_type: Type of data (e.g. Temperature) (Default: None).</span>
-<span class="sd">        unit: data_type unit (Default: None).</span>
-<span class="sd">        analysis_period: A Ladybug analysis period (Defualt: None)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analysis_period</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initiate Ladybug header for lists.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            location: location data as a ladybug Location or location string</span>
-<span class="sd">                (Default: None).</span>
-<span class="sd">            data_type: Type of data (e.g. Temperature) (Default: None).</span>
-<span class="sd">            unit: data_type unit (Default: None).</span>
-<span class="sd">            analysis_period: A Ladybug analysis period (Defualt: None)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">data_type</span> <span class="k">if</span> <span class="n">data_type</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span> <span class="k">if</span> <span class="n">unit</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span> <span class="o">=</span> <span class="n">AnalysisPeriod</span><span class="o">.</span><span class="n">from_analysis_period</span><span class="p">(</span><span class="n">analysis_period</span><span class="p">)</span>
-
-<div class="viewcode-block" id="Header.from_header"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.from_header">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_header</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">header</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Try to generate a header from a header or a header string.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="s1">&#39;isHeader&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">header</span>
-
-        <span class="c1"># &quot;%s|%s(%s)|%s&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">_h</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot;**&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;**&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">_h</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;**&quot;</span><span class="p">))</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Failed to create a Header from </span><span class="si">%s</span><span class="s2">!</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">isHeader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return True.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">True</span>
-
-<div class="viewcode-block" id="Header.duplicate"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.duplicate">[docs]</a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Duplicate header.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span>
-                              <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Header.to_tuple"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.to_tuple">[docs]</a>    <span class="k">def</span> <span class="nf">to_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return Ladybug header as a list.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span>
-        <span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return data as tuple.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">()</span>
-
-<div class="viewcode-block" id="Header.ToString"><a class="viewcode-back" href="../../ladybug.html#ladybug.header.Header.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return Ladybug header as a string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">)|</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span><span class="p">)</span></div>
-</pre></div>
-
-          </div>
-        </div>
-      </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

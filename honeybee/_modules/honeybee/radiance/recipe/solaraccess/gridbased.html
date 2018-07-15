@@ -31,68 +31,9 @@
 
   </head>
   <body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="../../../../../index.html">
-    <img class="logo" src="../../../../../_static/honeybee.png" alt="Logo"/>
-    
-  </a>
-</p>
+  
 
-
-
-<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../honeybee.html">honeybee package</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
-    
-    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -106,6 +47,7 @@
 <span class="kn">from</span> <span class="nn">...command.oconv</span> <span class="k">import</span> <span class="n">Oconv</span>
 <span class="kn">from</span> <span class="nn">...command.rcontrib</span> <span class="k">import</span> <span class="n">Rcontrib</span>
 <span class="kn">from</span> <span class="nn">...analysisgrid</span> <span class="k">import</span> <span class="n">AnalysisGrid</span>
+<span class="kn">from</span> <span class="nn">...sky.analemma</span> <span class="k">import</span> <span class="n">Analemma</span>
 <span class="kn">from</span> <span class="nn">....futil</span> <span class="k">import</span> <span class="n">write_to_file</span>
 <span class="kn">from</span> <span class="nn">....vectormath.euclid</span> <span class="k">import</span> <span class="n">Vector3</span>
 <span class="kn">from</span> <span class="nn">....hbsurface</span> <span class="k">import</span> <span class="n">HBSurface</span>
@@ -132,7 +74,7 @@
 <span class="sd">            should be smaller than 60 and divisible by 60. The default is set to</span>
 <span class="sd">            1 such that one sun vector is generated for each hour (Default: 1).</span>
 <span class="sd">        hb_objects: An optional list of Honeybee surfaces or zones (Default: None).</span>
-<span class="sd">        sub_folder: Analysis subfolder for this recipe. (Default: &quot;sunlighthours&quot;)</span>
+<span class="sd">        sub_folder: Analysis subfolder for this recipe. (Default: &quot;solaraccess&quot;)</span>
 
 <span class="sd">    Usage:</span>
 <span class="sd">        # initiate analysis_recipe</span>
@@ -167,6 +109,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_hoys</span> <span class="o">=</span> <span class="n">hoys</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
 
+        <span class="c1"># this is a bug! should be set under a setter method</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radiance_parameters</span> <span class="o">=</span> <span class="n">RcontribParameters</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radiance_parameters</span><span class="o">.</span><span class="n">irradiance_calc</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radiance_parameters</span><span class="o">.</span><span class="n">ambient_bounces</span> <span class="o">=</span> <span class="mi">0</span>
@@ -178,7 +121,8 @@
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rec_json</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the solar access recipe from json.</span>
 <span class="sd">            {</span>
-<span class="sd">              &quot;id&quot;: 0, // do NOT overwrite this id</span>
+<span class="sd">              &quot;id&quot;: &quot;solar_access&quot;,</span>
+<span class="sd">              &quot;type&quot;: &quot;gridbased&quot;,</span>
 <span class="sd">              &quot;location&quot;: null, // a honeybee location - see below</span>
 <span class="sd">              &quot;hoys&quot;: [], // list of hours of the year</span>
 <span class="sd">              &quot;surfaces&quot;: [], // list of honeybee surfaces</span>
@@ -274,8 +218,7 @@
 <div class="viewcode-block" id="SolarAccessGridBased.from_location_and_analysis_period"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.solaraccess.html#honeybee.radiance.recipe.solaraccess.gridbased.SolarAccessGridBased.from_location_and_analysis_period">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_location_and_analysis_period</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">analysis_period</span><span class="p">,</span> <span class="n">point_groups</span><span class="p">,</span> <span class="n">vector_groups</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">hb_objects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sub_folder</span><span class="o">=</span><span class="s1">&#39;sunlighthour&#39;</span>
-    <span class="p">):</span>
+            <span class="n">hb_objects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sub_folder</span><span class="o">=</span><span class="s1">&#39;sunlighthour&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create sunlighthours recipe from Location and analysis period.&quot;&quot;&quot;</span>
         <span class="n">vector_groups</span> <span class="o">=</span> <span class="n">vector_groups</span> <span class="ow">or</span> <span class="p">()</span>
 
@@ -339,47 +282,8 @@
         <span class="n">col</span> <span class="o">=</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">ecotect</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">LegendParameters</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SolarAccessGridBased.write_suns"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.solaraccess.html#honeybee.radiance.recipe.solaraccess.gridbased.SolarAccessGridBased.write_suns">[docs]</a>    <span class="k">def</span> <span class="nf">write_suns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_dir</span><span class="p">,</span> <span class="n">project_name</span><span class="p">,</span> <span class="n">mkdir</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Write sunlist, sun geometry and sun material files.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            target_dir: Path to project directory (e.g. c:/ladybug)</span>
-<span class="sd">            project_name: Project name as string. Suns will be saved as</span>
-<span class="sd">                project_name.sun</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            A tuple of paths to sunlist file, sun materials and sun geometries</span>
-
-<span class="sd">        Exceptions:</span>
-<span class="sd">            ValueError if target_dir doesn&#39;t exist and mkdir is False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">project_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;project_name should be a string.&quot;</span>
-
-        <span class="n">_suns</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sun_vectors</span><span class="p">))</span>
-        <span class="n">_mat</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sun_vectors</span><span class="p">))</span>
-        <span class="n">_geo</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sun_vectors</span><span class="p">))</span>
-
-        <span class="c1"># create data</span>
-        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sun_vectors</span><span class="p">):</span>
-            <span class="n">_suns</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;solar</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">count</span>
-            <span class="n">_mat</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;void light solar</span><span class="si">%d</span><span class="s1"> 0 0 3 1.0 1.0 1.0&#39;</span> <span class="o">%</span> <span class="n">count</span>
-            <span class="n">_geo</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> \
-                <span class="s1">&#39;solar</span><span class="si">{0}</span><span class="s1"> source sun</span><span class="si">{0}</span><span class="s1"> 0 0 4 </span><span class="si">{1}</span><span class="s1"> </span><span class="si">{2}</span><span class="s1"> </span><span class="si">{3}</span><span class="s1"> 0.533&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">count</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
-
-        <span class="n">_sunsf</span> <span class="o">=</span> <span class="n">write_to_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="n">project_name</span> <span class="o">+</span> <span class="s1">&#39;.sun&#39;</span><span class="p">),</span>
-                               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_suns</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">mkdir</span><span class="p">)</span>
-        <span class="n">_matf</span> <span class="o">=</span> <span class="n">write_to_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="n">project_name</span> <span class="o">+</span> <span class="s1">&#39;_suns.mat&#39;</span><span class="p">),</span>
-                              <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_mat</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">mkdir</span><span class="p">)</span>
-        <span class="n">_geof</span> <span class="o">=</span> <span class="n">write_to_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="n">project_name</span> <span class="o">+</span> <span class="s1">&#39;_suns.rad&#39;</span><span class="p">),</span>
-                              <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_geo</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">mkdir</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">_sunsf</span> <span class="ow">and</span> <span class="n">_matf</span> <span class="ow">and</span> <span class="n">_geof</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">_sunsf</span><span class="p">,</span> <span class="n">_matf</span><span class="p">,</span> <span class="n">_geof</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;Failed to write sun vectors!&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="SolarAccessGridBased.write"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.solaraccess.html#honeybee.radiance.recipe.solaraccess.gridbased.SolarAccessGridBased.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="s1">&#39;untitled&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="SolarAccessGridBased.write"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.solaraccess.html#honeybee.radiance.recipe.solaraccess.gridbased.SolarAccessGridBased.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="s1">&#39;untitled&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write analysis files to target folder.</span>
 
 <span class="sd">        Files for sunlight hours analysis are:</span>
@@ -416,17 +320,19 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">glazing_rad_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_groups_rad_files</span>
         <span class="p">)</span>
         <span class="c1"># additional radiance files added to the recipe as scene</span>
-        <span class="n">extrafiles</span> <span class="o">=</span> <span class="n">write_extra_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">,</span> <span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/scene&#39;</span><span class="p">)</span>
+        <span class="n">extrafiles</span> <span class="o">=</span> <span class="n">write_extra_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">,</span> <span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/scene&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># 1.write points</span>
         <span class="n">points_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_analysis_grids</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="n">project_name</span><span class="p">)</span>
 
         <span class="c1"># 2.write sun files</span>
-        <span class="n">sunsList</span><span class="p">,</span> <span class="n">sunsMat</span><span class="p">,</span> <span class="n">sunsGeo</span> <span class="o">=</span> \
-            <span class="bp">self</span><span class="o">.</span><span class="n">write_suns</span><span class="p">(</span><span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/sky&#39;</span><span class="p">,</span> <span class="n">project_name</span><span class="p">)</span>
+        <span class="n">ann</span> <span class="o">=</span> <span class="n">Analemma</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sun_vectors</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span><span class="p">)</span>
+        <span class="n">ann</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/sky&#39;</span><span class="p">)</span>
+        <span class="n">sun_modifiers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/sky&#39;</span><span class="p">,</span> <span class="n">ann</span><span class="o">.</span><span class="n">sunlist_file</span><span class="p">)</span>
+        <span class="n">suns_geo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span> <span class="o">+</span> <span class="s1">&#39;/sky&#39;</span><span class="p">,</span> <span class="n">ann</span><span class="o">.</span><span class="n">analemma_file</span><span class="p">)</span>
 
         <span class="c1"># 2.1.add sun list to modifiers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_radiance_parameters</span><span class="o">.</span><span class="n">mod_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">sunsList</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_radiance_parameters</span><span class="o">.</span><span class="n">mod_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">sun_modifiers</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radiance_parameters</span><span class="o">.</span><span class="n">y_dimension</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_point_count</span>
 
         <span class="c1"># 3.write batch file</span>
@@ -435,11 +341,20 @@
 
         <span class="c1"># TODO(Mostapha): add window_groups here if any!</span>
         <span class="c1"># # 4.1.prepare oconv</span>
-        <span class="n">oct_scene_files</span> <span class="o">=</span> <span class="n">opqfiles</span> <span class="o">+</span> <span class="n">glzfiles</span> <span class="o">+</span> <span class="n">wgsfiles</span> <span class="o">+</span> <span class="p">[</span><span class="n">sunsMat</span><span class="p">,</span> <span class="n">sunsGeo</span><span class="p">]</span> <span class="o">+</span> \
+        <span class="n">oct_scene_files</span> <span class="o">=</span> <span class="n">opqfiles</span> <span class="o">+</span> <span class="n">glzfiles</span> <span class="o">+</span> <span class="n">wgsfiles</span> <span class="o">+</span> <span class="p">[</span><span class="n">suns_geo</span><span class="p">]</span> <span class="o">+</span> \
             <span class="n">extrafiles</span><span class="o">.</span><span class="n">fp</span>
 
+        <span class="n">oct_scene_files_items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">oct_scene_files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Point-in-time recipes cannot currently handle dynamic window&#39;</span>
+                      <span class="s1">&#39; groups. The first state will be used for simulation.&#39;</span><span class="p">)</span>
+                <span class="n">oct_scene_files_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">oct_scene_files_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="n">oc</span> <span class="o">=</span> <span class="n">Oconv</span><span class="p">(</span><span class="n">project_name</span><span class="p">)</span>
-        <span class="n">oc</span><span class="o">.</span><span class="n">scene_files</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">oct_scene_files</span><span class="p">)</span>
+        <span class="n">oc</span><span class="o">.</span><span class="n">scene_files</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">project_folder</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">oct_scene_files_items</span><span class="p">)</span>
 
         <span class="c1"># # 4.2.prepare Rcontrib</span>
         <span class="n">rct</span> <span class="o">=</span> <span class="n">Rcontrib</span><span class="p">(</span><span class="s1">&#39;result/&#39;</span> <span class="o">+</span> <span class="n">project_name</span><span class="p">,</span>
@@ -449,7 +364,8 @@
 
         <span class="n">batch_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;commands.bat&quot;</span><span class="p">)</span>
         <span class="n">rmtx</span> <span class="o">=</span> <span class="n">rgb_matrix_file_to_ill</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">rct</span><span class="o">.</span><span class="n">output_file</span><span class="p">),),</span>
-                                      <span class="s1">&#39;result/</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project_name</span><span class="p">))</span>
+                                      <span class="s1">&#39;result/</span><span class="si">{}</span><span class="s1">.ill&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project_name</span><span class="p">),</span>
+                                      <span class="n">transpose</span><span class="p">)</span>
         <span class="c1"># # 4.3 write batch file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oc</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rct</span><span class="o">.</span><span class="n">to_rad_string</span><span class="p">())</span>
@@ -470,13 +386,14 @@
         <span class="k">for</span> <span class="n">ag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_grids</span><span class="p">:</span>
             <span class="n">ag</span><span class="o">.</span><span class="n">unload</span><span class="p">()</span>
 
-        <span class="n">hours</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span><span class="p">)</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span>
         <span class="n">rf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_files</span>
         <span class="n">start_line</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">analysisGrid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_grids</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">count</span><span class="p">:</span>
                 <span class="n">start_line</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_grids</span><span class="p">[</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
 
+            <span class="c1"># TODO(): Add timestep</span>
             <span class="n">analysisGrid</span><span class="o">.</span><span class="n">set_values_from_file</span><span class="p">(</span>
                 <span class="n">rf</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">start_line</span><span class="o">=</span><span class="n">start_line</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_point_count</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">mode</span><span class="o">=</span><span class="mi">1</span>
@@ -487,7 +404,8 @@
 <div class="viewcode-block" id="SolarAccessGridBased.to_json"><a class="viewcode-back" href="../../../../../honeybee.radiance.recipe.solaraccess.html#honeybee.radiance.recipe.solaraccess.gridbased.SolarAccessGridBased.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the solar access recipe from json.</span>
 <span class="sd">            {</span>
-<span class="sd">              &quot;id&quot;: 0, // do NOT overwrite this id</span>
+<span class="sd">              &quot;id&quot;: &quot;solar_access&quot;,</span>
+<span class="sd">              &quot;type&quot;: &quot;gridbased&quot;,</span>
 <span class="sd">              &quot;location&quot;: null, // a honeybee location - see below</span>
 <span class="sd">              &quot;hoys&quot;: [], // list of hours of the year</span>
 <span class="sd">              &quot;surfaces&quot;: [], // list of honeybee surfaces</span>
@@ -496,7 +414,8 @@
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;solar_access&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;gridbased&quot;</span><span class="p">,</span>
             <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;hoys&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoys</span><span class="p">,</span>
             <span class="s2">&quot;surfaces&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">srf</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">srf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hb_objects</span><span class="p">],</span>
@@ -508,8 +427,68 @@
           </div>
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../../../index.html">
+    <img class="logo" src="../../../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
     <div class="footer">
       &copy;2018, Ladybug Tools.
       

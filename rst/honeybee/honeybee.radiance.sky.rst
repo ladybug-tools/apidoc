@@ -4,6 +4,14 @@ honeybee\.radiance\.sky package
 Submodules
 ----------
 
+honeybee\.radiance\.sky\.analemma module
+----------------------------------------
+
+.. automodule:: honeybee.radiance.sky.analemma
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 honeybee\.radiance\.sky\.certainIlluminance module
 --------------------------------------------------
 

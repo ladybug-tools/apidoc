@@ -1,0 +1,176 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.radiance.material.brtdfunc &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for honeybee.radiance.material.brtdfunc</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Radiance BRTDfunc Material.</span>
+
+<span class="sd">http://radsite.lbl.gov/radiance/refer/ray.html#BRTDfunc</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">materialbase</span> <span class="k">import</span> <span class="n">RadianceMaterial</span>
+
+
+<span class="c1"># TODO(): Implement the class. It&#39;s currently creates this material as generic Radiance</span>
+<span class="c1"># material</span>
+<div class="viewcode-block" id="BRTDfunc"><a class="viewcode-back" href="../../../../honeybee.radiance.material.html#honeybee.radiance.material.brtdfunc.BRTDfunc">[docs]</a><span class="k">class</span> <span class="nc">BRTDfunc</span><span class="p">(</span><span class="n">RadianceMaterial</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Radiance BRTDfunc Material.</span>
+
+<span class="sd">    The material BRTDfunc gives the maximum flexibility over surface reflectance and</span>
+<span class="sd">    transmittance, providing for spectrally-dependent specular rays and reflectance and</span>
+<span class="sd">    transmittance distribution functions.</span>
+
+<span class="sd">        mod BRTDfunc id</span>
+<span class="sd">        10+  rrefl  grefl  brefl</span>
+<span class="sd">             rtrns  gtrns  btrns</span>
+<span class="sd">             rbrtd  gbrtd  bbrtd</span>
+<span class="sd">             funcfile  transform</span>
+<span class="sd">        0</span>
+<span class="sd">        9+   rfdif gfdif bfdif</span>
+<span class="sd">             rbdif gbdif bbdif</span>
+<span class="sd">             rtdif gtdif btdif</span>
+<span class="sd">             A10 ..</span>
+
+<span class="sd">    The variables rrefl, grefl and brefl specify the color coefficients for the ideal</span>
+<span class="sd">    specular (mirror) reflection of the surface. The variables rtrns, gtrns and btrns</span>
+<span class="sd">    specify the color coefficients for the ideal specular transmission. The functions</span>
+<span class="sd">    rbrtd, gbrtd and bbrtd take the direction to the incident light (and its solid angle)</span>
+<span class="sd">    and compute the color coefficients for the directional diffuse part of reflection and</span>
+<span class="sd">    transmission. As a special case, three identical values of &#39;0&#39; may be given in place</span>
+<span class="sd">    of these function names to indicate no directional diffuse component.</span>
+
+<span class="sd">    Unlike most other material types, the surface normal is not altered to face the</span>
+<span class="sd">    incoming ray. Thus, functions and variables must pay attention to the orientation of</span>
+<span class="sd">    the surface and make adjustments appropriately. However, the special variables for</span>
+<span class="sd">    the perturbed dot product and surface normal, RdotP, NxP, NyP and NzP are reoriented</span>
+<span class="sd">    as if the ray hit the front surface for convenience.</span>
+
+<span class="sd">    A diffuse reflection component may be given for the front side with rfdif, gfdif and</span>
+<span class="sd">    bfdif for the front side of the surface or rbdif, gbdif and bbdif for the back side.</span>
+<span class="sd">    The diffuse transmittance (must be the same for both sides by physical law) is given</span>
+<span class="sd">    by rtdif, gtdif and btdif. A pattern will modify these diffuse scattering values, and</span>
+<span class="sd">    will be available through the special variables CrP, CgP and CbP.</span>
+
+<span class="sd">    Care must be taken when using this material type to produce a physically valid</span>
+<span class="sd">    reflection model. The reflectance functions should be bidirectional, and under no</span>
+<span class="sd">    circumstances should the sum of reflected diffuse, transmitted diffuse, reflected</span>
+<span class="sd">    specular, transmitted specular and the integrated directional diffuse component be</span>
+<span class="sd">    greater than one.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../../index.html">
+    <img class="logo" src="../../../../_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../honeybee.html">honeybee package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

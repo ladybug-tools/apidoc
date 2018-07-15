@@ -94,6 +94,14 @@ honeybee\.hbzone module
     :undoc-members:
     :show-inheritance:
 
+honeybee\.plus module
+---------------------
+
+.. automodule:: honeybee.plus
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 honeybee\.room module
 ---------------------
 

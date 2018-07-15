@@ -1,0 +1,779 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>honeybee.radiance.geometry package &#8212; Honeybee 0.0.04 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.04',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee.radiance.material package" href="honeybee.radiance.material.html" />
+    <link rel="prev" title="honeybee.radiance.command.pyRad.pyRadLib package" href="honeybee.radiance.command.pyRad.pyRadLib.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="honeybee-radiance-geometry-package">
+<h1>honeybee.radiance.geometry package<a class="headerlink" href="#honeybee-radiance-geometry-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.bubble">
+<span id="honeybee-radiance-geometry-bubble-module"></span><h2>honeybee.radiance.geometry.bubble module<a class="headerlink" href="#module-honeybee.radiance.geometry.bubble" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Bubble.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Bubble">http://radsite.lbl.gov/radiance/refer/ray.html#Bubble</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.bubble.Bubble">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.bubble.</code><code class="descname">Bubble</code><span class="sig-paren">(</span><em>name</em>, <em>center_pt=None</em>, <em>radius=None</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/bubble.html#Bubble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.bubble.Bubble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.sphere.Sphere" title="honeybee.radiance.geometry.sphere.Sphere"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.sphere.Sphere</span></code></a></p>
+<p>Radiance Bubble.</p>
+<p>A bubble is simply a sphere whose surface normal points inward.</p>
+<p>mod bubble id
+0
+0
+4 xcent ycent zcent radius</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.cone">
+<span id="honeybee-radiance-geometry-cone-module"></span><h2>honeybee.radiance.geometry.cone module<a class="headerlink" href="#module-honeybee.radiance.geometry.cone" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Cone.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Cone">http://radsite.lbl.gov/radiance/refer/ray.html#Cone</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.cone.Cone">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.cone.</code><code class="descname">Cone</code><span class="sig-paren">(</span><em>name</em>, <em>center_pt_start=None</em>, <em>radius_start=None</em>, <em>center_pt_end=None</em>, <em>radius_end=None</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/cone.html#Cone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.cone.Cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Cone.</p>
+<p>A cone is a megaphone-shaped object. It is truncated by two planes perpendicular to
+its axis, and one of its ends may come to a point. It is given as two axis endpoints,
+and the starting and ending radii:</p>
+<blockquote>
+<div><p>mod cone id
+0
+0
+8</p>
+<blockquote>
+<div>x0      y0      z0
+x1      y1      z1
+r0      r1</div></blockquote>
+</div></blockquote>
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.cone.Cone.center_pt_end">
+<code class="descname">center_pt_end</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.cone.Cone.center_pt_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.cone.Cone.center_pt_start">
+<code class="descname">center_pt_start</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.cone.Cone.center_pt_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.cone.Cone.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>geo_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/cone.html#Cone.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.cone.Cone.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make radiance material from json
+{</p>
+<blockquote>
+<div>“type”: “cone”, // Geometry type
+“modifier”: {} or “void”,
+“name”: “”, // Geometry Name
+“center_pt_start”: {“x”: float, “y”: float, “z”: float},
+“radius_start”: float,
+“center_pt_end”: {“x”: float, “y”: float, “z”: float},
+“radius_end”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.cone.Cone.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>geometry_string</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/cone.html#Cone.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.cone.Cone.from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Radiance material from a string.</p>
+<p>If the material has a modifier the modifier material should also be part of the
+string or should be provided using modifier argument.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.cone.Cone.radius_end">
+<code class="descname">radius_end</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.cone.Cone.radius_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.cone.Cone.radius_start">
+<code class="descname">radius_start</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.cone.Cone.radius_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.geometry.cone.Cone.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/cone.html#Cone.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.cone.Cone.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate radiance material to json
+{</p>
+<blockquote>
+<div>“type”: “cone”, // Geometry type
+“modifier”: {} or “void”,
+“name”: “”, // Geometry Name
+“center_pt_start”: {“x”: float, “y”: float, “z”: float},
+“radius_start”: float,
+“center_pt_end”: {“x”: float, “y”: float, “z”: float},
+“radius_end”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.cup">
+<span id="honeybee-radiance-geometry-cup-module"></span><h2>honeybee.radiance.geometry.cup module<a class="headerlink" href="#module-honeybee.radiance.geometry.cup" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Cup.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Cup">http://radsite.lbl.gov/radiance/refer/ray.html#Cup</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.cup.Cone">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.cup.</code><code class="descname">Cone</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/cup.html#Cone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.cup.Cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Cup.</p>
+<p>A cup is an inverted cone (i.e., has an inward surface normal).</p>
+<p>A cone is a megaphone-shaped object. It is truncated by two planes perpendicular to
+its axis, and one of its ends may come to a point. It is given as two axis endpoints,
+and the starting and ending radii:</p>
+<blockquote>
+<div><p>mod cone id
+0
+0
+8</p>
+<blockquote>
+<div>x0      y0      z0
+x1      y1      z1
+r0      r1</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.cylinder">
+<span id="honeybee-radiance-geometry-cylinder-module"></span><h2>honeybee.radiance.geometry.cylinder module<a class="headerlink" href="#module-honeybee.radiance.geometry.cylinder" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Cylinder.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Cylinder">http://radsite.lbl.gov/radiance/refer/ray.html#Cylinder</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.cylinder.Cylinder">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.cylinder.</code><code class="descname">Cylinder</code><span class="sig-paren">(</span><em>name</em>, <em>center_pt_start=None</em>, <em>center_pt_end=None</em>, <em>radius=None</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/cylinder.html#Cylinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.cylinder.Cylinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Cylinder.</p>
+<p>A cylinder is like a cone, but its starting and ending radii are equal.</p>
+<blockquote>
+<div><p>mod cylinder id
+0
+0
+7</p>
+<blockquote>
+<div>x0      y0      z0
+x1      y1      z1
+rad</div></blockquote>
+</div></blockquote>
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.cylinder.Cylinder.center_pt_end">
+<code class="descname">center_pt_end</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.cylinder.Cylinder.center_pt_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.cylinder.Cylinder.center_pt_start">
+<code class="descname">center_pt_start</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.cylinder.Cylinder.center_pt_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.cylinder.Cylinder.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>geo_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/cylinder.html#Cylinder.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.cylinder.Cylinder.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make radiance material from json
+{</p>
+<blockquote>
+<div>“type”: “cylinder”, // Geometry type
+“modifier”: {} or “void”,
+“name”: “”, // Geometry Name
+“center_pt_start”: {“x”: float, “y”: float, “z”: float},
+“center_pt_end”: {“x”: float, “y”: float, “z”: float},
+“radius”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.cylinder.Cylinder.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>geometry_string</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/cylinder.html#Cylinder.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.cylinder.Cylinder.from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Radiance geometry from a string.</p>
+<p>If the geometry has a modifier the modifier material should also be part of the
+string or should be provided using modifier argument.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.cylinder.Cylinder.radius">
+<code class="descname">radius</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.cylinder.Cylinder.radius" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.geometry.cylinder.Cylinder.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/cylinder.html#Cylinder.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.cylinder.Cylinder.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate radiance material to json
+{</p>
+<blockquote>
+<div>“type”: “cylinder”, // Geometry type
+“modifier”: {} or “void”,
+“name”: “”, // Geometry Name
+“center_pt_start”: {“x”: float, “y”: float, “z”: float},
+“center_pt_end”: {“x”: float, “y”: float, “z”: float},
+“radius”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.geometrybase">
+<span id="honeybee-radiance-geometry-geometrybase-module"></span><h2>honeybee.radiance.geometry.geometrybase module<a class="headerlink" href="#module-honeybee.radiance.geometry.geometrybase" title="Permalink to this headline">¶</a></h2>
+<p>Base Radiance Surfaces class (e.g source, sphere, etc.).</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Materials">http://radsite.lbl.gov/radiance/refer/ray.html#Materials</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.geometrybase.RadianceGeometry">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.geometrybase.</code><code class="descname">RadianceGeometry</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/geometrybase.html#RadianceGeometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="honeybee.radiance.html#honeybee.radiance.primitive.Primitive" title="honeybee.radiance.primitive.Primitive"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.primitive.Primitive</span></code></a></p>
+<p>Base class for Radiance geometries.</p>
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.geometrybase.RadianceGeometry.name">
+<code class="descname">name</code><a class="headerlink" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geometry name as a string. Do not use white space and special character.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.geometrybase.RadianceGeometry.modifier">
+<code class="descname">modifier</code><a class="headerlink" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry.modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifier. It can be material, mixture, texture or pattern. Honeybee
+currently only supports materials. For other types use Generic primitive
+class (Default: “void”).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.geometrybase.RadianceGeometry.isRadianceGeometry">
+<code class="descname">isRadianceGeometry</code><a class="headerlink" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry.isRadianceGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate that this object is a Radiance Geometry.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.instance">
+<span id="honeybee-radiance-geometry-instance-module"></span><h2>honeybee.radiance.geometry.instance module<a class="headerlink" href="#module-honeybee.radiance.geometry.instance" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Transfunc Instance.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Instance">http://radsite.lbl.gov/radiance/refer/ray.html#Instance</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.instance.Instance">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.instance.</code><code class="descname">Instance</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/instance.html#Instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.instance.Instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Instance.</p>
+<p>An instance is a compound surface, given by the contents of an octree file (created
+by oconv).</p>
+<blockquote>
+<div>mod instance id
+1+ octree transform
+0
+0</div></blockquote>
+<p>If the modifier is “void”, then surfaces will use the modifiers given in the original
+description. Otherwise, the modifier specified is used in their place. The transform
+moves the octree to the desired location in the scene. Multiple instances using the
+same octree take little extra memory, hence very complex descriptions can be rendered
+using this primitive.</p>
+<p>There are a number of important limitations to be aware of when using instances.
+First, the scene description used to generate the octree must stand on its own,
+without referring to modifiers in the parent description. This is necessary for
+oconv to create the octree. Second, light sources in the octree will not be
+incorporated correctly in the calculation, and they are not recommended. Finally,
+there is no advantage (other than convenience) to using a single instance of an
+octree, or an octree containing only a few surfaces. An xform command on the
+subordinate description is prefered in such cases.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.mesh">
+<span id="honeybee-radiance-geometry-mesh-module"></span><h2>honeybee.radiance.geometry.mesh module<a class="headerlink" href="#module-honeybee.radiance.geometry.mesh" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Transfunc Mesh.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Mesh">http://radsite.lbl.gov/radiance/refer/ray.html#Mesh</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.mesh.Mesh">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.mesh.</code><code class="descname">Mesh</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/mesh.html#Mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.mesh.Mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Mesh.</p>
+<p>A mesh is a compound surface, made up of many triangles and an octree data structure
+to accelerate ray intersection. It is typically converted from a Wavefront .OBJ file
+using the obj2mesh program.</p>
+<blockquote>
+<div>mod mesh id
+1+ meshfile transform
+0
+0</div></blockquote>
+<p>If the modifier is “void”, then surfaces will use the modifiers given in the original
+mesh description. Otherwise, the modifier specified is used in their place. The
+transform moves the mesh to the desired location in the scene. Multiple instances
+using the same meshfile take little extra memory, and the compiled mesh itself takes
+much less space than individual polygons would. In the case of an unsmoothed mesh,
+using the mesh primitive reduces memory requirements by a factor of 30 relative to
+individual triangles. If a mesh has smoothed surfaces, we save a factor of 50 or
+more, permitting very detailed geometries that would otherwise exhaust the available
+memory. In addition, the mesh primitive can have associated (u,v) coordinates for
+pattern and texture mapping. These are made available to function files via the Lu
+and Lv variables.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.polygon">
+<span id="honeybee-radiance-geometry-polygon-module"></span><h2>honeybee.radiance.geometry.polygon module<a class="headerlink" href="#module-honeybee.radiance.geometry.polygon" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Polygon.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Polygon">http://radsite.lbl.gov/radiance/refer/ray.html#Polygon</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.polygon.Polygon">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.polygon.</code><code class="descname">Polygon</code><span class="sig-paren">(</span><em>name</em>, <em>points</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/polygon.html#Polygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.polygon.Polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Polygon.</p>
+<p>A polygon is given by a list of three-dimensional vertices, which are ordered
+counter-clockwise as viewed from the front side (into the surface normal). The last
+vertex is automatically connected to the first. Holes are represented in polygons as
+interior vertices connected to the outer perimeter by coincident edges (seams).</p>
+<p>mod polygon id
+0
+0
+3n</p>
+<blockquote>
+<div>x1      y1      z1
+x2      y2      z2
+…
+xn      yn      zn</div></blockquote>
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.polygon.Polygon.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>geo_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/polygon.html#Polygon.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.polygon.Polygon.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make radiance material from json
+{</p>
+<blockquote>
+<div>“type”: “polygon”, // Geometry type
+“modifier”: {} or “void”,
+“name”: “”, // Geometry Name
+“points”: [{“x”: float, “y”: float, “z”: float}, …]</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.polygon.Polygon.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>geometry_string</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/polygon.html#Polygon.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.polygon.Polygon.from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Radiance material from a string.</p>
+<p>If the material has a modifier the modifier material should also be part of the
+string or should be provided using modifier argument.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.geometry.polygon.Polygon.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/polygon.html#Polygon.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.polygon.Polygon.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate radiance material to json
+{</p>
+<blockquote>
+<div>“type”: “polygon”, // Geometry type
+“modifier”: {} or void, // Modifier
+“name”: “”, // Geometry Name
+“points”: [{“x”: float, “y”: float, “z”: float}, …]</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.ring">
+<span id="honeybee-radiance-geometry-ring-module"></span><h2>honeybee.radiance.geometry.ring module<a class="headerlink" href="#module-honeybee.radiance.geometry.ring" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Ring.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Ring">http://radsite.lbl.gov/radiance/refer/ray.html#Ring</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.ring.Ring">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.ring.</code><code class="descname">Ring</code><span class="sig-paren">(</span><em>name</em>, <em>center_pt=None</em>, <em>radius_inner=None</em>, <em>surface_normal=None</em>, <em>radius_outer=None</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/ring.html#Ring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.ring.Ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Ring.</p>
+<p>A ring is a circular disk given by its center, surface normal, and inner and outer
+radii:</p>
+<blockquote>
+<div><p>mod ring id
+0
+0
+8</p>
+<blockquote>
+<div>xcent   ycent   zcent
+xdir    ydir    zdir
+r0      r1</div></blockquote>
+</div></blockquote>
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.ring.Ring.center_pt">
+<code class="descname">center_pt</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.ring.Ring.center_pt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.ring.Ring.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>geo_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/ring.html#Ring.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.ring.Ring.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make radiance material from json
+{</p>
+<blockquote>
+<div>“type”: “ring”, // Geometry type
+“modifier”: {} or “void”,
+“name”: “”, // Geometry Name
+“center_pt”: {“x”: float, “y”: float, “z”: float},
+“surface_normal”: {“x”: float, “y”: float, “z”: float},
+“radius_inner”: float,
+“radius_outer”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.ring.Ring.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>geometry_string</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/ring.html#Ring.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.ring.Ring.from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Radiance geometry from a string.</p>
+<p>If the geometry has a modifier the modifier material should also be part of the
+string or should be provided using modifier argument.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.ring.Ring.radius_inner">
+<code class="descname">radius_inner</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.ring.Ring.radius_inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.ring.Ring.radius_outer">
+<code class="descname">radius_outer</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.ring.Ring.radius_outer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.ring.Ring.surface_normal">
+<code class="descname">surface_normal</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.ring.Ring.surface_normal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.geometry.ring.Ring.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/ring.html#Ring.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.ring.Ring.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate radiance material to json
+{</p>
+<blockquote>
+<div>“type”: “ring”, // Geometry type
+“modifier”: {} or “void”,
+“name”: “”, // Geometry Name
+“center_pt”: {“x”: float, “y”: float, “z”: float},
+“surface_normal”: {“x”: float, “y”: float, “z”: float},
+“radius_inner”: float,
+“radius_outer”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.source">
+<span id="honeybee-radiance-geometry-source-module"></span><h2>honeybee.radiance.geometry.source module<a class="headerlink" href="#module-honeybee.radiance.geometry.source" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Source.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Source">http://radsite.lbl.gov/radiance/refer/ray.html#Source</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.source.Source">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.source.</code><code class="descname">Source</code><span class="sig-paren">(</span><em>name</em>, <em>direction=None</em>, <em>angle=None</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/source.html#Source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.source.Source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Source.</p>
+<p>A source is not really a surface, but a solid angle. It is used for specifying light
+sources that are very distant. The direction to the center of the source and the
+number of degrees subtended by its disk are given as follows:</p>
+<p>mod source id
+0
+0
+4 xdir ydir zdir angle</p>
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.source.Source.angle">
+<code class="descname">angle</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.source.Source.angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.source.Source.direction">
+<code class="descname">direction</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.source.Source.direction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.source.Source.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>geo_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/source.html#Source.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.source.Source.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make radiance material from json
+{</p>
+<blockquote>
+<div>“type”: “source”, // Geometry type
+“modifier”: {} or “void”,
+“name”: “”, // Geometry Name
+“direction”: {“x”: float, “y”: float, “z”: float},
+“angle”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.source.Source.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>geometry_string</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/source.html#Source.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.source.Source.from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Radiance material from a string.</p>
+<p>If the material has a modifier the modifier material should also be part of the
+string or should be provided using modifier argument.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.geometry.source.Source.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/source.html#Source.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.source.Source.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate radiance material to json
+{</p>
+<blockquote>
+<div>“type”: “source”, // Geometry type
+“modifier”: {} or void, // Modifier
+“name”: “”, // Geometry Name
+“direction”: {“x”: float, “y”: float, “z”: float},
+“angle”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.sphere">
+<span id="honeybee-radiance-geometry-sphere-module"></span><h2>honeybee.radiance.geometry.sphere module<a class="headerlink" href="#module-honeybee.radiance.geometry.sphere" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Sphere.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Sphere">http://radsite.lbl.gov/radiance/refer/ray.html#Sphere</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.sphere.Sphere">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.sphere.</code><code class="descname">Sphere</code><span class="sig-paren">(</span><em>name</em>, <em>center_pt=None</em>, <em>radius=None</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/sphere.html#Sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.sphere.Sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Sphere.</p>
+<p>mod sphere id
+0
+0
+4 xcent ycent zcent radius</p>
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.sphere.Sphere.center_pt">
+<code class="descname">center_pt</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.sphere.Sphere.center_pt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.sphere.Sphere.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>geo_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/sphere.html#Sphere.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.sphere.Sphere.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make radiance material from json
+{</p>
+<blockquote>
+<div>“type”: “sphere”, // Geometry type
+“modifier”: {} or “void”,
+“name”: “”, // Geometry Name
+“center_pt”: {“x”: float, “y”: float, “z”: float},
+“radius”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="honeybee.radiance.geometry.sphere.Sphere.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>geometry_string</em>, <em>modifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/sphere.html#Sphere.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.sphere.Sphere.from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Radiance material from a string.</p>
+<p>If the material has a modifier the modifier material should also be part of the
+string or should be provided using modifier argument.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="honeybee.radiance.geometry.sphere.Sphere.radius">
+<code class="descname">radius</code><em class="property"> = None</em><a class="headerlink" href="#honeybee.radiance.geometry.sphere.Sphere.radius" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="honeybee.radiance.geometry.sphere.Sphere.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/sphere.html#Sphere.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.sphere.Sphere.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate radiance material to json
+{</p>
+<blockquote>
+<div>“type”: “sphere”, // Geometry type
+“modifier”: {} or void, // Modifier
+“name”: “”, // Geometry Name
+“center_pt”: {“x”: float, “y”: float, “z”: float},
+“radius”: float</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry.tube">
+<span id="honeybee-radiance-geometry-tube-module"></span><h2>honeybee.radiance.geometry.tube module<a class="headerlink" href="#module-honeybee.radiance.geometry.tube" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Tube.</p>
+<p><a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Tube">http://radsite.lbl.gov/radiance/refer/ray.html#Tube</a></p>
+<dl class="class">
+<dt id="honeybee.radiance.geometry.tube.Tube">
+<em class="property">class </em><code class="descclassname">honeybee.radiance.geometry.tube.</code><code class="descname">Tube</code><span class="sig-paren">(</span><em>name</em>, <em>modifier=None</em>, <em>values=None</em>, <em>is_opaque=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee/radiance/geometry/tube.html#Tube"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee.radiance.geometry.tube.Tube" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#honeybee.radiance.geometry.geometrybase.RadianceGeometry" title="honeybee.radiance.geometry.geometrybase.RadianceGeometry"><code class="xref py py-class docutils literal"><span class="pre">honeybee.radiance.geometry.geometrybase.RadianceGeometry</span></code></a></p>
+<p>Radiance Tube.
+A tube is an inverted cylinder. A cylinder is like a cone, but its starting and
+ending radii are equal.</p>
+<blockquote>
+<div><p>mod tube id
+0
+0
+7</p>
+<blockquote>
+<div>x0      y0      z0
+x1      y1      z1
+rad</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-honeybee.radiance.geometry">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-honeybee.radiance.geometry" title="Permalink to this headline">¶</a></h2>
+<p>Radiance Geometry.</p>
+<p>In Radiance manual geometries are named as Surfaces.
+Read more at: <a class="reference external" href="http://radsite.lbl.gov/radiance/refer/ray.html#Surfaces">http://radsite.lbl.gov/radiance/refer/ray.html#Surfaces</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/honeybee.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Honeybee is a python library to create, run and visualize the results of daylight (radiance) and energy analysis (OpenStudio).</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=honeybee&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee.html">honeybee package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee.energyplus.html">honeybee.energyplus package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee.radiance.html">honeybee.radiance package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="honeybee.radiance.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysisgrid">honeybee.radiance.analysisgrid module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.analysispoint">honeybee.radiance.analysispoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.datatype">honeybee.radiance.datatype module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.factory">honeybee.radiance.factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.imagecollection">honeybee.radiance.imagecollection module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.primitive">honeybee.radiance.primitive module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.properties">honeybee.radiance.properties module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radfile">honeybee.radiance.radfile module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.radparser">honeybee.radiance.radparser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.scene">honeybee.radiance.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.staticscene">honeybee.radiance.staticscene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance.view">honeybee.radiance.view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee.radiance.html#module-honeybee.radiance">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.server.html">honeybee.server package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee.vectormath.html">honeybee.vectormath package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.config">honeybee.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.dataoperation">honeybee.dataoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.futil">honeybee.futil module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.geometryoperation">honeybee.geometryoperation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbdynamicsurface">honeybee.hbdynamicsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbfensurface">honeybee.hbfensurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbobject">honeybee.hbobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbshadesurface">honeybee.hbshadesurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbsurface">honeybee.hbsurface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.hbzone">honeybee.hbzone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.plus">honeybee.plus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.room">honeybee.room module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.schedule">honeybee.schedule module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfaceproperties">honeybee.surfaceproperties module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.surfacetype">honeybee.surfacetype module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee.utilcol">honeybee.utilcol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee.html#module-honeybee">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="honeybee.html">honeybee package</a><ul>
+  <li><a href="honeybee.radiance.html">honeybee.radiance package</a><ul>
+      <li>Previous: <a href="honeybee.radiance.command.pyRad.pyRadLib.html" title="previous chapter">honeybee.radiance.command.pyRad.pyRadLib package</a></li>
+      <li>Next: <a href="honeybee.radiance.material.html" title="next chapter">honeybee.radiance.material package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/honeybee.radiance.geometry.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
