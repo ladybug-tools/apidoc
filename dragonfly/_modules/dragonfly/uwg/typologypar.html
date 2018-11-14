@@ -1,0 +1,393 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dragonfly.uwg.typologypar &#8212; Dragonfly 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dragonfly.uwg.typologypar</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">..dfobject</span> <span class="k">import</span> <span class="n">DFParameter</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">in_range</span>
+
+
+<div class="viewcode-block" id="TypologyPar"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.typologypar.TypologyPar">[docs]</a><span class="k">class</span> <span class="nc">TypologyPar</span><span class="p">(</span><span class="n">DFParameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents the properties of a building typology that relate to the UWG.</span>
+
+<span class="sd">    Properties:</span>
+<span class="sd">        fract_heat_to_canyon: A number from 0 to 1 that represents the fraction</span>
+<span class="sd">            the building&#39;s waste heat from air conditioning that gets rejected</span>
+<span class="sd">            into the urban canyon. The default is set to 0.5.</span>
+<span class="sd">        shgc: A number from 0 to 1 that represents the SHGC of the</span>
+<span class="sd">            buildings in the typology.</span>
+<span class="sd">        wall_albedo: A number from 0 to 1 that represents the exterior</span>
+<span class="sd">            wall albedo of the buildings in the typology.</span>
+<span class="sd">            The default is taken from the DOE commercial building reference</span>
+<span class="sd">            and varies by building typology type.</span>
+<span class="sd">        roof_albedo: A number from 0 to 1 that represents the exterior</span>
+<span class="sd">            roof albedo of the buildings in the typology.</span>
+<span class="sd">            The default is 0.7 for NewConstruction and 0.2 for</span>
+<span class="sd">            Pre1980s and 1980sPresent.</span>
+<span class="sd">        roof_veg_fraction: A number from 0 to 1 that represents the</span>
+<span class="sd">            roof vegetation fraction of the buildings in the typology.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fract_heat_to_canyon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shgc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">wall_albedo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">roof_albedo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">roof_veg_fraction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize uwg typology parameters&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fract_heat_to_canyon</span> <span class="o">=</span> <span class="n">fract_heat_to_canyon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shgc</span> <span class="o">=</span> <span class="n">shgc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wall_albedo</span> <span class="o">=</span> <span class="n">wall_albedo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roof_albedo</span> <span class="o">=</span> <span class="n">roof_albedo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roof_veg_fraction</span> <span class="o">=</span> <span class="n">roof_veg_fraction</span>
+
+<div class="viewcode-block" id="TypologyPar.from_json"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.typologypar.TypologyPar.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a typology parameter object from a dictionary</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data: {</span>
+<span class="sd">                fract_heat_to_canyon: float between 0 and 1</span>
+<span class="sd">                shgc: float</span>
+<span class="sd">                wall_albedo: float between 0 and 1</span>
+<span class="sd">                roof_albedo: float between 0 and 1</span>
+<span class="sd">                roof_veg_fraction: float between 0 and 1</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">required_keys</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="n">nullable_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;fract_heat_to_canyon&quot;</span><span class="p">,</span> <span class="s2">&quot;shgc&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;wall_albedo&quot;</span><span class="p">,</span> <span class="s2">&quot;roof_albedo&quot;</span><span class="p">,</span> <span class="s2">&quot;roof_veg_fraction&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is a required value&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nullable_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">fract_heat_to_canyon</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;fract_heat_to_canyon&quot;</span><span class="p">],</span>
+                   <span class="n">shgc</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;shgc&quot;</span><span class="p">],</span>
+                   <span class="n">wall_albedo</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;wall_albedo&quot;</span><span class="p">],</span>
+                   <span class="n">roof_albedo</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;roof_albedo&quot;</span><span class="p">],</span>
+                   <span class="n">roof_veg_fraction</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;roof_veg_fraction&quot;</span><span class="p">])</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fract_heat_to_canyon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the fraction of the bldg heat rejected to the urban canyon.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fract_heat_to_canyon</span>
+
+    <span class="nd">@fract_heat_to_canyon</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">fract_heat_to_canyon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;fract_heat_to_canyon must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fract_heat_to_canyon</span> <span class="o">=</span> <span class="n">in_range</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;fract_heat_to_canyon&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fract_heat_to_canyon</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shgc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the SHGC of the buildings in the typology.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shgc</span>
+
+    <span class="nd">@shgc</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">shgc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shgc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;shgc must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shgc</span> <span class="o">=</span> <span class="n">in_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;shgc&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">wall_albedo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the exterior wall albedo of the buildings in the typology.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wall_albedo</span>
+
+    <span class="nd">@wall_albedo</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">wall_albedo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wall_albedo</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;wall_albedo must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wall_albedo</span> <span class="o">=</span> <span class="n">in_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;wall_albedo&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">roof_albedo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the exterior roof albedo of the buildings in the typology.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_roof_albedo</span>
+
+    <span class="nd">@roof_albedo</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">roof_albedo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_roof_albedo</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;roof_albedo must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_roof_albedo</span> <span class="o">=</span> <span class="n">in_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;roof_albedo&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">roof_veg_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the roof vegetation fraction of the buildings in the typology.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_roof_veg_fraction</span>
+
+    <span class="nd">@roof_veg_fraction</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">roof_veg_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;roof_veg_fraction must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_roof_veg_fraction</span> <span class="o">=</span> <span class="n">in_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;roof_veg_fraction&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_roof_veg_fraction</span> <span class="o">=</span> <span class="mf">0.</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isTypologyPar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True for isTypologyPar.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="TypologyPar.to_json"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.typologypar.TypologyPar.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a typology parameter dictionary</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            {</span>
+<span class="sd">                fract_heat_to_canyon: float between 0 and 1</span>
+<span class="sd">                shgc: float</span>
+<span class="sd">                wall_albedo: float between 0 and 1</span>
+<span class="sd">                roof_albedo: float between 0 and 1</span>
+<span class="sd">                roof_veg_fraction: float between 0 and 1</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;fract_heat_to_canyon&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fract_heat_to_canyon</span><span class="p">,</span>
+            <span class="s2">&quot;shgc&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">shgc</span><span class="p">,</span>
+            <span class="s2">&quot;wall_albedo&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wall_albedo</span><span class="p">,</span>
+            <span class="s2">&quot;roof_albedo&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">roof_albedo</span><span class="p">,</span>
+            <span class="s2">&quot;roof_veg_fraction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">roof_veg_fraction</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="TypologyPar.ToString"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.typologypar.TypologyPar.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represnt Dragonfly typology uwg parameters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;Typology UWG Parameters: &#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Fraction of Heat to Canyon: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  SHGC: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Albedo (Wall | Roof): </span><span class="si">{}</span><span class="s1"> | </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Roof Vegetation Fract: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">_fract_heat_to_canyon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shgc</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">_wall_albedo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_roof_albedo</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">_roof_veg_fraction</span>
+               <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TypologyDefaults"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.typologypar.TypologyDefaults">[docs]</a><span class="k">class</span> <span class="nc">TypologyDefaults</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Contains default values from the DOE commercial building reference&quot;&quot;&quot;</span>
+
+    <span class="c1"># default wall albedos for different building types</span>
+    <span class="n">WALL_ALBEDO</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;FullServiceRestaurant&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="s1">&#39;Hospital&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="s1">&#39;LargeHotel&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="s1">&#39;LargeOffice&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="s1">&#39;MedOffice&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="s1">&#39;MidRiseApartment&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="s1">&#39;OutPatient&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="s1">&#39;PrimarySchool&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="s1">&#39;QuickServiceRestaurant&#39;</span><span class="p">:</span> <span class="mf">0.22</span><span class="p">,</span>
+        <span class="s1">&#39;SecondarySchool&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="s1">&#39;SmallHotel&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="s1">&#39;SmallOffice&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="s1">&#39;StandAloneRetail&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="s1">&#39;StripMall&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="s1">&#39;SuperMarket&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="s1">&#39;WareHouse&#39;</span><span class="p">:</span> <span class="mf">0.08</span>
+    <span class="p">}</span>
+
+    <span class="c1"># default roof albedos for different construction eras</span>
+    <span class="n">ROOF_ALBEDO</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Pre1980s&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;1980sPresent&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;NewConstruction&#39;</span><span class="p">:</span> <span class="mf">0.7</span>
+    <span class="p">}</span>
+
+    <span class="c1"># default shgcs for different climate zones and construction eras</span>
+    <span class="n">SHGC</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Pre1980s&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="mf">0.407</span><span class="p">,</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="mf">0.407</span><span class="p">,</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="mf">0.407</span><span class="p">,</span>
+            <span class="mi">13</span><span class="p">:</span> <span class="mf">0.407</span><span class="p">,</span>
+            <span class="mi">14</span><span class="p">:</span> <span class="mf">0.407</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;1980sPresent&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="mf">0.251</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="mf">0.251</span><span class="p">,</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="mf">0.251</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="mf">0.255</span><span class="p">,</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="mf">0.44</span><span class="p">,</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="mf">0.251</span><span class="p">,</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="mf">0.392</span><span class="p">,</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="mf">0.355</span><span class="p">,</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="mf">0.362</span><span class="p">,</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="mf">0.392</span><span class="p">,</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">13</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">14</span><span class="p">:</span> <span class="mf">0.487</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;NewConstruction&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="mf">0.251</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="mf">0.251</span><span class="p">,</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="mf">0.251</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="mf">0.252</span><span class="p">,</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="mf">0.252</span><span class="p">,</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="mf">0.252</span><span class="p">,</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="mf">0.39</span><span class="p">,</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">13</span><span class="p">:</span> <span class="mf">0.385</span><span class="p">,</span>
+            <span class="mi">14</span><span class="p">:</span> <span class="mf">0.487</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="TypologyDefaults.wall_albedo_by_type"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.typologypar.TypologyDefaults.wall_albedo_by_type">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">wall_albedo_by_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bldg_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return default wall albedo based on bldg_type string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">WALL_ALBEDO</span><span class="p">[</span><span class="n">bldg_type</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TypologyDefaults.roof_albedo_by_era"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.typologypar.TypologyDefaults.roof_albedo_by_era">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">roof_albedo_by_era</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">built_era</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default wall albedo based on built_era string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ROOF_ALBEDO</span><span class="p">[</span><span class="n">built_era</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TypologyDefaults.shgc_by_era_zone"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.typologypar.TypologyDefaults.shgc_by_era_zone">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">shgc_by_era_zone</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">built_era</span><span class="p">,</span> <span class="n">climate_zone</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default solar heat coeff based on built_era string and climate_zone int.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">SHGC</span><span class="p">[</span><span class="n">built_era</span><span class="p">][</span><span class="n">climate_zone</span><span class="p">]</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/dragonfly.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A python library for urban climate + urban energy modeling.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=dragonfly&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dragonfly.html">dragonfly package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

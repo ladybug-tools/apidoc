@@ -1,0 +1,671 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dragonfly.typology &#8212; Dragonfly 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dragonfly.typology</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">from</span> <span class="nn">.dfobject</span> <span class="k">import</span> <span class="n">DFObject</span>
+<span class="kn">from</span> <span class="nn">.bldgtypes</span> <span class="k">import</span> <span class="n">BuildingTypes</span>
+<span class="kn">from</span> <span class="nn">.uwg.typologypar</span> <span class="k">import</span> <span class="n">TypologyPar</span><span class="p">,</span> <span class="n">TypologyDefaults</span>
+<span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">in_range</span>
+
+<span class="kn">import</span> <span class="nn">dragonfly</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">plus</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">dragonfly</span><span class="o">.</span><span class="n">isplus</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Typology"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.typology.Typology">[docs]</a><span class="k">class</span> <span class="nc">Typology</span><span class="p">(</span><span class="n">DFObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents a group of buildings of the same typology in an urban area.</span>
+
+<span class="sd">    Properties:</span>
+<span class="sd">        average_height: The average height of the buildings of this typology</span>
+<span class="sd">            in meters.</span>
+<span class="sd">        footprint_area: The footprint area of the buildings of this typolog</span>
+<span class="sd">            in square meteres.</span>
+<span class="sd">        facade_area: The facade area of the buildings of this typology</span>
+<span class="sd">            in square meters.</span>
+<span class="sd">        bldg_program: A text string representing one of the 16 DOE building</span>
+<span class="sd">            program types to be used as a template for this typology.</span>
+<span class="sd">            Choose from the following options:</span>
+<span class="sd">                FullServiceRestaurant</span>
+<span class="sd">                Hospital</span>
+<span class="sd">                LargeHotel</span>
+<span class="sd">                LargeOffice</span>
+<span class="sd">                MediumOffice</span>
+<span class="sd">                MidRiseApartment</span>
+<span class="sd">                OutPatient</span>
+<span class="sd">                PrimarySchool</span>
+<span class="sd">                QuickServiceRestaurant</span>
+<span class="sd">                SecondarySchool</span>
+<span class="sd">                SmallHotel</span>
+<span class="sd">                SmallOffice</span>
+<span class="sd">                StandAloneRetail</span>
+<span class="sd">                StripMall</span>
+<span class="sd">                SuperMarket</span>
+<span class="sd">                Warehouse</span>
+<span class="sd">        bldg_era: A text string that sets the age of the buildings represented</span>
+<span class="sd">            by this typology. This is used to determine what constructions</span>
+<span class="sd">            make up the walls, roofs, and windows based on international</span>
+<span class="sd">            building codes over the last several decades.  Choose from</span>
+<span class="sd">            the following options:</span>
+<span class="sd">                Pre1980s</span>
+<span class="sd">                1980sPresent</span>
+<span class="sd">                NewConstruction</span>
+<span class="sd">        floor_to_floor: A number that represents the average distance between</span>
+<span class="sd">            floors for the building typology.  The default is set to 3.05 meters.</span>
+<span class="sd">        floor_area: A number that represents the floor area of the buiding in</span>
+<span class="sd">            square meteres. The default is auto-calculated using the</span>
+<span class="sd">            footprint_area, average_height, and floor_to_floor.</span>
+<span class="sd">        glz_ratio: An optional number from 0 to 1 that represents the fraction</span>
+<span class="sd">            of the walls of the building typology that are glazed. If no value</span>
+<span class="sd">            is input here, a default will be used that comes from the DoE building</span>
+<span class="sd">            template from the bldg_program and bldg_era.</span>
+<span class="sd">        uwg_parameters: Optional UWG TypologyPar to set the properties of a</span>
+<span class="sd">            building typology that specifically relate to the UWG</span>
+<span class="sd">            (ie. roof / wall albedo, fraction of bldg heat to canyon)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">average_height</span><span class="p">,</span> <span class="n">footprint_area</span><span class="p">,</span> <span class="n">facade_area</span><span class="p">,</span>
+                 <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span><span class="p">,</span> <span class="n">floor_to_floor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">floor_area</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">glz_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uwg_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a dragonfly building typology&quot;&quot;&quot;</span>
+        <span class="c1"># track whether the parent district geometry must be updated.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_parent_district</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent_district</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># critical geometry parameters that all typologies must have.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">average_height</span> <span class="o">=</span> <span class="n">average_height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">footprint_area</span> <span class="o">=</span> <span class="n">footprint_area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facade_area</span> <span class="o">=</span> <span class="n">facade_area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_to_floor</span> <span class="o">=</span> <span class="n">floor_to_floor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_area</span> <span class="o">=</span> <span class="n">floor_area</span>
+
+        <span class="c1"># critical program parameters that all typologies must have.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bldg_program</span> <span class="o">=</span> <span class="n">bldg_program</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bldg_era</span> <span class="o">=</span> <span class="n">bldg_era</span>
+
+        <span class="c1"># optional parameters with default values set by building program.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">glz_ratio</span> <span class="o">=</span> <span class="n">glz_ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uwg_parameters</span> <span class="o">=</span> <span class="n">uwg_parameters</span>
+
+<div class="viewcode-block" id="Typology.from_json"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.typology.Typology.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a typology object from a dictionary</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data: {</span>
+<span class="sd">                average_height: float</span>
+<span class="sd">                footprint_area: float</span>
+<span class="sd">                facade_area: float</span>
+<span class="sd">                bldg_program: string</span>
+<span class="sd">                bldg_era: string</span>
+<span class="sd">                floor_to_floor: float</span>
+<span class="sd">                floor_area: float</span>
+<span class="sd">                glz_ratio: float between 0 and 1</span>
+<span class="sd">                uwg_parameters: uwg_parameters json</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">required_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;average_height&quot;</span><span class="p">,</span> <span class="s2">&quot;footprint_area&quot;</span><span class="p">,</span> <span class="s2">&quot;facade_area&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;bldg_program&quot;</span><span class="p">,</span> <span class="s2">&quot;bldg_era&quot;</span><span class="p">)</span>
+
+        <span class="n">nullable_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;floor_to_floor&quot;</span><span class="p">,</span> <span class="s2">&quot;floor_area&quot;</span><span class="p">,</span> <span class="s2">&quot;glz_ratio&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;uwg_parameters&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is a required value&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nullable_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">average_height</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;average_height&#39;</span><span class="p">],</span>
+            <span class="n">footprint_area</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;footprint_area&#39;</span><span class="p">],</span>
+            <span class="n">facade_area</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;facade_area&#39;</span><span class="p">],</span>
+            <span class="n">bldg_program</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;bldg_program&#39;</span><span class="p">],</span>
+            <span class="n">bldg_era</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;bldg_era&#39;</span><span class="p">],</span>
+            <span class="n">floor_to_floor</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;floor_to_floor&#39;</span><span class="p">],</span>
+            <span class="n">floor_area</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;floor_area&#39;</span><span class="p">],</span>
+            <span class="n">glz_ratio</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;glz_ratio&#39;</span><span class="p">],</span>
+            <span class="n">uwg_parameters</span><span class="o">=</span><span class="n">TypologyPar</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;uwg_parameters&#39;</span><span class="p">])</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Typology.from_solid_geometry"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.typology.Typology.from_solid_geometry">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_solid_geometry</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bldg_breps</span><span class="p">,</span> <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span><span class="p">,</span>
+                            <span class="n">floor_to_floor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">glz_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">uwg_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a building typology from closed building brep geometry</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bldg_breps: A list of closed rhino breps representing</span>
+<span class="sd">                buildings of the typology.</span>
+<span class="sd">            bldg_program: A text string representing one of the 16 DOE building</span>
+<span class="sd">                program types to be used as a template for this typology.</span>
+<span class="sd">            bldg_era: A text string that sets the age of the buildings represented</span>
+<span class="sd">                by this typology.</span>
+<span class="sd">            floor_to_floor: A number that represents the average distance between</span>
+<span class="sd">                floors. Default is set to 3.05 meters.</span>
+<span class="sd">            glz_ratio: An optional number from 0 to 1 that represents the fraction</span>
+<span class="sd">                of the walls of the building typology that are glazed. Default will</span>
+<span class="sd">                come from the DoE building template from the bldg_program and bldg_era.</span>
+<span class="sd">            uwg_parameters: Optional UWG TypologyPar to set the properties of a</span>
+<span class="sd">                building typology that specifically relate to the UWG</span>
+<span class="sd">                (ie. roof / wall albedo, fraction of bldg heat to canyon)</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            typology: The dragonfly typology object</span>
+<span class="sd">            footprint_breps: Breps representing the footprints of the buildings.</span>
+<span class="sd">            floor_breps: Breps representing the floors of the buildings in the typology.</span>
+<span class="sd">            facade_breps: Breps representing the exposed facade surfaces of the typology.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">dragonfly</span><span class="o">.</span><span class="n">isplus</span><span class="p">,</span> \
+            <span class="s1">&#39;&quot;from_geometry&quot; method can only be used in [+] libraries.&#39;</span>
+
+        <span class="n">avg_bldg_height</span><span class="p">,</span> <span class="n">footprint_area</span><span class="p">,</span> <span class="n">floor_area</span><span class="p">,</span> <span class="n">facade_area</span><span class="p">,</span> <span class="n">footprint_breps</span><span class="p">,</span> \
+            <span class="n">floor_breps</span><span class="p">,</span> <span class="n">facade_breps</span> <span class="o">=</span> <span class="n">plus</span><span class="o">.</span><span class="n">calculateTypologyGeoParams</span><span class="p">(</span>
+                <span class="n">bldg_breps</span><span class="p">,</span> <span class="n">floor_to_floor</span><span class="p">)</span>
+
+        <span class="n">typology</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">avg_bldg_height</span><span class="p">,</span> <span class="n">footprint_area</span><span class="p">,</span> <span class="n">facade_area</span><span class="p">,</span>
+                       <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span><span class="p">,</span> <span class="n">floor_to_floor</span><span class="p">,</span>
+                       <span class="n">floor_area</span><span class="p">,</span> <span class="n">glz_ratio</span><span class="p">,</span> <span class="n">uwg_parameters</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">typology</span><span class="p">,</span> <span class="n">footprint_breps</span><span class="p">,</span> <span class="n">floor_breps</span><span class="p">,</span> <span class="n">facade_breps</span></div>
+
+<div class="viewcode-block" id="Typology.from_footprint_geometry"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.typology.Typology.from_footprint_geometry">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_footprint_geometry</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bldg_footprint_breps</span><span class="p">,</span> <span class="n">avg_num_stories</span><span class="p">,</span>
+                                <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span><span class="p">,</span> <span class="n">floor_to_floor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                <span class="n">glz_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uwg_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize typology from building footprints and an average number of stories.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bldg_footprint_breps: A list of surface rhino breps representing</span>
+<span class="sd">                the building footprints of the typology.</span>
+<span class="sd">            avg_num_stories: A float value (greater than or equal to 1) that represents</span>
+<span class="sd">                the average number of stories of the buildings in the typology.</span>
+<span class="sd">            bldg_program: A text string representing one of the 16 DOE building</span>
+<span class="sd">                program types to be used as a template for this typology.</span>
+<span class="sd">            bldg_era: A text string that sets the age of the buildings represented</span>
+<span class="sd">                by this typology.</span>
+<span class="sd">            floor_to_floor: A number that represents the average distance</span>
+<span class="sd">                between floors. Default is set to 3.05 meters.</span>
+<span class="sd">            glz_ratio: An optional number from 0 to 1 that represents the</span>
+<span class="sd">                fraction of the walls of the building typology that are</span>
+<span class="sd">                glazed. Default will come from the DoE building template from</span>
+<span class="sd">                the bldg_program and bldg_era.</span>
+<span class="sd">            uwg_parameters: Optional UWG TypologyPar to set the properties of a</span>
+<span class="sd">                building typology that specifically relate to the UWG</span>
+<span class="sd">                (ie. roof / wall albedo, fraction of bldg heat to canyon)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            typology: The dragonfly typology object</span>
+<span class="sd">            perimeter_curves: The exterior-exposed curves of the footprints.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">dragonfly</span><span class="o">.</span><span class="n">isplus</span><span class="p">,</span> \
+            <span class="s1">&#39;&quot;from_geometry&quot; method can only be used in [+] libraries.&#39;</span>
+        <span class="k">assert</span> <span class="n">avg_num_stories</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">,</span> \
+            <span class="s1">&#39;num_stories must be greater than or equal to 1. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">avg_num_stories</span><span class="p">))</span>
+
+        <span class="n">footprint_area</span><span class="p">,</span> <span class="n">perimeter_length</span><span class="p">,</span> <span class="n">perimeter_curves</span> <span class="o">=</span> \
+            <span class="n">plus</span><span class="o">.</span><span class="n">calculateFootprintGeoParams</span><span class="p">(</span><span class="n">bldg_footprint_breps</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">floor_to_floor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">avg_bldg_height</span> <span class="o">=</span> <span class="n">floor_to_floor</span> <span class="o">*</span> <span class="n">avg_num_stories</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">avg_bldg_height</span> <span class="o">=</span> <span class="mf">3.05</span> <span class="o">*</span> <span class="n">avg_num_stories</span>
+        <span class="n">facade_area</span> <span class="o">=</span> <span class="n">perimeter_length</span> <span class="o">*</span> <span class="n">avg_bldg_height</span>
+        <span class="n">floor_area</span> <span class="o">=</span> <span class="n">footprint_area</span> <span class="o">*</span> <span class="n">avg_num_stories</span>
+
+        <span class="n">typology</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">avg_bldg_height</span><span class="p">,</span> <span class="n">footprint_area</span><span class="p">,</span> <span class="n">facade_area</span><span class="p">,</span>
+                       <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span><span class="p">,</span> <span class="n">floor_to_floor</span><span class="p">,</span> <span class="n">floor_area</span><span class="p">,</span>
+                       <span class="n">glz_ratio</span><span class="p">,</span> <span class="n">uwg_parameters</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">typology</span><span class="p">,</span> <span class="n">perimeter_curves</span></div>
+
+<div class="viewcode-block" id="Typology.from_footprint_geo_and_stories"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.typology.Typology.from_footprint_geo_and_stories">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_footprint_geo_and_stories</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bldg_footprint_breps</span><span class="p">,</span> <span class="n">num_stories</span><span class="p">,</span>
+                                       <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span><span class="p">,</span> <span class="n">floor_to_floor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">glz_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uwg_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize typology from building footprints and list of building stories.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bldg_footprint_breps: A list of surface rhino breps representing</span>
+<span class="sd">                the building footprints of the typology.</span>
+<span class="sd">            num_stories: A list of integer values (all greater than or equal</span>
+<span class="sd">                to 1) that represent the number of stories for each of the</span>
+<span class="sd">                surfaces in the bldg_footprint_breps.</span>
+<span class="sd">            bldg_program: A text string representing one of the 16 DOE building</span>
+<span class="sd">                program types to be used as a template for this typology.</span>
+<span class="sd">            bldg_era: A text string that sets the age of the buildings</span>
+<span class="sd">                represented by this typology.</span>
+<span class="sd">            floor_to_floor: A number that represents the average distance</span>
+<span class="sd">                between floors. Default is set to 3.05 meters.</span>
+<span class="sd">            glz_ratio: An optional number from 0 to 1 that represents the</span>
+<span class="sd">                fraction of the walls of the building typology that are glazed.</span>
+<span class="sd">                Default will come from the DoE building template from the</span>
+<span class="sd">                bldg_program and bldg_era.</span>
+<span class="sd">            uwg_parameters: Optional UWG TypologyPar to set the properties of a</span>
+<span class="sd">                building typology that specifically relate to the UWG</span>
+<span class="sd">                (ie. roof / wall albedo, fraction of bldg heat to canyon)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            typology: The dragonfly typology object</span>
+<span class="sd">            perimeter_curves: The exterior-exposed curves of the footprints.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">dragonfly</span><span class="o">.</span><span class="n">isplus</span><span class="p">,</span> \
+            <span class="s1">&#39;&quot;from_geometry&quot; method can only be used in [+] libraries.&#39;</span>
+
+        <span class="n">weighted_num_stories</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_ftp_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">floor_srf</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bldg_footprint_breps</span><span class="p">):</span>
+            <span class="n">f_area</span> <span class="o">=</span> <span class="n">plus</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">(</span><span class="n">floor_srf</span><span class="p">)</span>
+            <span class="n">weighted_num_stories</span> <span class="o">+=</span> <span class="n">f_area</span> <span class="o">*</span> <span class="n">num_stories</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">total_ftp_area</span> <span class="o">+=</span> <span class="n">f_area</span>
+        <span class="n">avg_num_stories</span> <span class="o">=</span> <span class="n">weighted_num_stories</span> <span class="o">/</span> <span class="n">total_ftp_area</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_footprints</span><span class="p">(</span><span class="n">bldg_footprint_breps</span><span class="p">,</span> <span class="n">avg_num_stories</span><span class="p">,</span>
+                                   <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span><span class="p">,</span> <span class="n">floor_to_floor</span><span class="p">,</span>
+                                   <span class="n">glz_ratio</span><span class="p">,</span> <span class="n">uwg_parameters</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Typology.create_merged_typology"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.typology.Typology.create_merged_typology">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create_merged_typology</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">typ_one</span><span class="p">,</span> <span class="n">typ_two</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a merged typology between two typologies of the same building type.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            typ_one: The first Dragonfly building typology.</span>
+<span class="sd">            typ_two: The second Dragonfly building typology.</span>
+
+<span class="sd">        Returs:</span>
+<span class="sd">            merged_typology: A Dragonfly typology representing the</span>
+<span class="sd">                merged previous typologies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># checks</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">typ_one</span><span class="p">,</span> <span class="s1">&#39;isTypology&#39;</span><span class="p">)),</span> \
+            <span class="s1">&#39;typ_one must be a Dragonfly typology. got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">typ_one</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">typ_two</span><span class="p">,</span> <span class="s1">&#39;isTypology&#39;</span><span class="p">)),</span> \
+            <span class="s1">&#39;typ_two must be a Dragonfly typology. got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">typ_two</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">bldg_program</span> <span class="o">==</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">bldg_program</span><span class="p">),</span> \
+            <span class="s2">&quot;bldg_program of one: </span><span class="si">{}</span><span class="s2"> does not match that of two: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">typ_one</span><span class="o">.</span><span class="n">bldg_program</span><span class="p">,</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">bldg_program</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">bldg_era</span> <span class="o">==</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">),</span> \
+            <span class="s2">&quot;bldg_era of this one: </span><span class="si">{}</span><span class="s2"> does not match that of two: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">typ_one</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">,</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">)</span>
+
+        <span class="c1"># attributes that get totalled</span>
+        <span class="n">new_footprint_area</span> <span class="o">=</span> <span class="n">typ_one</span><span class="o">.</span><span class="n">footprint_area</span> <span class="o">+</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">footprint_area</span>
+        <span class="n">new_facade_area</span> <span class="o">=</span> <span class="n">typ_one</span><span class="o">.</span><span class="n">facade_area</span> <span class="o">+</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">facade_area</span>
+        <span class="n">new_floor_area</span> <span class="o">=</span> <span class="n">typ_one</span><span class="o">.</span><span class="n">floor_area</span> <span class="o">+</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">floor_area</span>
+
+        <span class="c1"># geometry atributes that get weighted averaged.</span>
+        <span class="n">new_average_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">average_height</span> <span class="o">*</span>
+                              <span class="n">typ_one</span><span class="o">.</span><span class="n">footprint_area</span> <span class="o">+</span>
+                              <span class="n">typ_two</span><span class="o">.</span><span class="n">average_height</span> <span class="o">*</span>
+                              <span class="n">typ_two</span><span class="o">.</span><span class="n">footprint_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">new_footprint_area</span>
+        <span class="n">new_floor_to_floor</span> <span class="o">=</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">floor_to_floor</span> <span class="o">*</span>
+                              <span class="n">typ_one</span><span class="o">.</span><span class="n">floor_area</span> <span class="o">+</span>
+                              <span class="n">typ_two</span><span class="o">.</span><span class="n">floor_to_floor</span> <span class="o">*</span>
+                              <span class="n">typ_two</span><span class="o">.</span><span class="n">floor_area</span><span class="p">)</span><span class="o">/</span><span class="n">new_floor_area</span>
+        <span class="n">new_glz_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">glz_ratio</span> <span class="o">*</span> <span class="n">typ_one</span><span class="o">.</span><span class="n">facade_area</span> <span class="o">+</span>
+                         <span class="n">typ_two</span><span class="o">.</span><span class="n">glz_ratio</span> <span class="o">*</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">facade_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">new_facade_area</span>
+
+        <span class="n">new_uwg_param</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_create_merged_uwg_param</span><span class="p">(</span><span class="n">typ_one</span><span class="p">,</span> <span class="n">typ_two</span><span class="p">,</span>
+                                                     <span class="n">new_floor_area</span><span class="p">,</span>
+                                                     <span class="n">new_facade_area</span><span class="p">,</span>
+                                                     <span class="n">new_footprint_area</span><span class="p">)</span>
+
+        <span class="c1"># assemble the new typology object</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_average_height</span><span class="p">,</span> <span class="n">new_footprint_area</span><span class="p">,</span> <span class="n">new_facade_area</span><span class="p">,</span>
+                   <span class="n">typ_one</span><span class="o">.</span><span class="n">bldg_program</span><span class="p">,</span> <span class="n">typ_one</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">,</span> <span class="n">new_floor_to_floor</span><span class="p">,</span>
+                   <span class="n">new_floor_area</span><span class="p">,</span> <span class="n">new_glz_ratio</span><span class="p">,</span> <span class="n">new_uwg_param</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">average_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the average height of the buildings in meters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_average_height</span>
+
+    <span class="nd">@average_height</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">average_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+            <span class="s1">&#39;average_height must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;average_height must be greater than 0&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_average_height</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_parent_district</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent_district</span><span class="o">.</span><span class="n">_update_geo_from_typologies</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">footprint_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the footprint of the buildings in square meters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_footprint_area</span>
+
+    <span class="nd">@footprint_area</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">footprint_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+            <span class="s1">&#39;footprint_area must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;footprint_area must be greater than 0&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_footprint_area</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_parent_district</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent_district</span><span class="o">.</span><span class="n">_update_geo_from_typologies</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">facade_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the facade area of the buildings in square meters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_facade_area</span>
+
+    <span class="nd">@facade_area</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">facade_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+            <span class="s1">&#39;facade_area must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;facade_area must be greater than 0&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_facade_area</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_parent_district</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent_district</span><span class="o">.</span><span class="n">_update_geo_from_typologies</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">floor_to_floor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the facade area of the buildings in square meters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_floor_to_floor</span>
+
+    <span class="nd">@floor_to_floor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">floor_to_floor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;floor_to_floor must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;floor_to_floor must be greater than 0&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_floor_to_floor</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_floor_to_floor</span> <span class="o">=</span> <span class="mf">3.05</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">number_of_stories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An integer representing the average number of stories of the buildings.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">average_height</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_to_floor</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">floor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the interior floor area of the buildings in square meters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_floor_area</span>
+
+    <span class="nd">@floor_area</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">floor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;floor_area must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_footprint_area</span><span class="p">),</span> \
+                <span class="s2">&quot;floor_area </span><span class="si">{}</span><span class="s2"> cannot be smaller than the footprint_area </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_footprint_area</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_floor_area</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_floor_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_footprint_area</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_stories</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_parent_district</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent_district</span><span class="o">.</span><span class="n">_update_geo_from_typologies</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bldg_program</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the program of the buildings in the typology.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_program</span>
+
+    <span class="nd">@bldg_program</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">bldg_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prog</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_program</span> <span class="o">=</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">check_program</span><span class="p">(</span><span class="n">prog</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bldg_era</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the construction era of buildings in the typology.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_era</span>
+
+    <span class="nd">@bldg_era</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">bldg_era</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_era</span> <span class="o">=</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">check_era</span><span class="p">(</span><span class="n">age</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">glz_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the glazing ratio of the buildings in the typology.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_glz_ratio</span>
+
+    <span class="nd">@glz_ratio</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">glz_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;glz_ratio must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_glz_ratio</span> <span class="o">=</span> <span class="n">in_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;glz_ratio&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_glz_ratio</span> <span class="o">=</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">default_glazing_ratio</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bldg_program</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">uwg_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the uwg parameters (ie. wall/roof albedo, fract heat to canyon).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uwg_parameters</span>
+
+    <span class="nd">@uwg_parameters</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">uwg_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uwg_par</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">uwg_par</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">uwg_par</span><span class="p">,</span> <span class="s1">&#39;isTypologyPar&#39;</span><span class="p">),</span> \
+                <span class="s1">&#39;uwg_parameters is not a dragonfly TypologyPar object. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">uwg_par</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_uwg_parameters</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">uwg_par</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_uwg_parameters</span> <span class="o">=</span> <span class="n">TypologyPar</span><span class="p">()</span>
+
+        <span class="c1"># Override null values with the defaults of this typology</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uwg_parameters</span><span class="o">.</span><span class="n">_wall_albedo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_uwg_parameters</span><span class="o">.</span><span class="n">_wall_albedo</span> <span class="o">=</span> <span class="n">TypologyDefaults</span><span class="o">.</span><span class="n">wall_albedo_by_type</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_program</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uwg_parameters</span><span class="o">.</span><span class="n">_roof_albedo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_uwg_parameters</span><span class="o">.</span><span class="n">_roof_albedo</span> <span class="o">=</span> <span class="n">TypologyDefaults</span><span class="o">.</span><span class="n">roof_albedo_by_era</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uwg_parameters</span><span class="o">.</span><span class="n">_shgc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_parent_district</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_uwg_parameters</span><span class="o">.</span><span class="n">_shgc</span> <span class="o">=</span> <span class="n">TypologyDefaults</span><span class="o">.</span><span class="n">shgc_by_era_zone</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_district</span><span class="o">.</span><span class="n">climate_zone</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_create_merged_uwg_param</span><span class="p">(</span><span class="n">typ_one</span><span class="p">,</span> <span class="n">typ_two</span><span class="p">,</span> <span class="n">new_floor_area</span><span class="p">,</span>
+                                 <span class="n">new_facade_area</span><span class="p">,</span> <span class="n">new_footprint_area</span><span class="p">):</span>
+        <span class="c1"># for window properties</span>
+        <span class="n">_typ_one_glz_area</span> <span class="o">=</span> <span class="n">typ_one</span><span class="o">.</span><span class="n">facade_area</span> <span class="o">*</span> <span class="n">typ_one</span><span class="o">.</span><span class="n">glz_ratio</span>
+        <span class="n">_typ_two_glz_area</span> <span class="o">=</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">facade_area</span> <span class="o">*</span> <span class="n">typ_two</span><span class="o">.</span><span class="n">glz_ratio</span>
+
+        <span class="c1"># uwg_parameters that get weighted averaged</span>
+        <span class="n">new_fract_heat_to_canyon</span> <span class="o">=</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">fract_heat_to_canyon</span> <span class="o">*</span>
+                                    <span class="n">typ_one</span><span class="o">.</span><span class="n">floor_area</span> <span class="o">+</span>
+                                    <span class="n">typ_two</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">fract_heat_to_canyon</span> <span class="o">*</span>
+                                    <span class="n">typ_two</span><span class="o">.</span><span class="n">floor_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">new_floor_area</span>
+        <span class="n">new_wall_albedo</span> <span class="o">=</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">wall_albedo</span> <span class="o">*</span>
+                           <span class="n">typ_one</span><span class="o">.</span><span class="n">facade_area</span> <span class="o">+</span>
+                           <span class="n">typ_two</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">wall_albedo</span> <span class="o">*</span>
+                           <span class="n">typ_two</span><span class="o">.</span><span class="n">facade_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">new_facade_area</span>
+        <span class="n">new_roof_albedo</span> <span class="o">=</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">roof_albedo</span> <span class="o">*</span>
+                           <span class="n">typ_one</span><span class="o">.</span><span class="n">footprint_area</span> <span class="o">+</span>
+                           <span class="n">typ_two</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">roof_albedo</span> <span class="o">*</span>
+                           <span class="n">typ_two</span><span class="o">.</span><span class="n">footprint_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">new_footprint_area</span>
+        <span class="n">new_roof_veg_fraction</span> <span class="o">=</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">roof_veg_fraction</span> <span class="o">*</span>
+                                 <span class="n">typ_one</span><span class="o">.</span><span class="n">footprint_area</span> <span class="o">+</span>
+                                 <span class="n">typ_two</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">roof_veg_fraction</span> <span class="o">*</span>
+                                 <span class="n">typ_two</span><span class="o">.</span><span class="n">footprint_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">new_footprint_area</span>
+        <span class="k">if</span> <span class="n">typ_one</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">shgc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
+                <span class="ow">and</span> <span class="n">typ_one</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">shgc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">new_shgc</span> <span class="o">=</span> <span class="p">(</span><span class="n">typ_one</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">shgc</span> <span class="o">*</span> <span class="n">_typ_one_glz_area</span> <span class="o">+</span>
+                                <span class="n">typ_two</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">shgc</span> <span class="o">*</span> <span class="n">_typ_two_glz_area</span>
+                                <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">_typ_one_glz_area</span> <span class="o">+</span> <span class="n">_typ_two_glz_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_shgc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">TypologyPar</span><span class="p">(</span><span class="n">new_fract_heat_to_canyon</span><span class="p">,</span> <span class="n">new_shgc</span><span class="p">,</span> <span class="n">new_wall_albedo</span><span class="p">,</span>
+                           <span class="n">new_roof_albedo</span><span class="p">,</span> <span class="n">new_roof_veg_fraction</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">has_parent_district</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_parent_district</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parent_district</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_district</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isTypology</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True for Typology.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Typology.to_json"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.typology.Typology.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a typology dictionary</span>
+<span class="sd">        Results:</span>
+<span class="sd">            {</span>
+<span class="sd">                average_height: float</span>
+<span class="sd">                footprint_area: float</span>
+<span class="sd">                facade_area: float</span>
+<span class="sd">                bldg_program: string</span>
+<span class="sd">                bldg_era: string</span>
+<span class="sd">                floor_to_floor: float</span>
+<span class="sd">                floor_area: float</span>
+<span class="sd">                glz_ratio: float between 0 and 1</span>
+<span class="sd">                uwg_parameters: uwg_parameters json</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;average_height&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">average_height</span><span class="p">,</span>
+            <span class="s2">&quot;footprint_area&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">footprint_area</span><span class="p">,</span>
+            <span class="s2">&quot;facade_area&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">facade_area</span><span class="p">,</span>
+            <span class="s2">&quot;bldg_program&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">bldg_program</span><span class="p">,</span>
+            <span class="s2">&quot;bldg_era&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">,</span>
+            <span class="s2">&quot;floor_to_floor&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_to_floor</span><span class="p">,</span>
+            <span class="s2">&quot;floor_area&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_area</span><span class="p">,</span>
+            <span class="s2">&quot;glz_ratio&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">glz_ratio</span><span class="p">,</span>
+            <span class="s2">&quot;uwg_parameters&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Typology.ToString"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.typology.Typology.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represnt Dragonfly typology.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;Building Typology: &#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Average Height: </span><span class="si">{}</span><span class="s1"> m&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Number of Stories: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Floor Area: </span><span class="si">{:,.0f}</span><span class="s1"> m2&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Footprint Area: </span><span class="si">{:,.0f}</span><span class="s1"> m2&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Facade Area: </span><span class="si">{:,.0f}</span><span class="s1"> m2&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Glazing Ratio: </span><span class="si">{}</span><span class="s1"> %&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_program</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_era</span><span class="p">,</span>
+                   <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_average_height</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_stories</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">floor_area</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">footprint_area</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">facade_area</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">glz_ratio</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+               <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/dragonfly.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A python library for urban climate + urban energy modeling.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=dragonfly&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly.html">dragonfly package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

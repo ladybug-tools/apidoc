@@ -1,0 +1,1076 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dragonfly.uwg package &#8212; Dragonfly 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="dragonfly package" href="dragonfly.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dragonfly-uwg-package">
+<h1>dragonfly.uwg package<a class="headerlink" href="#dragonfly-uwg-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-dragonfly.uwg.districtpar">
+<span id="dragonfly-uwg-districtpar-module"></span><h2>dragonfly.uwg.districtpar module<a class="headerlink" href="#module-dragonfly.uwg.districtpar" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.uwg.districtpar.PavementPar">
+<em class="property">class </em><code class="descclassname">dragonfly.uwg.districtpar.</code><code class="descname">PavementPar</code><span class="sig-paren">(</span><em>albedo=None</em>, <em>thickness=None</em>, <em>conductivity=None</em>, <em>volumetric_heat_capacity=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#PavementPar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.PavementPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dragonfly.html#dragonfly.dfobject.DFParameter" title="dragonfly.dfobject.DFParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFParameter</span></code></a></p>
+<p>Represents the makeup of pavement within the urban area.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first last docutils">
+<dt>albedo: A number between 0 and 1 that represents the</dt>
+<dd>surface albedo (or reflectivity) of the pavement.
+The default is set to 0.1, which is typical of fresh asphalt.</dd>
+<dt>thickness: A number that represents the thickness of the</dt>
+<dd>pavement material in meters (m).
+The default is set to 0.5 meters.</dd>
+<dt>conductivity: A number representing the conductivity</dt>
+<dd>of the pavement material in W/m-K.
+The default is set to 1 W/m-K, which is typical of asphalt.</dd>
+<dt>volumetric_heat_capacity: A number representing the</dt>
+<dd>volumetric heat capacity of the pavement material in J/m3-K.
+This is the number of joules needed to raise
+one cubic meter of the material by 1 degree Kelvin.
+The default is set to 1,600,000 J/m3-K, which is typical of asphalt.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.uwg.districtpar.PavementPar.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#PavementPar.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.PavementPar.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.PavementPar.albedo">
+<code class="descname">albedo</code><a class="headerlink" href="#dragonfly.uwg.districtpar.PavementPar.albedo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the road albedo.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.PavementPar.conductivity">
+<code class="descname">conductivity</code><a class="headerlink" href="#dragonfly.uwg.districtpar.PavementPar.conductivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the road conductivity.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.districtpar.PavementPar.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#PavementPar.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.PavementPar.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a pavement parameter object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>albedo: float between 0 and 1
+thickness: float positive
+conductivity: float positive
+volumetric_heat_capacity: float positive</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.PavementPar.isPavementPar">
+<code class="descname">isPavementPar</code><a class="headerlink" href="#dragonfly.uwg.districtpar.PavementPar.isPavementPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for isPavementPar.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.PavementPar.thickness">
+<code class="descname">thickness</code><a class="headerlink" href="#dragonfly.uwg.districtpar.PavementPar.thickness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the road thickness.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.districtpar.PavementPar.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#PavementPar.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.PavementPar.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a pavement parameter dictionary
+Results:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>albedo: float between 0 and 1
+thickness: float positive
+conductivity: float positive
+volumetric_heat_capacity: float positive</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.PavementPar.volumetric_heat_capacity">
+<code class="descname">volumetric_heat_capacity</code><a class="headerlink" href="#dragonfly.uwg.districtpar.PavementPar.volumetric_heat_capacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the volumetric heat capacity.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dragonfly.uwg.districtpar.TrafficPar">
+<em class="property">class </em><code class="descclassname">dragonfly.uwg.districtpar.</code><code class="descname">TrafficPar</code><span class="sig-paren">(</span><em>sensible_heat</em>, <em>weekday_schedule=[]</em>, <em>saturday_schedule=[]</em>, <em>sunday_schedule=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#TrafficPar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dragonfly.html#dragonfly.dfobject.DFParameter" title="dragonfly.dfobject.DFParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFParameter</span></code></a></p>
+<p>Represents the traffic within an urban area.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first last docutils">
+<dt>sensible_heat: A number representing the maximum sensible anthropogenic</dt>
+<dd>heat flux of the urban area in watts per square meter.</dd>
+<dt>weekday_schedule: A list of 24 fractional values that will be</dt>
+<dd>multiplied by the sensible_heat to produce hourly values for
+heat on the weekday of the simulation.
+The default is a typical traffic schedule for a commerical area.</dd>
+<dt>saturday_schedule: A list of 24 fractional values that will be</dt>
+<dd>multiplied by the sensible_heat to produce hourly values for
+heat on the Saturday of the simulation.
+The default is a typical traffic schedule for a commerical area.</dd>
+<dt>sunday_schedule: A list of 24 fractional values that will be</dt>
+<dd>multiplied by the sensible_heat to produce hourly values for
+heat on the Sunday of the simulation.
+The default is a typical traffic schedule for a commerical area.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#TrafficPar.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#TrafficPar.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a traffic parameter object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>sensible_heat: float
+weekday_schedule: [] list of 24 fractional values
+saturday_schedule: [] list of 24 fractional values
+sunday_schedule: [] list of 24 fractional values</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.get_uwg_matrix">
+<code class="descname">get_uwg_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#TrafficPar.get_uwg_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.get_uwg_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>A matrix of the traffic schedule that can be assigned to the uwg.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.isTrafficPar">
+<code class="descname">isTrafficPar</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.isTrafficPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for isTrafficPar.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.saturday_avg_heat">
+<code class="descname">saturday_avg_heat</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.saturday_avg_heat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the average W/m2 over the Saturday.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.saturday_hourly_heat">
+<code class="descname">saturday_hourly_heat</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.saturday_hourly_heat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of W/m2 on each hour of the Saturday.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.saturday_schedule">
+<code class="descname">saturday_schedule</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.saturday_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the Saturday traffic schedule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.sensible_heat">
+<code class="descname">sensible_heat</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.sensible_heat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the max sensible heat flux of the traffic.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.sunday_avg_heat">
+<code class="descname">sunday_avg_heat</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.sunday_avg_heat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the average W/m2 over the Sunday.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.sunday_hourly_heat">
+<code class="descname">sunday_hourly_heat</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.sunday_hourly_heat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of W/m2 on each hour of the Sunday.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.sunday_schedule">
+<code class="descname">sunday_schedule</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.sunday_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the Sunday traffic schedule as a list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#TrafficPar.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a traffic parameter dictionary
+:returns:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>sensible_heat: float
+weekday_schedule: [] list of 24 fractional values
+saturday_schedule: [] list of 24 fractional values
+sunday_schedule: [] list of 24 fractional values</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.weekday_avg_heat">
+<code class="descname">weekday_avg_heat</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.weekday_avg_heat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the average W/m2 over the Weekday.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.weekday_hourly_heat">
+<code class="descname">weekday_hourly_heat</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.weekday_hourly_heat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of W/m2 on each hour of the Weekday.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.TrafficPar.weekday_schedule">
+<code class="descname">weekday_schedule</code><a class="headerlink" href="#dragonfly.uwg.districtpar.TrafficPar.weekday_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the Weekday traffic schedule.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dragonfly.uwg.districtpar.VegetationPar">
+<em class="property">class </em><code class="descclassname">dragonfly.uwg.districtpar.</code><code class="descname">VegetationPar</code><span class="sig-paren">(</span><em>vegetation_albedo=0.25</em>, <em>vegetation_start_month=0</em>, <em>vegetation_end_month=0</em>, <em>tree_latent_fraction=0.7</em>, <em>grass_latent_fraction=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#VegetationPar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dragonfly.html#dragonfly.dfobject.DFParameter" title="dragonfly.dfobject.DFParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFParameter</span></code></a></p>
+<p>Represents the behaviour of vegetation within an urban area.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first last docutils">
+<dt>vegetation_albedo: A number between 0 and 1 that represents</dt>
+<dd>the ratio of reflected radiation from vegetated surfaces
+to incident radiation upon them.</dd>
+<dt>vegetation_start_month: An integer from 1 to 12 that represents</dt>
+<dd>the month at which vegetation begins to affect the urban climate.
+The default is set to 0, which will automatically determine the
+vegetation start month by analyzing the epw to see which
+months have an average monthly temperature above 10 C.</dd>
+<dt>vegetation_end_month: An integer from 1 to 12 that represents</dt>
+<dd>the last month at which vegetation affect the urban climate.
+The default is set to 0, which will automatically determine
+the vegetation end month by analyzing the epw to see which
+months have an average monthly temperature above 10 C.</dd>
+<dt>tree_latent_fraction: A number between 0 and 1 that represents</dt>
+<dd>the the fraction of absorbed solar energy by trees that
+is given off as latent heat (evapotranspiration). Currently,
+this does not affect the moisture balance in the uwg but
+it will affect the temperature.
+If no value is input here, a typical value of 0.7 will be assumed.</dd>
+<dt>grass_latent_fraction: A number between 0 and 1 that represents</dt>
+<dd>the the fraction of absorbed solar energy by grass that is
+given off as latent heat (evapotranspiration). Currently,
+this does not affect the moisture balance in the uwg but
+it will affect the temperature.
+If no value is input here, a typical value of 0.5 will be assumed.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#VegetationPar.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#VegetationPar.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a vegetation parameter object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>vegetation_albedo: float between 0 and 1
+vegetation_start_month: int between 0 and 12
+vegetation_end_month: int between 0 and 12
+tree_latent_fraction: float between 0 and 1
+grass_latent_fraction: float between 0 and 1</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.grass_latent_fraction">
+<code class="descname">grass_latent_fraction</code><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.grass_latent_fraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the grass latent fraction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.isVegetationPar">
+<code class="descname">isVegetationPar</code><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.isVegetationPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for isVegetationPar.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/districtpar.html#VegetationPar.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a vegetation parameter dictionary
+:returns:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>vegetation_albedo: float between 0 and 1
+vegetation_start_month: int between 0 and 11
+vegetation_end_month: int between 0 and 11
+tree_latent_fraction: float between 0 and 1
+grass_latent_fraction: float between 0 and 1</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.tree_latent_fraction">
+<code class="descname">tree_latent_fraction</code><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.tree_latent_fraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the tree latent fraction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.veg_end_month_text">
+<code class="descname">veg_end_month_text</code><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.veg_end_month_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>The text name of the vegetation end month.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.veg_start_month_text">
+<code class="descname">veg_start_month_text</code><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.veg_start_month_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>The text name of the vegetation start month.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.vegetation_albedo">
+<code class="descname">vegetation_albedo</code><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.vegetation_albedo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the vegetation albedo.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.vegetation_end_month">
+<code class="descname">vegetation_end_month</code><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.vegetation_end_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the vegetation end month.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.districtpar.VegetationPar.vegetation_start_month">
+<code class="descname">vegetation_start_month</code><a class="headerlink" href="#dragonfly.uwg.districtpar.VegetationPar.vegetation_start_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the vegetation start month.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.uwg.regionpar">
+<span id="dragonfly-uwg-regionpar-module"></span><h2>dragonfly.uwg.regionpar module<a class="headerlink" href="#module-dragonfly.uwg.regionpar" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar">
+<em class="property">class </em><code class="descclassname">dragonfly.uwg.regionpar.</code><code class="descname">BoundaryLayerPar</code><span class="sig-paren">(</span><em>day_boundary_layer_height=None</em>, <em>night_boundary_layer_height=None</em>, <em>inversion_height=None</em>, <em>circulation_coefficient=None</em>, <em>exchange_coefficient=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/regionpar.html#BoundaryLayerPar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dragonfly.html#dragonfly.dfobject.DFParameter" title="dragonfly.dfobject.DFParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFParameter</span></code></a></p>
+<p>Represents the properties of the urban boundary layer.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first last docutils">
+<dt>day_boundary_layer_height: A number that represents the height</dt>
+<dd>in meters of the urban boundary layer during the daytime.
+This is the height to which the urban meterorological conditions
+are stable and representative of the overall urban area.
+Typically, this boundary layer height increases with the
+height of the buildings.  The default is set to 1000 meters.</dd>
+<dt>night_boundary_layer_height: A number that represents the height</dt>
+<dd>in meters of the urban boundary layer during the nighttime.
+This is the height to which the urban meterorological
+conditions are stable and representative of the overall
+urban area. Typically, this boundary layer height increases with
+the height of the buildings.  The default is set to 80 meters.</dd>
+<dt>inversion_height: A number that represents the height at which</dt>
+<dd>the vertical profile of potential temperature becomes stable.
+It is the height at which the profile of air temperature becomes
+stable. Can be determined by flying helium balloons equipped
+with temperature sensors and recording the air temperatures
+at different heights.  The default is set to 150 meters.</dd>
+<dt>circulation_coefficient: A number representing the circulation coefficient.</dt>
+<dd>The default is 1.2 per Bueno, Bruno (2012).</dd>
+<dt>exchange_coefficient: A number representing the exchange coefficient.</dt>
+<dd>The default is 1.0 per Bueno, Bruno (2014).</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/regionpar.html#BoundaryLayerPar.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar.circulation_coefficient">
+<code class="descname">circulation_coefficient</code><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar.circulation_coefficient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the circulation coefficient.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar.day_boundary_layer_height">
+<code class="descname">day_boundary_layer_height</code><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar.day_boundary_layer_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the daytime boundary layer height.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar.exchange_coefficient">
+<code class="descname">exchange_coefficient</code><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar.exchange_coefficient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the exchange coefficient.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/regionpar.html#BoundaryLayerPar.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a boundary layer parameter object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>day_boundary_layer_height: float positive
+night_boundary_layer_height: float positive
+inversion_height: float positive
+circulation_coefficient: float positive
+exchange_coefficient: float positive</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar.inversion_height">
+<code class="descname">inversion_height</code><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar.inversion_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the inversion height.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar.isBoundaryLayerPar">
+<code class="descname">isBoundaryLayerPar</code><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar.isBoundaryLayerPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for isBoundaryLayerPar.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar.night_boundary_layer_height">
+<code class="descname">night_boundary_layer_height</code><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar.night_boundary_layer_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the nighttime boundary layer height.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.regionpar.BoundaryLayerPar.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/regionpar.html#BoundaryLayerPar.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.regionpar.BoundaryLayerPar.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a boundary layer parameter dictionary
+Results:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>day_boundary_layer_height: float positive
+night_boundary_layer_height: float positive
+inversion_height: float positive
+circulation_coefficient: float positive
+exchange_coefficient: float positive</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dragonfly.uwg.regionpar.RefEPWSitePar">
+<em class="property">class </em><code class="descclassname">dragonfly.uwg.regionpar.</code><code class="descname">RefEPWSitePar</code><span class="sig-paren">(</span><em>average_obstacle_height=None</em>, <em>vegetation_coverage=None</em>, <em>temp_measure_height=None</em>, <em>wind_measure_height=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/regionpar.html#RefEPWSitePar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.regionpar.RefEPWSitePar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dragonfly.html#dragonfly.dfobject.DFParameter" title="dragonfly.dfobject.DFParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFParameter</span></code></a></p>
+<p>Represents properties of the reference site where the original EPW was recorded.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first last docutils">
+<dt>average_obstacle_height: A number that represents the height in</dt>
+<dd>meters of objects that obstruct the view to the sky at the
+weather station site.  This includes both trees and buildings.
+The default is set to 0.1 meters.</dd>
+<dt>vegetation_coverage: A number between 0 and 1 that represents</dt>
+<dd>that fraction of the reference EPW site that is covered in grass.
+If nothing is input here, a defailt of 0.9 will be used.</dd>
+<dt>temp_measure_height: A number that represents the height in meters</dt>
+<dd>at which temperature is measured on the weather station.
+The default is set to 10 meters as this is the standard
+measurement height for US Department of Energy EPW files.</dd>
+<dt>wind_measure_height: A number that represents the height in meters</dt>
+<dd>at which wind speed is measured on the weather station.
+The default is set to 10 meters as this is the standard
+measurement height for US Department of Energy EPW files.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.uwg.regionpar.RefEPWSitePar.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/regionpar.html#RefEPWSitePar.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.regionpar.RefEPWSitePar.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.RefEPWSitePar.average_obstacle_height">
+<code class="descname">average_obstacle_height</code><a class="headerlink" href="#dragonfly.uwg.regionpar.RefEPWSitePar.average_obstacle_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the average obstacle height.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.regionpar.RefEPWSitePar.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/regionpar.html#RefEPWSitePar.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.regionpar.RefEPWSitePar.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a reference epw parameter object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>average_obstacle_height: float
+vegetation_coverage: float between 0 and 1
+temp_measure_height: float between 0 and 1
+wind_measure_height: float</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.RefEPWSitePar.isRefEPWSitePar">
+<code class="descname">isRefEPWSitePar</code><a class="headerlink" href="#dragonfly.uwg.regionpar.RefEPWSitePar.isRefEPWSitePar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for isRefEPWSitePar.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.RefEPWSitePar.temp_measure_height">
+<code class="descname">temp_measure_height</code><a class="headerlink" href="#dragonfly.uwg.regionpar.RefEPWSitePar.temp_measure_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the temperature measurement height.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.regionpar.RefEPWSitePar.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/regionpar.html#RefEPWSitePar.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.regionpar.RefEPWSitePar.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a reference epw parameter dictionary
+Results:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>average_obstacle_height: float
+vegetation_coverage: float between 0 and 1
+temp_measure_height: float between 0 and 1
+wind_measure_height: float</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.RefEPWSitePar.vegetation_coverage">
+<code class="descname">vegetation_coverage</code><a class="headerlink" href="#dragonfly.uwg.regionpar.RefEPWSitePar.vegetation_coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the vegetation coverage.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.regionpar.RefEPWSitePar.wind_measure_height">
+<code class="descname">wind_measure_height</code><a class="headerlink" href="#dragonfly.uwg.regionpar.RefEPWSitePar.wind_measure_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the wind measurement height.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.uwg.run">
+<span id="dragonfly-uwg-run-module"></span><h2>dragonfly.uwg.run module<a class="headerlink" href="#module-dragonfly.uwg.run" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.uwg.run.RunManager">
+<em class="property">class </em><code class="descclassname">dragonfly.uwg.run.</code><code class="descname">RunManager</code><span class="sig-paren">(</span><em>epw_file</em>, <em>district</em>, <em>epw_site_par=None</em>, <em>boundary_layer_par=None</em>, <em>analysis_period=None</em>, <em>sim_timestep=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/run.html#RunManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.run.RunManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Object to interface between dragonfly and the uwg.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first docutils">
+<dt>epw_file: An .epw file path on your system.</dt>
+<dd>This is the rural or airport file that will be morphed to
+reflect the climate conditions within an urban canyon.</dd>
+</dl>
+<p>district: A dragonfly District object representing the urban area.
+epw_site_par: Optional dragonfly RefEPWSitePar object.
+boundary_layer_par: Optional dragonfly BoundaryLayerPar object.
+analysis_period: A ladybug AnalysisPeriod indicating the time period</p>
+<blockquote>
+<div>of the epw_file to be morphed.  The default is set to run the
+entire year</div></blockquote>
+<dl class="last docutils">
+<dt>sim_timestep: The timestep at which the simulation is run in seconds.</dt>
+<dd>The default is set to 300 seconds (5 minutes).</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.uwg.run.RunManager.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/run.html#RunManager.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.run.RunManager.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Directly run the UWG to generate a morphed EPW.
+This method will only work if you have the uwg Python library installed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.run.RunManager.save_uwg_file">
+<code class="descname">save_uwg_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/run.html#RunManager.save_uwg_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.run.RunManager.save_uwg_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save all of the properties of the RunManager to a .uwg file.
+These .uwg files can be parsed by the UWG engine.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.run.RunManager.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/run.html#RunManager.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.run.RunManager.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.run.RunManager.analysis_period">
+<code class="descname">analysis_period</code><a class="headerlink" href="#dragonfly.uwg.run.RunManager.analysis_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the AnalysisPeriod over which the simulation runs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.run.RunManager.boundary_layer_par">
+<code class="descname">boundary_layer_par</code><a class="headerlink" href="#dragonfly.uwg.run.RunManager.boundary_layer_par" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the BoundaryLayerPar object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.run.RunManager.district">
+<code class="descname">district</code><a class="headerlink" href="#dragonfly.uwg.run.RunManager.district" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the District object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.run.RunManager.epw_file">
+<code class="descname">epw_file</code><a class="headerlink" href="#dragonfly.uwg.run.RunManager.epw_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the EPW file path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.run.RunManager.epw_site_par">
+<code class="descname">epw_site_par</code><a class="headerlink" href="#dragonfly.uwg.run.RunManager.epw_site_par" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the RefEPWSitePar object.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.run.RunManager.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/run.html#RunManager.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.run.RunManager.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a RunManager object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>epw_file: list of Typology objects
+district: dragonfly district disct
+epw_site_par: epw site parameter dict
+boundary_layer_par: boundary layer parameter dict
+analysis_period: ladybug analysis period dict
+sim_timestep: simulation timestep in seconds</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">run</code><span class="sig-paren">(</span><em>urban_epw_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/run.html#RunManager.run"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Run the UWG using the inputs to the RunManager.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>urban_epw_path</strong> – Full file path to the morphed epw.
+The default is set to go to an URBAN folder in the same
+directory as the existing rural EPW.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The file path to the morphed epw.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">urban_epw_path</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">save_uwg_file</code><span class="sig-paren">(</span><em>uwg_file_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/run.html#RunManager.save_uwg_file"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Write the properties of the RunManager to a .uwg file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uwg_file_path</strong> – Full file path to the .uwg file that you want to write.
+The default is set to go to an URBAN folder in the same
+directory as the existing rural EPW.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The file path to the .uwg file.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">uwg_file_path</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.run.RunManager.sim_timestep">
+<code class="descname">sim_timestep</code><a class="headerlink" href="#dragonfly.uwg.run.RunManager.sim_timestep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the simulation timestep in seconds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.run.RunManager.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/run.html#RunManager.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.run.RunManager.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a UWG RunManager dictionary
+Results:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>epw_file: list of Typology objects
+district: dragonfly district disct
+epw_site_par: epw site parameter dict
+boundary_layer_par: boundary layer parameter dict
+analysis_period: ladybug analysis period dict
+sim_timestep: simulation timestep in seconds</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.run.RunManager.uwg_file_string">
+<code class="descname">uwg_file_string</code><a class="headerlink" href="#dragonfly.uwg.run.RunManager.uwg_file_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string that can be written to a .uwg file.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.uwg.typologypar">
+<span id="dragonfly-uwg-typologypar-module"></span><h2>dragonfly.uwg.typologypar module<a class="headerlink" href="#module-dragonfly.uwg.typologypar" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.uwg.typologypar.TypologyDefaults">
+<em class="property">class </em><code class="descclassname">dragonfly.uwg.typologypar.</code><code class="descname">TypologyDefaults</code><a class="reference internal" href="_modules/dragonfly/uwg/typologypar.html#TypologyDefaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyDefaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Contains default values from the DOE commercial building reference</p>
+<dl class="attribute">
+<dt id="dragonfly.uwg.typologypar.TypologyDefaults.ROOF_ALBEDO">
+<code class="descname">ROOF_ALBEDO</code><em class="property"> = {'1980sPresent': 0.2, 'NewConstruction': 0.7, 'Pre1980s': 0.2}</em><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyDefaults.ROOF_ALBEDO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.typologypar.TypologyDefaults.SHGC">
+<code class="descname">SHGC</code><em class="property"> = {'1980sPresent': {0: 0.251, 1: 0.251, 2: 0.251, 3: 0.255, 4: 0.44, 5: 0.251, 6: 0.392, 7: 0.355, 8: 0.362, 9: 0.392, 10: 0.385, 11: 0.385, 12: 0.385, 13: 0.385, 14: 0.487}, 'NewConstruction': {0: 0.251, 1: 0.251, 2: 0.251, 3: 0.252, 4: 0.252, 5: 0.252, 6: 0.39, 7: 0.385, 8: 0.385, 9: 0.385, 10: 0.385, 11: 0.385, 12: 0.385, 13: 0.385, 14: 0.487}, 'Pre1980s': {0: 0.54, 1: 0.54, 2: 0.54, 3: 0.54, 4: 0.54, 5: 0.54, 6: 0.54, 7: 0.54, 8: 0.54, 9: 0.54, 10: 0.407, 11: 0.407, 12: 0.407, 13: 0.407, 14: 0.407}}</em><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyDefaults.SHGC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.typologypar.TypologyDefaults.WALL_ALBEDO">
+<code class="descname">WALL_ALBEDO</code><em class="property"> = {'FullServiceRestaurant': 0.15, 'Hospital': 0.08, 'LargeHotel': 0.08, 'LargeOffice': 0.08, 'MedOffice': 0.15, 'MidRiseApartment': 0.15, 'OutPatient': 0.15, 'PrimarySchool': 0.15, 'QuickServiceRestaurant': 0.22, 'SecondarySchool': 0.15, 'SmallHotel': 0.15, 'SmallOffice': 0.08, 'StandAloneRetail': 0.08, 'StripMall': 0.08, 'SuperMarket': 0.08, 'WareHouse': 0.08}</em><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyDefaults.WALL_ALBEDO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.typologypar.TypologyDefaults.roof_albedo_by_era">
+<em class="property">classmethod </em><code class="descname">roof_albedo_by_era</code><span class="sig-paren">(</span><em>built_era</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/typologypar.html#TypologyDefaults.roof_albedo_by_era"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyDefaults.roof_albedo_by_era" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default wall albedo based on built_era string.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.typologypar.TypologyDefaults.shgc_by_era_zone">
+<em class="property">classmethod </em><code class="descname">shgc_by_era_zone</code><span class="sig-paren">(</span><em>built_era</em>, <em>climate_zone</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/typologypar.html#TypologyDefaults.shgc_by_era_zone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyDefaults.shgc_by_era_zone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default solar heat coeff based on built_era string and climate_zone int.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.typologypar.TypologyDefaults.wall_albedo_by_type">
+<em class="property">classmethod </em><code class="descname">wall_albedo_by_type</code><span class="sig-paren">(</span><em>bldg_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/typologypar.html#TypologyDefaults.wall_albedo_by_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyDefaults.wall_albedo_by_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return default wall albedo based on bldg_type string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dragonfly.uwg.typologypar.TypologyPar">
+<em class="property">class </em><code class="descclassname">dragonfly.uwg.typologypar.</code><code class="descname">TypologyPar</code><span class="sig-paren">(</span><em>fract_heat_to_canyon=None</em>, <em>shgc=None</em>, <em>wall_albedo=None</em>, <em>roof_albedo=None</em>, <em>roof_veg_fraction=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/typologypar.html#TypologyPar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="dragonfly.html#dragonfly.dfobject.DFParameter" title="dragonfly.dfobject.DFParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFParameter</span></code></a></p>
+<p>Represents the properties of a building typology that relate to the UWG.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first last docutils">
+<dt>fract_heat_to_canyon: A number from 0 to 1 that represents the fraction</dt>
+<dd>the building’s waste heat from air conditioning that gets rejected
+into the urban canyon. The default is set to 0.5.</dd>
+<dt>shgc: A number from 0 to 1 that represents the SHGC of the</dt>
+<dd>buildings in the typology.</dd>
+<dt>wall_albedo: A number from 0 to 1 that represents the exterior</dt>
+<dd>wall albedo of the buildings in the typology.
+The default is taken from the DOE commercial building reference
+and varies by building typology type.</dd>
+<dt>roof_albedo: A number from 0 to 1 that represents the exterior</dt>
+<dd>roof albedo of the buildings in the typology.
+The default is 0.7 for NewConstruction and 0.2 for
+Pre1980s and 1980sPresent.</dd>
+<dt>roof_veg_fraction: A number from 0 to 1 that represents the</dt>
+<dd>roof vegetation fraction of the buildings in the typology.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.uwg.typologypar.TypologyPar.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/typologypar.html#TypologyPar.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.typologypar.TypologyPar.fract_heat_to_canyon">
+<code class="descname">fract_heat_to_canyon</code><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar.fract_heat_to_canyon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the fraction of the bldg heat rejected to the urban canyon.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.uwg.typologypar.TypologyPar.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/typologypar.html#TypologyPar.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a typology parameter object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>fract_heat_to_canyon: float between 0 and 1
+shgc: float
+wall_albedo: float between 0 and 1
+roof_albedo: float between 0 and 1
+roof_veg_fraction: float between 0 and 1</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.typologypar.TypologyPar.isTypologyPar">
+<code class="descname">isTypologyPar</code><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar.isTypologyPar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for isTypologyPar.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.typologypar.TypologyPar.roof_albedo">
+<code class="descname">roof_albedo</code><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar.roof_albedo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the exterior roof albedo of the buildings in the typology.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.typologypar.TypologyPar.roof_veg_fraction">
+<code class="descname">roof_veg_fraction</code><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar.roof_veg_fraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the roof vegetation fraction of the buildings in the typology.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.typologypar.TypologyPar.shgc">
+<code class="descname">shgc</code><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar.shgc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the SHGC of the buildings in the typology.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.uwg.typologypar.TypologyPar.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/uwg/typologypar.html#TypologyPar.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a typology parameter dictionary
+:returns:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>fract_heat_to_canyon: float between 0 and 1
+shgc: float
+wall_albedo: float between 0 and 1
+roof_albedo: float between 0 and 1
+roof_veg_fraction: float between 0 and 1</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.uwg.typologypar.TypologyPar.wall_albedo">
+<code class="descname">wall_albedo</code><a class="headerlink" href="#dragonfly.uwg.typologypar.TypologyPar.wall_albedo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the exterior wall albedo of the buildings in the typology.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.uwg">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dragonfly.uwg" title="Permalink to this headline">¶</a></h2>
+<p>Dragonfly Urban Weather Generator Classes.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/dragonfly.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A python library for urban climate + urban energy modeling.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=dragonfly&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="dragonfly.html">dragonfly package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="dragonfly.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">dragonfly.uwg package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-dragonfly.uwg.districtpar">dragonfly.uwg.districtpar module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-dragonfly.uwg.regionpar">dragonfly.uwg.regionpar module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-dragonfly.uwg.run">dragonfly.uwg.run module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-dragonfly.uwg.typologypar">dragonfly.uwg.typologypar module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-dragonfly.uwg">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.html#module-dragonfly.bldgtypes">dragonfly.bldgtypes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.html#module-dragonfly.dfobject">dragonfly.dfobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.html#module-dragonfly.district">dragonfly.district module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.html#module-dragonfly.terrain">dragonfly.terrain module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.html#module-dragonfly.typology">dragonfly.typology module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.html#module-dragonfly.utilities">dragonfly.utilities module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.html#module-dragonfly.vegetation">dragonfly.vegetation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.html#module-dragonfly">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="dragonfly.html">dragonfly package</a><ul>
+      <li>Previous: <a href="dragonfly.html" title="previous chapter">dragonfly package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/dragonfly.uwg.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

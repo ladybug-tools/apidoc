@@ -1,0 +1,372 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dragonfly.bldgtypes &#8212; Dragonfly 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dragonfly.bldgtypes</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<div class="viewcode-block" id="BuildingTypes"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes">[docs]</a><span class="k">class</span> <span class="nc">BuildingTypes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Contains the accepted building typologies and contruction eras.&quot;&quot;&quot;</span>
+
+    <span class="c1"># dictionary to go from building programs to numbers understood by the UWG</span>
+    <span class="n">BLDG_PROGRAM</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;FullServiceRestaurant&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;Hospital&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;LargeHotel&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">&#39;LargeOffice&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;MedOffice&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;MidRiseApartment&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s1">&#39;OutPatient&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="s1">&#39;PrimarySchool&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="s1">&#39;QuickServiceRestaurant&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;SecondarySchool&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+        <span class="s1">&#39;SmallHotel&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;SmallOffice&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+        <span class="s1">&#39;StandAloneRetail&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="s1">&#39;StripMall&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+        <span class="s1">&#39;SuperMarket&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="s1">&#39;WareHouse&#39;</span><span class="p">:</span> <span class="mi">15</span>
+        <span class="p">}</span>
+
+    <span class="c1"># dictionary to get default glazing ratio depending on building program</span>
+    <span class="c1"># values come from analysis of the DOE commercial building refernece</span>
+    <span class="n">GLZ_RATIO</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;FullServiceRestaurant&#39;</span><span class="p">:</span> <span class="mf">0.182</span><span class="p">,</span>
+        <span class="s1">&#39;Hospital&#39;</span><span class="p">:</span> <span class="mf">0.1461</span><span class="p">,</span>
+        <span class="s1">&#39;LargeHotel&#39;</span><span class="p">:</span> <span class="mf">0.2663</span><span class="p">,</span>
+        <span class="s1">&#39;LargeOffice&#39;</span><span class="p">:</span> <span class="mf">0.38</span><span class="p">,</span>
+        <span class="s1">&#39;MedOffice&#39;</span><span class="p">:</span> <span class="mf">0.33</span><span class="p">,</span>
+        <span class="s1">&#39;MidRiseApartment&#39;</span><span class="p">:</span> <span class="mf">0.1499</span><span class="p">,</span>
+        <span class="s1">&#39;OutPatient&#39;</span><span class="p">:</span> <span class="mf">0.1985</span><span class="p">,</span>
+        <span class="s1">&#39;PrimarySchool&#39;</span><span class="p">:</span> <span class="mf">0.35</span><span class="p">,</span>
+        <span class="s1">&#39;QuickServiceRestaurant&#39;</span><span class="p">:</span> <span class="mf">0.14</span><span class="p">,</span>
+        <span class="s1">&#39;SecondarySchool&#39;</span><span class="p">:</span> <span class="mf">0.34</span><span class="p">,</span>
+        <span class="s1">&#39;SmallHotel&#39;</span><span class="p">:</span> <span class="mf">0.1087</span><span class="p">,</span>
+        <span class="s1">&#39;SmallOffice&#39;</span><span class="p">:</span> <span class="mf">0.212</span><span class="p">,</span>
+        <span class="s1">&#39;StandAloneRetail&#39;</span><span class="p">:</span> <span class="mf">0.071</span><span class="p">,</span>
+        <span class="s1">&#39;StripMall&#39;</span><span class="p">:</span> <span class="mf">0.105</span><span class="p">,</span>
+        <span class="s1">&#39;SuperMarket&#39;</span><span class="p">:</span> <span class="mf">0.109</span><span class="p">,</span>
+        <span class="s1">&#39;WareHouse&#39;</span><span class="p">:</span> <span class="mf">0.0058</span>
+    <span class="p">}</span>
+
+    <span class="c1"># dictionary to go from construction era to numbers understood by the UWG</span>
+    <span class="n">BUILT_ERA</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Pre1980s&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;1980sPresent&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;NewConstruction&#39;</span><span class="p">:</span> <span class="mi">2</span>
+        <span class="p">}</span>
+
+    <span class="c1"># dictionary to go from UWG construction era to Dragonfly convention</span>
+    <span class="n">UWG_BUILT_ERA</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Pre80&#39;</span><span class="p">:</span> <span class="s1">&#39;Pre1980s&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Pst80&#39;</span><span class="p">:</span> <span class="s1">&#39;1980sPresent&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;New&#39;</span><span class="p">:</span> <span class="s1">&#39;NewConstruction&#39;</span>
+        <span class="p">}</span>
+
+    <span class="c1"># dictionary to go from climate zone numbers of the UWG to human-readable format</span>
+    <span class="n">ZONE_TYPE</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;1A&#39;</span><span class="p">,</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;2A&#39;</span><span class="p">,</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;2B&#39;</span><span class="p">,</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;3A&#39;</span><span class="p">,</span>
+        <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;3B-CA&#39;</span><span class="p">,</span>
+        <span class="mi">5</span><span class="p">:</span> <span class="s1">&#39;3B&#39;</span><span class="p">,</span>
+        <span class="mi">6</span><span class="p">:</span> <span class="s1">&#39;3C&#39;</span><span class="p">,</span>
+        <span class="mi">7</span><span class="p">:</span> <span class="s1">&#39;4A&#39;</span><span class="p">,</span>
+        <span class="mi">8</span><span class="p">:</span> <span class="s1">&#39;4B&#39;</span><span class="p">,</span>
+        <span class="mi">9</span><span class="p">:</span> <span class="s1">&#39;4C&#39;</span><span class="p">,</span>
+        <span class="mi">10</span><span class="p">:</span> <span class="s1">&#39;5A&#39;</span><span class="p">,</span>
+        <span class="mi">11</span><span class="p">:</span> <span class="s1">&#39;5B&#39;</span><span class="p">,</span>
+        <span class="mi">12</span><span class="p">:</span> <span class="s1">&#39;6A&#39;</span><span class="p">,</span>
+        <span class="mi">13</span><span class="p">:</span> <span class="s1">&#39;6B&#39;</span><span class="p">,</span>
+        <span class="mi">14</span><span class="p">:</span> <span class="s1">&#39;7&#39;</span><span class="p">,</span>
+        <span class="mi">15</span><span class="p">:</span> <span class="s1">&#39;8&#39;</span>
+        <span class="p">}</span>
+
+    <span class="c1"># dictionary of acceptable ASHRAE climate zone inputs</span>
+    <span class="n">ZONE_CONVERTER</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;1A&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;2A&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;2B&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">&#39;3A&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;3B-CA&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;3B&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s1">&#39;3C&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="s1">&#39;4A&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="s1">&#39;4B&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;4C&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+        <span class="s1">&#39;5A&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;5B&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+        <span class="s1">&#39;6A&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="s1">&#39;6B&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+        <span class="s1">&#39;7&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="s1">&#39;8&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+
+        <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="s1">&#39;5&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+
+        <span class="s1">&#39;1B&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;1C&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;2C&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;5C&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;6C&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="s1">&#39;7A&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="s1">&#39;7B&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="s1">&#39;7C&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="s1">&#39;8A&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="s1">&#39;8B&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="s1">&#39;8C&#39;</span><span class="p">:</span> <span class="mi">15</span>
+    <span class="p">}</span>
+
+    <span class="c1"># dictionary of acceptable building program inputs</span>
+    <span class="n">BLDG_PROGRAM_CONVERTER</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;FULLSERVICERESTAURANT&#39;</span><span class="p">:</span> <span class="s1">&#39;FullServiceRestaurant&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;HOSPITAL&#39;</span><span class="p">:</span> <span class="s1">&#39;Hospital&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LARGEHOTEL&#39;</span><span class="p">:</span> <span class="s1">&#39;LargeHotel&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LARGEOFFICE&#39;</span><span class="p">:</span> <span class="s1">&#39;LargeOffice&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;MEDIUMOFFICE&#39;</span><span class="p">:</span> <span class="s1">&#39;MediumOffice&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;MIDRISEAPARTMENT&#39;</span><span class="p">:</span> <span class="s1">&#39;MidRiseApartment&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;OUTPATIENT&#39;</span><span class="p">:</span> <span class="s1">&#39;OutPatient&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PRIMARYSCHOOL&#39;</span><span class="p">:</span> <span class="s1">&#39;PrimarySchool&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;QUICKSERVICERESTAURANT&#39;</span><span class="p">:</span> <span class="s1">&#39;QuickServiceRestaurant&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SECONDARYSCHOOL&#39;</span><span class="p">:</span> <span class="s1">&#39;SecondarySchool&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SMALLHOTEL&#39;</span><span class="p">:</span> <span class="s1">&#39;SmallHotel&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SMALLOFFICE&#39;</span><span class="p">:</span> <span class="s1">&#39;SmallOffice&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;STANDALONERETAIL&#39;</span><span class="p">:</span> <span class="s1">&#39;StandAloneRetail&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;STRIPMALL&#39;</span><span class="p">:</span> <span class="s1">&#39;StripMall&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SUPERMARKET&#39;</span><span class="p">:</span> <span class="s1">&#39;SuperMarket&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;WAREHOUSE&#39;</span><span class="p">:</span> <span class="s1">&#39;WareHouse&#39;</span><span class="p">,</span>
+
+        <span class="s1">&#39;FULL SERVICE RESTAURANT&#39;</span><span class="p">:</span> <span class="s1">&#39;FullServiceRestaurant&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LARGE HOTEL&#39;</span><span class="p">:</span> <span class="s1">&#39;LargeHotel&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LARGE OFFICE&#39;</span><span class="p">:</span> <span class="s1">&#39;LargeOffice&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;MEDIUM OFFICE&#39;</span><span class="p">:</span> <span class="s1">&#39;MediumOffice&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;MIDRISE APARTMENT&#39;</span><span class="p">:</span> <span class="s1">&#39;MidRiseApartment&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;OUT PATIENT&#39;</span><span class="p">:</span> <span class="s1">&#39;OutPatient&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PRIMARY SCHOOL&#39;</span><span class="p">:</span> <span class="s1">&#39;PrimarySchool&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;QUICK SERVICE RESTAURANT&#39;</span><span class="p">:</span> <span class="s1">&#39;QuickServiceRestaurant&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SECONDARY SCHOOL&#39;</span><span class="p">:</span> <span class="s1">&#39;SecondarySchool&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SMALL HOTEL&#39;</span><span class="p">:</span> <span class="s1">&#39;SmallHotel&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SMALL OFFICE&#39;</span><span class="p">:</span> <span class="s1">&#39;SmallOffice&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;STANDALONE RETAIL&#39;</span><span class="p">:</span> <span class="s1">&#39;StandAloneRetail&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;STRIP MALL&#39;</span><span class="p">:</span> <span class="s1">&#39;StripMall&#39;</span><span class="p">,</span>
+
+        <span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="s1">&#39;LargeOffice&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="s1">&#39;StandAloneRetail&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="s1">&#39;MidRiseApartment&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="s1">&#39;PrimarySchool&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="s1">&#39;SecondarySchool&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;5&#39;</span><span class="p">:</span> <span class="s1">&#39;SmallHotel&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="s1">&#39;LargeHotel&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;7&#39;</span><span class="p">:</span> <span class="s1">&#39;Hospital&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;8&#39;</span><span class="p">:</span> <span class="s1">&#39;OutPatient&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;9&#39;</span><span class="p">:</span> <span class="s1">&#39;Warehouse&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;10&#39;</span><span class="p">:</span> <span class="s1">&#39;SuperMarket&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;11&#39;</span><span class="p">:</span> <span class="s1">&#39;FullServiceRestaurant&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;12&#39;</span><span class="p">:</span> <span class="s1">&#39;QuickServiceRestaurant&#39;</span><span class="p">,</span>
+
+        <span class="s1">&#39;Office&#39;</span><span class="p">:</span> <span class="s1">&#39;LargeOffice&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Retail&#39;</span><span class="p">:</span> <span class="s1">&#39;StandAloneRetail&#39;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># dictionary of acceptable building ages</span>
+    <span class="n">BUILT_ERA_CONVERTER</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;PRE1980S&#39;</span><span class="p">:</span> <span class="s1">&#39;Pre1980s&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;1980SPRESENT&#39;</span><span class="p">:</span> <span class="s1">&#39;1980sPresent&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;NEWCONSTRUCTION&#39;</span><span class="p">:</span> <span class="s1">&#39;NewConstruction&#39;</span><span class="p">,</span>
+
+        <span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="s1">&#39;Pre1980s&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="s1">&#39;1980sPresent&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="s1">&#39;NewConstruction&#39;</span><span class="p">,</span>
+
+        <span class="s2">&quot;Pre-1980&#39;s&quot;</span><span class="p">:</span> <span class="s1">&#39;Pre1980s&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;1980&#39;s-Present&quot;</span><span class="p">:</span> <span class="s1">&#39;1980sPresent&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;New Construction&#39;</span><span class="p">:</span> <span class="s1">&#39;NewConstruction&#39;</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="BuildingTypes.check_program"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes.check_program">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">check_program</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bldg_program</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bldg_program</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> \
+            <span class="s1">&#39;bldg_program must be a text string. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">bldg_program</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="n">bldg_program</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BLDG_PROGRAM_CONVERTER</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> \
+            <span class="s1">&#39;bldg_program &quot;</span><span class="si">{}</span><span class="s1">&quot;&quot; is not recognized as a valid program.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">bldg_program</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BLDG_PROGRAM_CONVERTER</span><span class="p">[</span><span class="n">bldg_program</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="BuildingTypes.check_era"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes.check_era">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">check_era</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bldg_era</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bldg_era</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> \
+            <span class="s1">&#39;bldg_era must be a text string got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">bldg_era</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="n">bldg_era</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BUILT_ERA_CONVERTER</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> \
+            <span class="s1">&#39;bldg_age &quot;</span><span class="si">{}</span><span class="s1">&quot; is not recognized as a valid building age.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">bldg_era</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BUILT_ERA_CONVERTER</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">bldg_era</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="BuildingTypes.check_cimate_zone"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes.check_cimate_zone">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">check_cimate_zone</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">climate_zone</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">climate_zone</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> \
+            <span class="s1">&#39;climate_zone must be a text string got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">climate_zone</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="n">climate_zone</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ZONE_CONVERTER</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> \
+            <span class="s1">&#39;climate_zone &quot;</span><span class="si">{}</span><span class="s1">&quot;&quot; is not recognized as a valid climate zone&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">climate_zone</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ZONE_CONVERTER</span><span class="p">[</span><span class="n">climate_zone</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="BuildingTypes.get_program_index"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes.get_program_index">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_program_index</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">program</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BLDG_PROGRAM</span><span class="p">[</span><span class="n">program</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BuildingTypes.get_era_index"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes.get_era_index">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_era_index</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">era</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BUILT_ERA</span><span class="p">[</span><span class="n">era</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BuildingTypes.get_uwg_era_index"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes.get_uwg_era_index">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_uwg_era_index</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">era</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">UWG_BUILT_ERA</span><span class="p">[</span><span class="n">era</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BuildingTypes.get_readable_zone"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes.get_readable_zone">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_readable_zone</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">climate_zone</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ZONE_TYPE</span><span class="p">[</span><span class="n">climate_zone</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BuildingTypes.default_glazing_ratio"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes.default_glazing_ratio">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">default_glazing_ratio</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bldg_program</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">GLZ_RATIO</span><span class="p">[</span><span class="n">bldg_program</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BuildingTypes.get_program_list"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.bldgtypes.BuildingTypes.get_program_list">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_program_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="nb">dict</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BLDG_PROGRAM</span>
+        <span class="n">keys</span><span class="p">,</span> <span class="n">vals</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">dict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">keys</span><span class="p">))]</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;BuildingTypes representation.&quot;&quot;&quot;</span>
+        <span class="n">_programs</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BLDG_PROGRAM</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">_cnstr_eras</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BUILT_ERA</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s1">&#39;Building Programs:</span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1"> Construction Eras:</span><span class="se">\n</span><span class="s1">  </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">_programs</span><span class="p">,</span> <span class="n">_cnstr_eras</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/dragonfly.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A python library for urban climate + urban energy modeling.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=dragonfly&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly.html">dragonfly package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

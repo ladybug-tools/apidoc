@@ -1,0 +1,727 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dragonfly.district &#8212; Dragonfly 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dragonfly.district</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">.dfobject</span> <span class="k">import</span> <span class="n">DFObject</span>
+<span class="kn">from</span> <span class="nn">.bldgtypes</span> <span class="k">import</span> <span class="n">BuildingTypes</span>
+<span class="kn">from</span> <span class="nn">.typology</span> <span class="k">import</span> <span class="n">Typology</span>
+<span class="kn">from</span> <span class="nn">.uwg.districtpar</span> <span class="k">import</span> <span class="n">TrafficPar</span><span class="p">,</span> <span class="n">VegetationPar</span><span class="p">,</span> <span class="n">PavementPar</span>
+<span class="kn">from</span> <span class="nn">.uwg.typologypar</span> <span class="k">import</span> <span class="n">TypologyDefaults</span>
+<span class="kn">from</span> <span class="nn">.utilities</span> <span class="k">import</span> <span class="n">in_range</span>
+
+
+<div class="viewcode-block" id="District"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.district.District">[docs]</a><span class="k">class</span> <span class="nc">District</span><span class="p">(</span><span class="n">DFObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents an urban district inclluding buildings, ground cover, and traffic.</span>
+
+<span class="sd">    Properties:</span>
+<span class="sd">        typologies</span>
+<span class="sd">        site_area</span>
+<span class="sd">        climate_zone</span>
+<span class="sd">        tree_coverage_ratio</span>
+<span class="sd">        grass_coverage_ratio</span>
+<span class="sd">        traffic_parameters</span>
+<span class="sd">        vegetation_parameters</span>
+<span class="sd">        pavement_parameters</span>
+<span class="sd">        characteristic_length</span>
+<span class="sd">        average_bldg_height</span>
+<span class="sd">        site_coverage_ratio</span>
+<span class="sd">        facade_to_site_ratio</span>
+<span class="sd">        bldg_type_ratios</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">building_typologies</span><span class="p">,</span> <span class="n">site_area</span><span class="p">,</span> <span class="n">climate_zone</span><span class="p">,</span>
+                 <span class="n">tree_coverage_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grass_coverage_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">traffic_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vegetation_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">pavement_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">characteristic_length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a district.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            building_typologies: A list of dragonfly Typology objects.</span>
+<span class="sd">            site_area: A float value representing the site area in square meters.</span>
+<span class="sd">            climate_zone: A text string representing the ASHRAE climate zone.</span>
+<span class="sd">                (eg. 5A). This is used to set default constructions for</span>
+<span class="sd">                the buildings in the district.</span>
+<span class="sd">            tree_coverage_ratio: An number from 0 to 1 that defines the</span>
+<span class="sd">                fraction of the urban area (including both pavement</span>
+<span class="sd">                and roofs) that is covered by trees.  The default is set to 0.</span>
+<span class="sd">            grass_coverage_ratio: An number from 0 to 1 that defines the</span>
+<span class="sd">                fraction of the urban area (including both pavement and roofs)</span>
+<span class="sd">                that is covered by grass/vegetation.  The default is set to 0.</span>
+<span class="sd">            traffic_parameters: A dragonfly TrafficPar object that defines</span>
+<span class="sd">                the traffic within an urban area.</span>
+<span class="sd">            vegetation_parameters: A dragonfly VegetationPar object that</span>
+<span class="sd">                defines the behaviour of vegetation within an urban area.</span>
+<span class="sd">            pavement_parameters: A dragonfly PavementPar object that defines</span>
+<span class="sd">                the makeup of pavement within the urban area.</span>
+<span class="sd">            characteristic_length: A number representing the linear dimension</span>
+<span class="sd">                of the side of a square that encompasses the neighborhood in meters.</span>
+<span class="sd">                The default will take the square root of the input site_area.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            district: The dragonfly district object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Set the climate zone</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_climate_zone</span> <span class="o">=</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">check_cimate_zone</span><span class="p">(</span><span class="n">climate_zone</span><span class="p">)</span>
+
+        <span class="c1"># set the site_area</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">site_area</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+            <span class="s1">&#39;site_area must be a number. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">site_area</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="n">site_area</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;site_area must be greater than 0. Got </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">site_area</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_site_area</span> <span class="o">=</span> <span class="n">site_area</span>
+
+        <span class="c1"># set the characteristic length</span>
+        <span class="k">if</span> <span class="n">characteristic_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">characteristic_length</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;characteristic_length must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">characteristic_length</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">characteristic_length</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> \
+                <span class="s2">&quot;characteristic_length must be greater than 0&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_characteristic_length</span> <span class="o">=</span> <span class="n">characteristic_length</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_characteristic_length</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_site_area</span><span class="p">)</span>
+
+        <span class="c1"># merge any typologies that are of the same DoE template.</span>
+        <span class="n">bldg_types</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">merged_types</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">unique_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">b_type</span> <span class="ow">in</span> <span class="n">building_typologies</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">b_type</span><span class="p">,</span> <span class="s1">&#39;isTypology&#39;</span><span class="p">),</span> \
+                <span class="s1">&#39;typology is not a dragonfly typolgy object. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">b_type</span><span class="p">))</span>
+            <span class="n">b_type_name</span> <span class="o">=</span> <span class="n">b_type</span><span class="o">.</span><span class="n">bldg_program</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="n">b_type</span><span class="o">.</span><span class="n">bldg_era</span>
+            <span class="k">if</span> <span class="n">b_type_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bldg_types</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">merged_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b_type</span><span class="p">)</span>
+                <span class="n">bldg_types</span><span class="p">[</span><span class="n">b_type_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">unique_count</span>
+                <span class="n">unique_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">type_to_merge</span> <span class="o">=</span> <span class="n">merged_types</span><span class="p">[</span><span class="n">bldg_types</span><span class="p">[</span><span class="n">b_type_name</span><span class="p">]]</span>
+                <span class="n">mergedType</span> <span class="o">=</span> <span class="n">Typology</span><span class="o">.</span><span class="n">create_merged_typology</span><span class="p">(</span><span class="n">b_type</span><span class="p">,</span> <span class="n">type_to_merge</span><span class="p">)</span>
+                <span class="n">merged_types</span><span class="p">[</span><span class="n">bldg_types</span><span class="p">[</span><span class="n">b_type_name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">mergedType</span>
+
+        <span class="c1"># compute the critical geometry variables for the district</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_geo_from_typologies</span><span class="p">(</span><span class="n">site_area</span><span class="p">,</span> <span class="n">merged_types</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_average_bldg_height</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_site_coverage_ratio</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_facade_to_site_ratio</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">floor_areas</span><span class="p">,</span> <span class="n">full_type_names</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+        <span class="c1"># build the dictionary of typology ratios</span>
+        <span class="n">total_weight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">floor_areas</span><span class="p">)</span>
+        <span class="n">typology_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">/</span> <span class="n">total_weight</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">floor_areas</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_type_ratios</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">full_type_names</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_type_ratios</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">typology_ratios</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># link the typologies to the district object</span>
+        <span class="k">for</span> <span class="n">b_typ</span> <span class="ow">in</span> <span class="n">merged_types</span><span class="p">:</span>
+            <span class="n">b_typ</span><span class="o">.</span><span class="n">_has_parent_district</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">b_typ</span><span class="o">.</span><span class="n">_parent_district</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="k">if</span> <span class="n">b_typ</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">shgc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">b_typ</span><span class="o">.</span><span class="n">_uwg_parameters</span><span class="o">.</span><span class="n">_shgc</span> <span class="o">=</span> <span class="n">TypologyDefaults</span><span class="o">.</span><span class="n">shgc_by_era_zone</span><span class="p">(</span>
+                    <span class="n">b_typ</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_climate_zone</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_building_typologies</span> <span class="o">=</span> <span class="n">merged_types</span>
+
+        <span class="c1"># set vegetation coverage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree_coverage_ratio</span> <span class="o">=</span> <span class="n">tree_coverage_ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grass_coverage_ratio</span> <span class="o">=</span> <span class="n">grass_coverage_ratio</span>
+
+        <span class="c1"># uwg parameter objects that define district conditions and are set-able.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traffic_parameters</span> <span class="o">=</span> <span class="n">traffic_parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vegetation_parameters</span> <span class="o">=</span> <span class="n">vegetation_parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pavement_parameters</span> <span class="o">=</span> <span class="n">pavement_parameters</span>
+
+<div class="viewcode-block" id="District.from_json"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.district.District.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a district object from a dictionary</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data: {</span>
+<span class="sd">                building_typologies: list of Typology objects.</span>
+<span class="sd">                site_area: float in square meters</span>
+<span class="sd">                climate_zone: string</span>
+<span class="sd">                tree_coverage_ratio: float between 0 and 1</span>
+<span class="sd">                grass_coverage_ratio: float between 0 and 1</span>
+<span class="sd">                traffic_parameters: traffic parameter dict</span>
+<span class="sd">                vegetation_parameters: vegetation parameter dict</span>
+<span class="sd">                pavement_parameters: pavement parameter dict</span>
+<span class="sd">                characteristic_length: float</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">required_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;building_typologies&#39;</span><span class="p">,</span> <span class="s1">&#39;site_area&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;climate_zone&#39;</span>
+                         <span class="p">)</span>
+        <span class="n">nullable_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;tree_coverage_ratio&#39;</span><span class="p">,</span> <span class="s1">&#39;grass_coverage_ratio&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;traffic_parameters&#39;</span><span class="p">,</span> <span class="s1">&#39;vegetation_parameters&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;pavement_parameters&#39;</span><span class="p">,</span> <span class="s1">&#39;characteristic_length&#39;</span>
+                         <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is a required value&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nullable_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">building_typologies</span><span class="o">=</span><span class="p">[</span><span class="n">Typology</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                                        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;building_typologies&#39;</span><span class="p">]],</span>
+                   <span class="n">site_area</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;site_area&#39;</span><span class="p">],</span>
+                   <span class="n">climate_zone</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;climate_zone&#39;</span><span class="p">],</span>
+                   <span class="n">tree_coverage_ratio</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;tree_coverage_ratio&#39;</span><span class="p">],</span>
+                   <span class="n">grass_coverage_ratio</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;grass_coverage_ratio&#39;</span><span class="p">],</span>
+                   <span class="n">traffic_parameters</span><span class="o">=</span><span class="n">TrafficPar</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                       <span class="n">data</span><span class="p">[</span><span class="s1">&#39;traffic_parameters&#39;</span><span class="p">]),</span>
+                   <span class="n">vegetation_parameters</span><span class="o">=</span><span class="n">VegetationPar</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                       <span class="n">data</span><span class="p">[</span><span class="s1">&#39;vegetation_parameters&#39;</span><span class="p">]),</span>
+                   <span class="n">pavement_parameters</span><span class="o">=</span><span class="n">PavementPar</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                       <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pavement_parameters&#39;</span><span class="p">]),</span>
+                   <span class="n">characteristic_length</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;characteristic_length&#39;</span><span class="p">]</span>
+                   <span class="p">)</span></div>
+
+<div class="viewcode-block" id="District.from_geo_params"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.district.District.from_geo_params">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_geo_params</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">average_bldg_height</span><span class="p">,</span> <span class="n">site_coverage_ratio</span><span class="p">,</span>
+                        <span class="n">facade_to_site_ratio</span><span class="p">,</span> <span class="n">bldg_type_ratios</span><span class="p">,</span> <span class="n">climate_zone</span><span class="p">,</span>
+                        <span class="n">tree_coverage_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grass_coverage_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">traffic_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vegetation_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">pavement_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">characteristic_length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a District from a list of urban geometry parameters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            average_bldg_height: The average height of the buildings in meters.</span>
+<span class="sd">            site_coverage_ratio: A number between 0 and 1 that represents the</span>
+<span class="sd">                fraction of the district terrain that the building footprints</span>
+<span class="sd">                occupy.  It describes how close the buildings are to one</span>
+<span class="sd">                another in the district.</span>
+<span class="sd">            facade_to_site_ratio: A number that represents the ratio of vertical</span>
+<span class="sd">                urban surface area [walls] to the total terrain area of the district.</span>
+<span class="sd">                This value can be greater than 1.</span>
+<span class="sd">            bldg_type_ratios: A dictoinary with keys that represent the DoE</span>
+<span class="sd">                commercial template building programs and building ages</span>
+<span class="sd">                separated by a comma (eg. MidRiseApartment,1980sPresent).</span>
+<span class="sd">                Under each key of the dictionary, there should be a single</span>
+<span class="sd">                decimal number indicative of the fraction of the urban area&#39;s</span>
+<span class="sd">                floor area taken by the typology. The sum of all decimals</span>
+<span class="sd">                in the dictionary should equal 1.</span>
+<span class="sd">            climate_zone: A text string representing the ASHRAE climate zone.</span>
+<span class="sd">                (eg. 5A). This is used to set default constructions for</span>
+<span class="sd">                the buildings in the district.</span>
+<span class="sd">            tree_coverage_ratio: An number from 0 to 1 that defines the</span>
+<span class="sd">                fraction of the urban area (including both pavement</span>
+<span class="sd">                and roofs) that is covered by trees.  The default is set to 0.</span>
+<span class="sd">            grass_coverage_ratio: An number from 0 to 1 that defines the</span>
+<span class="sd">                fraction of the urban area (including both pavement and roofs)</span>
+<span class="sd">                that is covered by grass/vegetation.  The default is set to 0.</span>
+<span class="sd">            traffic_parameters: A dragonfly TrafficPar object that defines</span>
+<span class="sd">                the traffic within an urban area.</span>
+<span class="sd">            vegetation_parameters: A dragonfly VegetationPar object that</span>
+<span class="sd">                defines the behaviour of vegetation within an urban area.</span>
+<span class="sd">            pavement_parameters: A dragonfly PavementPar object that defines</span>
+<span class="sd">                the makeup of pavement within the urban area.</span>
+<span class="sd">            characteristic_length: A number representing the linear dimension</span>
+<span class="sd">                of the side of a square that encompasses the neighborhood in meters.</span>
+<span class="sd">                The default is set to 500 m, which was found to be the recomendation</span>
+<span class="sd">                for a typical mid-density urban area.</span>
+<span class="sd">                Street, Michael A. (2013). Comparison of simplified models of urban</span>
+<span class="sd">                climate for improved prediction of building energy use in cities.</span>
+<span class="sd">                Thesis (S.M. in Building Technology)--Massachusetts Institute of</span>
+<span class="sd">                Technology, Dept. of Architecture, http://hdl.handle.net/1721.1/82284</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># check geometry parameters that all districts must have and are not set-able.</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">average_bldg_height</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+            <span class="s1">&#39;average_bldg_height must be a number. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">average_bldg_height</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">average_bldg_height</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> \
+            <span class="s2">&quot;average_bldg_height must be greater than 0&quot;</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">site_coverage_ratio</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+            <span class="s1">&#39;site_coverage_ratio must be a number. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">site_coverage_ratio</span><span class="p">))</span>
+        <span class="n">in_range</span><span class="p">(</span><span class="n">site_coverage_ratio</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;site_coverage_ratio&#39;</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">facade_to_site_ratio</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+            <span class="s1">&#39;facade_to_site_ratio must be a number. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">facade_to_site_ratio</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">facade_to_site_ratio</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> \
+            <span class="s2">&quot;facade_to_site_ratio must be greater than 0&quot;</span>
+
+        <span class="k">if</span> <span class="n">characteristic_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">characteristic_length</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;characteristic_length must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">characteristic_length</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">characteristic_length</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> \
+                <span class="s2">&quot;characteristic_length must be greater than 0&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">characteristic_length</span> <span class="o">=</span> <span class="mf">500.0</span>
+
+        <span class="c1"># check the dictionary of building type ratios</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bldg_type_ratios</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> \
+            <span class="s1">&#39;bldg_type_ratios must be a dictionary. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">facade_to_site_ratio</span><span class="p">))</span>
+        <span class="n">totalRatios</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="n">bldg_type_ratios</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> \
+                <span class="s1">&#39;building_type must be a string got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">typ</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bldg_type_ratios</span><span class="p">[</span><span class="n">typ</span><span class="p">],</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;building_type_ratio must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">bldg_type_ratios</span><span class="p">[</span><span class="n">typ</span><span class="p">]))</span>
+            <span class="n">totalRatios</span> <span class="o">+=</span> <span class="n">bldg_type_ratios</span><span class="p">[</span><span class="n">typ</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">bldg_program</span> <span class="o">=</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">check_program</span><span class="p">(</span><span class="n">bldg_program</span><span class="p">)</span>
+                <span class="n">bldg_era</span> <span class="o">=</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">check_era</span><span class="p">(</span><span class="n">bldg_era</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                    <span class="s1">&#39;building_type &quot;</span><span class="si">{}</span><span class="s1">&quot; is not in the correct format&#39;</span>
+                    <span class="s1">&#39; of BldgProgram,BldgEra.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">totalRatios</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> \
+            <span class="s2">&quot;Total building ratios do not sum to 1. Got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">totalRatios</span><span class="p">)</span>
+
+        <span class="c1"># create typology objects from the dictionary of building type ratios.</span>
+        <span class="n">site_area</span> <span class="o">=</span> <span class="n">characteristic_length</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">_building_typologies</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">b_type</span> <span class="ow">in</span> <span class="n">bldg_type_ratios</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span> <span class="o">=</span> <span class="n">b_type</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="n">district_fract</span> <span class="o">=</span> <span class="n">bldg_type_ratios</span><span class="p">[</span><span class="n">b_type</span><span class="p">]</span>
+            <span class="n">footprint_area</span> <span class="o">=</span> <span class="n">site_area</span> <span class="o">*</span> <span class="n">site_coverage_ratio</span> <span class="o">*</span> <span class="n">district_fract</span>
+            <span class="n">facade_area</span> <span class="o">=</span> <span class="n">site_area</span> <span class="o">*</span> <span class="n">facade_to_site_ratio</span> <span class="o">*</span> <span class="n">district_fract</span>
+            <span class="n">new_type</span> <span class="o">=</span> <span class="n">Typology</span><span class="p">(</span>
+                <span class="n">average_bldg_height</span><span class="p">,</span> <span class="n">footprint_area</span><span class="p">,</span> <span class="n">facade_area</span><span class="p">,</span>
+                <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span><span class="p">)</span>
+            <span class="n">_building_typologies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_type</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">_building_typologies</span><span class="p">,</span> <span class="n">site_area</span><span class="p">,</span> <span class="n">climate_zone</span><span class="p">,</span>
+                   <span class="n">tree_coverage_ratio</span><span class="p">,</span> <span class="n">grass_coverage_ratio</span><span class="p">,</span>
+                   <span class="n">traffic_parameters</span><span class="p">,</span> <span class="n">vegetation_parameters</span><span class="p">,</span>
+                   <span class="n">pavement_parameters</span><span class="p">,</span> <span class="n">characteristic_length</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">building_typologies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of building typology objects for the urban area.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_building_typologies</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">average_bldg_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the average height of the buildings in the district.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_average_bldg_height</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">site_coverage_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the site coverage ratio of buildings to terrain.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_site_coverage_ratio</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">facade_to_site_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the facade to site ratio.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_facade_to_site_ratio</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">characteristic_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the caracteristic length of the district.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_characteristic_length</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bldg_type_ratios</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the building types and corresponding ratios as a dictionary.</span>
+
+<span class="sd">        Note that setting the typology ratios here completely overwrites the</span>
+<span class="sd">        building_typologies currently associated with this district object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_type_ratios</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bldg_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of the building types in the district.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bldg_type_ratios</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">climate_zone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the ASHRAE climate zone, whisch sets building constructions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">get_readable_zone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_climate_zone</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">site_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the site area of the district.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_site_area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">traffic_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the traffic parameter of the district&#39;s traffic.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_traffic_parameters</span>
+
+    <span class="nd">@traffic_parameters</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">traffic_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s1">&#39;isTrafficPar&#39;</span><span class="p">),</span> \
+                <span class="s1">&#39;traffic_parameters is not a dragonfly traffic_parameters&#39;</span> \
+                <span class="s1">&#39; object. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_traffic_parameters</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">average_bldg_height</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="mf">4.0</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">average_bldg_height</span> <span class="o">&lt;=</span> <span class="mi">25</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="mf">8.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="mf">10.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_traffic_parameters</span> <span class="o">=</span> <span class="n">TrafficPar</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vegetation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the vegetation parameters of the district&#39;s vegetation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vegetation_parameters</span>
+
+    <span class="nd">@vegetation_parameters</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">vegetation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s1">&#39;isVegetationPar&#39;</span><span class="p">),</span> \
+                <span class="s1">&#39;vegetation_parameters is not a dragonfly vegetation_parameters&#39;</span> \
+                <span class="s1">&#39; object. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vegetation_parameters</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vegetation_parameters</span> <span class="o">=</span> <span class="n">VegetationPar</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pavement_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the pavement parameters of the district&#39;s pavement.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pavement_parameters</span>
+
+    <span class="nd">@pavement_parameters</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">pavement_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s1">&#39;isPavementPar&#39;</span><span class="p">),</span> \
+                <span class="s1">&#39;pavement_parameters is not a dragonfly pavement_parameters&#39;</span> \
+                <span class="s1">&#39; object. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pavement_parameters</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pavement_parameters</span> <span class="o">=</span> <span class="n">PavementPar</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tree_coverage_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the fraction of the site area covered in trees.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree_coverage_ratio</span>
+
+    <span class="nd">@tree_coverage_ratio</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">tree_coverage_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;tree_coverage_ratio must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tree_coverage_ratio</span> <span class="o">=</span> <span class="n">in_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;tree_coverage_ratio&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tree_coverage_ratio</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">grass_coverage_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the fraction of the site area covered in grass.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grass_coverage_ratio</span>
+
+    <span class="nd">@grass_coverage_ratio</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">grass_coverage_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;grass_coverage_ratio must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_grass_coverage_ratio</span> <span class="o">=</span> <span class="n">in_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;grass_coverage_ratio&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_grass_coverage_ratio</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">floor_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the average floor height of the buildings in the typology.&quot;&quot;&quot;</span>
+        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_floor_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">bldg_typ</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_typologies</span><span class="p">:</span>
+            <span class="n">weighted_sum</span> <span class="o">+=</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">floor_to_floor</span> <span class="o">*</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">floor_area</span>
+            <span class="n">total_floor_area</span> <span class="o">+=</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">floor_area</span>
+        <span class="k">return</span> <span class="n">weighted_sum</span> <span class="o">/</span> <span class="n">total_floor_area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">glz_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the average glazing ratio of the buildings in the district.&quot;&quot;&quot;</span>
+        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_facade_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">bldg_typ</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_typologies</span><span class="p">:</span>
+            <span class="n">weighted_sum</span> <span class="o">+=</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">glz_ratio</span> <span class="o">*</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">facade_area</span>
+            <span class="n">total_facade_area</span> <span class="o">+=</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">facade_area</span>
+        <span class="k">return</span> <span class="n">weighted_sum</span> <span class="o">/</span> <span class="n">total_facade_area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fract_heat_to_canyon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The fraction of the building&#39;s heat that is rejected to the urban canyon.&quot;&quot;&quot;</span>
+        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_floor_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">bldg_typ</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_typologies</span><span class="p">:</span>
+            <span class="n">weighted_sum</span> <span class="o">+=</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">fract_heat_to_canyon</span> <span class="o">*</span> \
+                <span class="n">bldg_typ</span><span class="o">.</span><span class="n">floor_area</span>
+            <span class="n">total_floor_area</span> <span class="o">+=</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">floor_area</span>
+        <span class="k">return</span> <span class="n">weighted_sum</span> <span class="o">/</span> <span class="n">total_floor_area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shgc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the solar heat gain coefficient of the district&#39;s buildings.&quot;&quot;&quot;</span>
+        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_glass_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">bldg_typ</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_typologies</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">shgc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">bldg_typ</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">_shgc</span> <span class="o">=</span> <span class="n">TypologyDefaults</span><span class="o">.</span><span class="n">shgc_by_era_zone</span><span class="p">(</span>
+                    <span class="n">bldg_typ</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_climate_zone</span><span class="p">)</span>
+            <span class="n">weighted_sum</span> <span class="o">+=</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">shgc</span> <span class="o">*</span> \
+                <span class="n">bldg_typ</span><span class="o">.</span><span class="n">facade_area</span> <span class="o">*</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">glz_ratio</span>
+            <span class="n">total_glass_area</span> <span class="o">+=</span> <span class="p">(</span><span class="n">bldg_typ</span><span class="o">.</span><span class="n">facade_area</span> <span class="o">*</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">glz_ratio</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">weighted_sum</span> <span class="o">/</span> <span class="n">total_glass_area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">wall_albedo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the average wall albedo of the district&#39;s buildings.&quot;&quot;&quot;</span>
+        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_facade_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">bldg_typ</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_typologies</span><span class="p">:</span>
+            <span class="n">weighted_sum</span> <span class="o">+=</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">wall_albedo</span> <span class="o">*</span> \
+                <span class="n">bldg_typ</span><span class="o">.</span><span class="n">facade_area</span>
+            <span class="n">total_facade_area</span> <span class="o">+=</span> <span class="n">bldg_typ</span><span class="o">.</span><span class="n">facade_area</span>
+        <span class="k">return</span> <span class="n">weighted_sum</span> <span class="o">/</span> <span class="n">total_facade_area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">roof_albedo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the average roof albedo of the district&#39;s buildings.&quot;&quot;&quot;</span>
+        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_roof_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">bldg_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_typologies</span><span class="p">:</span>
+            <span class="n">weighted_sum</span> <span class="o">+=</span> <span class="n">bldg_type</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">roof_albedo</span> <span class="o">*</span> \
+                <span class="n">bldg_type</span><span class="o">.</span><span class="n">footprint_area</span>
+            <span class="n">total_roof_area</span> <span class="o">+=</span> <span class="n">bldg_type</span><span class="o">.</span><span class="n">footprint_area</span>
+        <span class="k">return</span> <span class="n">weighted_sum</span> <span class="o">/</span> <span class="n">total_roof_area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">roof_veg_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the average roof vegetated fraction of the district&#39;s buildings.&quot;&quot;&quot;</span>
+        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_roof_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">bldg_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_typologies</span><span class="p">:</span>
+            <span class="n">weighted_sum</span> <span class="o">+=</span> <span class="n">bldg_type</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">roof_veg_fraction</span> <span class="o">*</span> \
+                <span class="n">bldg_type</span><span class="o">.</span><span class="n">footprint_area</span>
+            <span class="n">total_roof_area</span> <span class="o">+=</span> <span class="n">bldg_type</span><span class="o">.</span><span class="n">footprint_area</span>
+        <span class="k">return</span> <span class="n">weighted_sum</span> <span class="o">/</span> <span class="n">total_roof_area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isDistrict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True for District.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="District.get_uwg_matrix"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.district.District.get_uwg_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">get_uwg_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a matrix of bldg programs and construction eras needed by the uwg.&quot;&quot;&quot;</span>
+        <span class="n">b_type_mtx</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bldg_type_ratios</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">fraction</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bldg_type_ratios</span><span class="p">[</span><span class="n">typ</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">bldg_program</span><span class="p">,</span> <span class="n">bldg_era</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="n">program_i</span> <span class="o">=</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">get_program_index</span><span class="p">(</span><span class="n">bldg_program</span><span class="p">)</span>
+            <span class="n">age_i</span> <span class="o">=</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">get_era_index</span><span class="p">(</span><span class="n">bldg_era</span><span class="p">)</span>
+            <span class="n">b_type_mtx</span><span class="p">[</span><span class="n">program_i</span><span class="p">][</span><span class="n">age_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fraction</span>
+        <span class="k">return</span> <span class="n">b_type_mtx</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_calculate_geo_from_typologies</span><span class="p">(</span><span class="n">site_area</span><span class="p">,</span> <span class="n">building_typologies</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate district geometry parameters from site area and typologies&quot;&quot;&quot;</span>
+        <span class="n">total_footprint_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">weighted_height_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_facade_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">floor_areas</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">full_type_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">b_type</span> <span class="ow">in</span> <span class="n">building_typologies</span><span class="p">:</span>
+            <span class="n">total_footprint_area</span> <span class="o">+=</span> <span class="n">b_type</span><span class="o">.</span><span class="n">footprint_area</span>
+            <span class="n">weighted_height_sum</span> <span class="o">+=</span> <span class="n">b_type</span><span class="o">.</span><span class="n">average_height</span> <span class="o">*</span> <span class="n">b_type</span><span class="o">.</span><span class="n">footprint_area</span>
+            <span class="n">total_facade_area</span> <span class="o">+=</span> <span class="n">b_type</span><span class="o">.</span><span class="n">facade_area</span>
+            <span class="n">floor_areas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b_type</span><span class="o">.</span><span class="n">floor_area</span><span class="p">)</span>
+            <span class="n">full_type_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b_type</span><span class="o">.</span><span class="n">bldg_program</span><span class="p">,</span> <span class="n">b_type</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">))</span>
+        <span class="n">average_bldg_height</span> <span class="o">=</span> <span class="n">weighted_height_sum</span> <span class="o">/</span> <span class="n">total_footprint_area</span>
+        <span class="n">site_coverage_ratio</span> <span class="o">=</span> <span class="n">total_footprint_area</span> <span class="o">/</span> <span class="n">site_area</span>
+        <span class="n">facade_to_site_ratio</span> <span class="o">=</span> <span class="n">total_facade_area</span> <span class="o">/</span> <span class="n">site_area</span>
+
+        <span class="k">return</span> <span class="n">average_bldg_height</span><span class="p">,</span> <span class="n">site_coverage_ratio</span><span class="p">,</span> \
+            <span class="n">facade_to_site_ratio</span><span class="p">,</span> <span class="n">floor_areas</span><span class="p">,</span> <span class="n">full_type_names</span>
+
+    <span class="k">def</span> <span class="nf">_update_geo_from_typologies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update district geometry parameters when an individual typology is changed.&quot;&quot;&quot;</span>
+        <span class="c1"># calculate geometry parameters</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_geo_from_typologies</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">characteristic_length</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_typologies</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_average_bldg_height</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_site_coverage_ratio</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_facade_to_site_ratio</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">floor_areas</span><span class="p">,</span> <span class="n">full_type_names</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+        <span class="c1"># update the dictionary of typology ratios</span>
+        <span class="n">total_weight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">floor_areas</span><span class="p">)</span>
+        <span class="n">typology_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">/</span> <span class="n">total_weight</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">floor_areas</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_building_typologies</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">full_type_names</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_building_typologies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">typology_ratios</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<div class="viewcode-block" id="District.to_json"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.district.District.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a district dictionary</span>
+<span class="sd">        Results:</span>
+<span class="sd">            {</span>
+<span class="sd">                building_typologies: list of Typology objects.</span>
+<span class="sd">                site_area: float in square meters</span>
+<span class="sd">                climate_zone: string</span>
+<span class="sd">                tree_coverage_ratio: float between 0 and 1</span>
+<span class="sd">                grass_coverage_ratio: float between 0 and 1</span>
+<span class="sd">                traffic_parameters: traffic parameter dict</span>
+<span class="sd">                vegetation_parameters: vegetation parameter dict</span>
+<span class="sd">                pavement_parameters: pavement parameter dict</span>
+<span class="sd">                characteristic_length: float</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;building_typologies&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">typ</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_typologies</span><span class="p">],</span>
+            <span class="s1">&#39;site_area&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">site_area</span><span class="p">,</span>
+            <span class="s1">&#39;climate_zone&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">climate_zone</span><span class="p">,</span>
+            <span class="s1">&#39;tree_coverage_ratio&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_coverage_ratio</span><span class="p">,</span>
+            <span class="s1">&#39;grass_coverage_ratio&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grass_coverage_ratio</span><span class="p">,</span>
+            <span class="s1">&#39;traffic_parameters&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">traffic_parameters</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;vegetation_parameters&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;pavement_parameters&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pavement_parameters</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;characteristic_length&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">characteristic_length</span>
+            <span class="p">}</span></div>
+
+<div class="viewcode-block" id="District.ToString"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.district.District.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represnt Dragonfly district.&quot;&quot;&quot;</span>
+        <span class="n">typol_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bldg_type_ratios</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bldg_types</span><span class="p">]</span>
+        <span class="n">typol_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">     &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">typol_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;District: &#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Average Bldg Height: </span><span class="si">{}</span><span class="s1"> m&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Site Coverage Ratio: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Facade-to-Site Ratio: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Tree Coverage Ratio: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Grass Coverage Ratio: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  ------------------------&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Building Typologies:</span><span class="se">\n</span><span class="s1">     </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                   <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_average_bldg_height</span><span class="p">),</span>
+                   <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_site_coverage_ratio</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                   <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_facade_to_site_ratio</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                   <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tree_coverage_ratio</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                   <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_grass_coverage_ratio</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                   <span class="n">typol_str</span>
+               <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/dragonfly.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A python library for urban climate + urban energy modeling.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=dragonfly&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly.html">dragonfly package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

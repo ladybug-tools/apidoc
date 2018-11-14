@@ -1,0 +1,1143 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dragonfly package &#8212; Dragonfly 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="dragonfly.uwg package" href="dragonfly.uwg.html" />
+    <link rel="prev" title="Welcome to dragonfly’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dragonfly-package">
+<h1>dragonfly package<a class="headerlink" href="#dragonfly-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dragonfly.uwg.html">dragonfly.uwg package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.uwg.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.uwg.html#module-dragonfly.uwg.districtpar">dragonfly.uwg.districtpar module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.uwg.html#module-dragonfly.uwg.regionpar">dragonfly.uwg.regionpar module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.uwg.html#module-dragonfly.uwg.run">dragonfly.uwg.run module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.uwg.html#module-dragonfly.uwg.typologypar">dragonfly.uwg.typologypar module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dragonfly.uwg.html#module-dragonfly.uwg">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-dragonfly.bldgtypes">
+<span id="dragonfly-bldgtypes-module"></span><h2>dragonfly.bldgtypes module<a class="headerlink" href="#module-dragonfly.bldgtypes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.bldgtypes.BuildingTypes">
+<em class="property">class </em><code class="descclassname">dragonfly.bldgtypes.</code><code class="descname">BuildingTypes</code><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Contains the accepted building typologies and contruction eras.</p>
+<dl class="attribute">
+<dt id="dragonfly.bldgtypes.BuildingTypes.BLDG_PROGRAM">
+<code class="descname">BLDG_PROGRAM</code><em class="property"> = {'FullServiceRestaurant': 0, 'Hospital': 1, 'LargeHotel': 2, 'LargeOffice': 3, 'MedOffice': 4, 'MidRiseApartment': 5, 'OutPatient': 6, 'PrimarySchool': 7, 'QuickServiceRestaurant': 8, 'SecondarySchool': 9, 'SmallHotel': 10, 'SmallOffice': 11, 'StandAloneRetail': 12, 'StripMall': 13, 'SuperMarket': 14, 'WareHouse': 15}</em><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.BLDG_PROGRAM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.bldgtypes.BuildingTypes.BLDG_PROGRAM_CONVERTER">
+<code class="descname">BLDG_PROGRAM_CONVERTER</code><em class="property"> = {'0': 'LargeOffice', '1': 'StandAloneRetail', '10': 'SuperMarket', '11': 'FullServiceRestaurant', '12': 'QuickServiceRestaurant', '2': 'MidRiseApartment', '3': 'PrimarySchool', '4': 'SecondarySchool', '5': 'SmallHotel', '6': 'LargeHotel', '7': 'Hospital', '8': 'OutPatient', '9': 'Warehouse', 'FULL SERVICE RESTAURANT': 'FullServiceRestaurant', 'FULLSERVICERESTAURANT': 'FullServiceRestaurant', 'HOSPITAL': 'Hospital', 'LARGE HOTEL': 'LargeHotel', 'LARGE OFFICE': 'LargeOffice', 'LARGEHOTEL': 'LargeHotel', 'LARGEOFFICE': 'LargeOffice', 'MEDIUM OFFICE': 'MediumOffice', 'MEDIUMOFFICE': 'MediumOffice', 'MIDRISE APARTMENT': 'MidRiseApartment', 'MIDRISEAPARTMENT': 'MidRiseApartment', 'OUT PATIENT': 'OutPatient', 'OUTPATIENT': 'OutPatient', 'Office': 'LargeOffice', 'PRIMARY SCHOOL': 'PrimarySchool', 'PRIMARYSCHOOL': 'PrimarySchool', 'QUICK SERVICE RESTAURANT': 'QuickServiceRestaurant', 'QUICKSERVICERESTAURANT': 'QuickServiceRestaurant', 'Retail': 'StandAloneRetail', 'SECONDARY SCHOOL': 'SecondarySchool', 'SECONDARYSCHOOL': 'SecondarySchool', 'SMALL HOTEL': 'SmallHotel', 'SMALL OFFICE': 'SmallOffice', 'SMALLHOTEL': 'SmallHotel', 'SMALLOFFICE': 'SmallOffice', 'STANDALONE RETAIL': 'StandAloneRetail', 'STANDALONERETAIL': 'StandAloneRetail', 'STRIP MALL': 'StripMall', 'STRIPMALL': 'StripMall', 'SUPERMARKET': 'SuperMarket', 'WAREHOUSE': 'WareHouse'}</em><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.BLDG_PROGRAM_CONVERTER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.bldgtypes.BuildingTypes.BUILT_ERA">
+<code class="descname">BUILT_ERA</code><em class="property"> = {'1980sPresent': 1, 'NewConstruction': 2, 'Pre1980s': 0}</em><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.BUILT_ERA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.bldgtypes.BuildingTypes.BUILT_ERA_CONVERTER">
+<code class="descname">BUILT_ERA_CONVERTER</code><em class="property"> = {'0': 'Pre1980s', '1': '1980sPresent', &quot;1980's-Present&quot;: '1980sPresent', '1980SPRESENT': '1980sPresent', '2': 'NewConstruction', 'NEWCONSTRUCTION': 'NewConstruction', 'New Construction': 'NewConstruction', 'PRE1980S': 'Pre1980s', &quot;Pre-1980's&quot;: 'Pre1980s'}</em><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.BUILT_ERA_CONVERTER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.bldgtypes.BuildingTypes.GLZ_RATIO">
+<code class="descname">GLZ_RATIO</code><em class="property"> = {'FullServiceRestaurant': 0.182, 'Hospital': 0.1461, 'LargeHotel': 0.2663, 'LargeOffice': 0.38, 'MedOffice': 0.33, 'MidRiseApartment': 0.1499, 'OutPatient': 0.1985, 'PrimarySchool': 0.35, 'QuickServiceRestaurant': 0.14, 'SecondarySchool': 0.34, 'SmallHotel': 0.1087, 'SmallOffice': 0.212, 'StandAloneRetail': 0.071, 'StripMall': 0.105, 'SuperMarket': 0.109, 'WareHouse': 0.0058}</em><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.GLZ_RATIO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.bldgtypes.BuildingTypes.UWG_BUILT_ERA">
+<code class="descname">UWG_BUILT_ERA</code><em class="property"> = {'New': 'NewConstruction', 'Pre80': 'Pre1980s', 'Pst80': '1980sPresent'}</em><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.UWG_BUILT_ERA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.bldgtypes.BuildingTypes.ZONE_CONVERTER">
+<code class="descname">ZONE_CONVERTER</code><em class="property"> = {'1': 0, '1A': 0, '1B': 0, '1C': 0, '2': 1, '2A': 1, '2B': 2, '2C': 1, '3': 3, '3A': 3, '3B': 5, '3B-CA': 4, '3C': 6, '4': 7, '4A': 7, '4B': 8, '4C': 9, '5': 10, '5A': 10, '5B': 11, '5C': 10, '6': 12, '6A': 12, '6B': 13, '6C': 12, '7': 14, '7A': 14, '7B': 14, '7C': 14, '8': 15, '8A': 15, '8B': 15, '8C': 15}</em><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.ZONE_CONVERTER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.bldgtypes.BuildingTypes.ZONE_TYPE">
+<code class="descname">ZONE_TYPE</code><em class="property"> = {0: '1A', 1: '2A', 2: '2B', 3: '3A', 4: '3B-CA', 5: '3B', 6: '3C', 7: '4A', 8: '4B', 9: '4C', 10: '5A', 11: '5B', 12: '6A', 13: '6B', 14: '7', 15: '8'}</em><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.ZONE_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.bldgtypes.BuildingTypes.check_cimate_zone">
+<em class="property">classmethod </em><code class="descname">check_cimate_zone</code><span class="sig-paren">(</span><em>climate_zone</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes.check_cimate_zone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.check_cimate_zone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.bldgtypes.BuildingTypes.check_era">
+<em class="property">classmethod </em><code class="descname">check_era</code><span class="sig-paren">(</span><em>bldg_era</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes.check_era"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.check_era" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.bldgtypes.BuildingTypes.check_program">
+<em class="property">classmethod </em><code class="descname">check_program</code><span class="sig-paren">(</span><em>bldg_program</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes.check_program"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.check_program" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.bldgtypes.BuildingTypes.default_glazing_ratio">
+<em class="property">classmethod </em><code class="descname">default_glazing_ratio</code><span class="sig-paren">(</span><em>bldg_program</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes.default_glazing_ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.default_glazing_ratio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.bldgtypes.BuildingTypes.get_era_index">
+<em class="property">classmethod </em><code class="descname">get_era_index</code><span class="sig-paren">(</span><em>era</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes.get_era_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.get_era_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.bldgtypes.BuildingTypes.get_program_index">
+<em class="property">classmethod </em><code class="descname">get_program_index</code><span class="sig-paren">(</span><em>program</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes.get_program_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.get_program_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.bldgtypes.BuildingTypes.get_program_list">
+<em class="property">classmethod </em><code class="descname">get_program_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes.get_program_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.get_program_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.bldgtypes.BuildingTypes.get_readable_zone">
+<em class="property">classmethod </em><code class="descname">get_readable_zone</code><span class="sig-paren">(</span><em>climate_zone</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes.get_readable_zone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.get_readable_zone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.bldgtypes.BuildingTypes.get_uwg_era_index">
+<em class="property">classmethod </em><code class="descname">get_uwg_era_index</code><span class="sig-paren">(</span><em>era</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/bldgtypes.html#BuildingTypes.get_uwg_era_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.bldgtypes.BuildingTypes.get_uwg_era_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.dfobject">
+<span id="dragonfly-dfobject-module"></span><h2>dragonfly.dfobject module<a class="headerlink" href="#module-dragonfly.dfobject" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.dfobject.DFObject">
+<em class="property">class </em><code class="descclassname">dragonfly.dfobject.</code><code class="descname">DFObject</code><a class="reference internal" href="_modules/dragonfly/dfobject.html#DFObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.dfobject.DFObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for Dragonfly typology, district, terrain, and vegetation.</p>
+<dl class="attribute">
+<dt id="dragonfly.dfobject.DFObject.isDFObject">
+<code class="descname">isDFObject</code><a class="headerlink" href="#dragonfly.dfobject.DFObject.isDFObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dragonfly.dfobject.DFParameter">
+<em class="property">class </em><code class="descclassname">dragonfly.dfobject.</code><code class="descname">DFParameter</code><a class="reference internal" href="_modules/dragonfly/dfobject.html#DFParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.dfobject.DFParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for Dragonfly BuildingPar, TrafficPar, VegetationPar, etc.</p>
+<dl class="attribute">
+<dt id="dragonfly.dfobject.DFParameter.isDFParameter">
+<code class="descname">isDFParameter</code><a class="headerlink" href="#dragonfly.dfobject.DFParameter.isDFParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.district">
+<span id="dragonfly-district-module"></span><h2>dragonfly.district module<a class="headerlink" href="#module-dragonfly.district" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.district.District">
+<em class="property">class </em><code class="descclassname">dragonfly.district.</code><code class="descname">District</code><span class="sig-paren">(</span><em>building_typologies</em>, <em>site_area</em>, <em>climate_zone</em>, <em>tree_coverage_ratio=None</em>, <em>grass_coverage_ratio=None</em>, <em>traffic_parameters=None</em>, <em>vegetation_parameters=None</em>, <em>pavement_parameters=None</em>, <em>characteristic_length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/district.html#District"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.district.District" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dragonfly.dfobject.DFObject" title="dragonfly.dfobject.DFObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFObject</span></code></a></p>
+<p>Represents an urban district inclluding buildings, ground cover, and traffic.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd>typologies
+site_area
+climate_zone
+tree_coverage_ratio
+grass_coverage_ratio
+traffic_parameters
+vegetation_parameters
+pavement_parameters
+characteristic_length
+average_bldg_height
+site_coverage_ratio
+facade_to_site_ratio
+bldg_type_ratios</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.district.District.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/district.html#District.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.district.District.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.average_bldg_height">
+<code class="descname">average_bldg_height</code><a class="headerlink" href="#dragonfly.district.District.average_bldg_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the average height of the buildings in the district.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.bldg_type_ratios">
+<code class="descname">bldg_type_ratios</code><a class="headerlink" href="#dragonfly.district.District.bldg_type_ratios" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the building types and corresponding ratios as a dictionary.</p>
+<p>Note that setting the typology ratios here completely overwrites the
+building_typologies currently associated with this district object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.bldg_types">
+<code class="descname">bldg_types</code><a class="headerlink" href="#dragonfly.district.District.bldg_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of the building types in the district.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.building_typologies">
+<code class="descname">building_typologies</code><a class="headerlink" href="#dragonfly.district.District.building_typologies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of building typology objects for the urban area.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.characteristic_length">
+<code class="descname">characteristic_length</code><a class="headerlink" href="#dragonfly.district.District.characteristic_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the caracteristic length of the district.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.climate_zone">
+<code class="descname">climate_zone</code><a class="headerlink" href="#dragonfly.district.District.climate_zone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ASHRAE climate zone, whisch sets building constructions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.facade_to_site_ratio">
+<code class="descname">facade_to_site_ratio</code><a class="headerlink" href="#dragonfly.district.District.facade_to_site_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the facade to site ratio.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.floor_height">
+<code class="descname">floor_height</code><a class="headerlink" href="#dragonfly.district.District.floor_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the average floor height of the buildings in the typology.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.fract_heat_to_canyon">
+<code class="descname">fract_heat_to_canyon</code><a class="headerlink" href="#dragonfly.district.District.fract_heat_to_canyon" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fraction of the building’s heat that is rejected to the urban canyon.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.district.District.from_geo_params">
+<em class="property">classmethod </em><code class="descname">from_geo_params</code><span class="sig-paren">(</span><em>average_bldg_height</em>, <em>site_coverage_ratio</em>, <em>facade_to_site_ratio</em>, <em>bldg_type_ratios</em>, <em>climate_zone</em>, <em>tree_coverage_ratio=None</em>, <em>grass_coverage_ratio=None</em>, <em>traffic_parameters=None</em>, <em>vegetation_parameters=None</em>, <em>pavement_parameters=None</em>, <em>characteristic_length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/district.html#District.from_geo_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.district.District.from_geo_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a District from a list of urban geometry parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>average_bldg_height</strong> – The average height of the buildings in meters.</li>
+<li><strong>site_coverage_ratio</strong> – A number between 0 and 1 that represents the
+fraction of the district terrain that the building footprints
+occupy.  It describes how close the buildings are to one
+another in the district.</li>
+<li><strong>facade_to_site_ratio</strong> – A number that represents the ratio of vertical
+urban surface area [walls] to the total terrain area of the district.
+This value can be greater than 1.</li>
+<li><strong>bldg_type_ratios</strong> – A dictoinary with keys that represent the DoE
+commercial template building programs and building ages
+separated by a comma (eg. MidRiseApartment,1980sPresent).
+Under each key of the dictionary, there should be a single
+decimal number indicative of the fraction of the urban area’s
+floor area taken by the typology. The sum of all decimals
+in the dictionary should equal 1.</li>
+<li><strong>climate_zone</strong> – A text string representing the ASHRAE climate zone.
+(eg. 5A). This is used to set default constructions for
+the buildings in the district.</li>
+<li><strong>tree_coverage_ratio</strong> – An number from 0 to 1 that defines the
+fraction of the urban area (including both pavement
+and roofs) that is covered by trees.  The default is set to 0.</li>
+<li><strong>grass_coverage_ratio</strong> – An number from 0 to 1 that defines the
+fraction of the urban area (including both pavement and roofs)
+that is covered by grass/vegetation.  The default is set to 0.</li>
+<li><strong>traffic_parameters</strong> – A dragonfly TrafficPar object that defines
+the traffic within an urban area.</li>
+<li><strong>vegetation_parameters</strong> – A dragonfly VegetationPar object that
+defines the behaviour of vegetation within an urban area.</li>
+<li><strong>pavement_parameters</strong> – A dragonfly PavementPar object that defines
+the makeup of pavement within the urban area.</li>
+<li><strong>characteristic_length</strong> – A number representing the linear dimension
+of the side of a square that encompasses the neighborhood in meters.
+The default is set to 500 m, which was found to be the recomendation
+for a typical mid-density urban area.
+Street, Michael A. (2013). Comparison of simplified models of urban
+climate for improved prediction of building energy use in cities.
+Thesis (S.M. in Building Technology)–Massachusetts Institute of
+Technology, Dept. of Architecture, <a class="reference external" href="http://hdl.handle.net/1721.1/82284">http://hdl.handle.net/1721.1/82284</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.district.District.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/district.html#District.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.district.District.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a district object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>building_typologies: list of Typology objects.
+site_area: float in square meters
+climate_zone: string
+tree_coverage_ratio: float between 0 and 1
+grass_coverage_ratio: float between 0 and 1
+traffic_parameters: traffic parameter dict
+vegetation_parameters: vegetation parameter dict
+pavement_parameters: pavement parameter dict
+characteristic_length: float</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.district.District.get_uwg_matrix">
+<code class="descname">get_uwg_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/district.html#District.get_uwg_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.district.District.get_uwg_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a matrix of bldg programs and construction eras needed by the uwg.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.glz_ratio">
+<code class="descname">glz_ratio</code><a class="headerlink" href="#dragonfly.district.District.glz_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the average glazing ratio of the buildings in the district.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.grass_coverage_ratio">
+<code class="descname">grass_coverage_ratio</code><a class="headerlink" href="#dragonfly.district.District.grass_coverage_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the fraction of the site area covered in grass.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.isDistrict">
+<code class="descname">isDistrict</code><a class="headerlink" href="#dragonfly.district.District.isDistrict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for District.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.pavement_parameters">
+<code class="descname">pavement_parameters</code><a class="headerlink" href="#dragonfly.district.District.pavement_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the pavement parameters of the district’s pavement.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.roof_albedo">
+<code class="descname">roof_albedo</code><a class="headerlink" href="#dragonfly.district.District.roof_albedo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the average roof albedo of the district’s buildings.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.roof_veg_fraction">
+<code class="descname">roof_veg_fraction</code><a class="headerlink" href="#dragonfly.district.District.roof_veg_fraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the average roof vegetated fraction of the district’s buildings.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.shgc">
+<code class="descname">shgc</code><a class="headerlink" href="#dragonfly.district.District.shgc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the solar heat gain coefficient of the district’s buildings.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.site_area">
+<code class="descname">site_area</code><a class="headerlink" href="#dragonfly.district.District.site_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the site area of the district.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.site_coverage_ratio">
+<code class="descname">site_coverage_ratio</code><a class="headerlink" href="#dragonfly.district.District.site_coverage_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the site coverage ratio of buildings to terrain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.district.District.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/district.html#District.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.district.District.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a district dictionary
+Results:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>building_typologies: list of Typology objects.
+site_area: float in square meters
+climate_zone: string
+tree_coverage_ratio: float between 0 and 1
+grass_coverage_ratio: float between 0 and 1
+traffic_parameters: traffic parameter dict
+vegetation_parameters: vegetation parameter dict
+pavement_parameters: pavement parameter dict
+characteristic_length: float</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.traffic_parameters">
+<code class="descname">traffic_parameters</code><a class="headerlink" href="#dragonfly.district.District.traffic_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the traffic parameter of the district’s traffic.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.tree_coverage_ratio">
+<code class="descname">tree_coverage_ratio</code><a class="headerlink" href="#dragonfly.district.District.tree_coverage_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the fraction of the site area covered in trees.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.vegetation_parameters">
+<code class="descname">vegetation_parameters</code><a class="headerlink" href="#dragonfly.district.District.vegetation_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the vegetation parameters of the district’s vegetation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.district.District.wall_albedo">
+<code class="descname">wall_albedo</code><a class="headerlink" href="#dragonfly.district.District.wall_albedo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the average wall albedo of the district’s buildings.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.terrain">
+<span id="dragonfly-terrain-module"></span><h2>dragonfly.terrain module<a class="headerlink" href="#module-dragonfly.terrain" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.terrain.Terrain">
+<em class="property">class </em><code class="descclassname">dragonfly.terrain.</code><code class="descname">Terrain</code><span class="sig-paren">(</span><em>area</em>, <em>characteristic_length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/terrain.html#Terrain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.terrain.Terrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dragonfly.dfobject.DFObject" title="dragonfly.dfobject.DFObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFObject</span></code></a></p>
+<p>Represents the terrain on which an urban area sits.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first last docutils">
+<dt>area: The area of the urban terrain surface in square meters</dt>
+<dd>(projected into the XY plane).</dd>
+<dt>characteristic_length:  A number representing the linear dimension</dt>
+<dd><p class="first">of the side of a square that encompasses the neighborhood in meters.</p>
+<p class="last">The default is set to 500 m, which was found to be the recomendation
+for a typical mid-density urban area.
+Street, Michael A. (2013). Comparison of simplified models of urban
+climate for improved prediction of building energy use in cities.
+Thesis (S.M. in Building Technology)–Massachusetts Institute of
+Technology, Dept. of Architecture,
+<a class="reference external" href="http://hdl.handle.net/1721.1/82284">http://hdl.handle.net/1721.1/82284</a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.terrain.Terrain.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/terrain.html#Terrain.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.terrain.Terrain.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.terrain.Terrain.area">
+<code class="descname">area</code><a class="headerlink" href="#dragonfly.terrain.Terrain.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the area of the terrain surface in the XY plane.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.terrain.Terrain.characteristic_length">
+<code class="descname">characteristic_length</code><a class="headerlink" href="#dragonfly.terrain.Terrain.characteristic_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the characteristic length.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.terrain.Terrain.from_geometry">
+<em class="property">classmethod </em><code class="descname">from_geometry</code><span class="sig-paren">(</span><em>terrainSrfs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/terrain.html#Terrain.from_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.terrain.Terrain.from_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a dragonfly terrain surface from a list of terrain breps
+:param terrainSrfs: A list of Rhino surfaces representing the terrian.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The dragonfly terrain object.
+surfaceBreps: The srfBreps representing the terrain<blockquote>
+<div>(projected into the XY plane).</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">terrain</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.terrain.Terrain.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/terrain.html#Terrain.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.terrain.Terrain.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a terrain object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>area: float
+characteristic_length: float</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.terrain.Terrain.isTerrain">
+<code class="descname">isTerrain</code><a class="headerlink" href="#dragonfly.terrain.Terrain.isTerrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for Terrain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.terrain.Terrain.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/terrain.html#Terrain.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.terrain.Terrain.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a terrain dictionary
+Results:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>area: float
+characteristic_length: float</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.typology">
+<span id="dragonfly-typology-module"></span><h2>dragonfly.typology module<a class="headerlink" href="#module-dragonfly.typology" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.typology.Typology">
+<em class="property">class </em><code class="descclassname">dragonfly.typology.</code><code class="descname">Typology</code><span class="sig-paren">(</span><em>average_height</em>, <em>footprint_area</em>, <em>facade_area</em>, <em>bldg_program</em>, <em>bldg_era</em>, <em>floor_to_floor=None</em>, <em>floor_area=None</em>, <em>glz_ratio=None</em>, <em>uwg_parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/typology.html#Typology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.typology.Typology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dragonfly.dfobject.DFObject" title="dragonfly.dfobject.DFObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFObject</span></code></a></p>
+<p>Represents a group of buildings of the same typology in an urban area.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first last docutils">
+<dt>average_height: The average height of the buildings of this typology</dt>
+<dd>in meters.</dd>
+<dt>footprint_area: The footprint area of the buildings of this typolog</dt>
+<dd>in square meteres.</dd>
+<dt>facade_area: The facade area of the buildings of this typology</dt>
+<dd>in square meters.</dd>
+<dt>bldg_program: A text string representing one of the 16 DOE building</dt>
+<dd><p class="first">program types to be used as a template for this typology.
+Choose from the following options:</p>
+<blockquote class="last">
+<div>FullServiceRestaurant
+Hospital
+LargeHotel
+LargeOffice
+MediumOffice
+MidRiseApartment
+OutPatient
+PrimarySchool
+QuickServiceRestaurant
+SecondarySchool
+SmallHotel
+SmallOffice
+StandAloneRetail
+StripMall
+SuperMarket
+Warehouse</div></blockquote>
+</dd>
+<dt>bldg_era: A text string that sets the age of the buildings represented</dt>
+<dd><p class="first">by this typology. This is used to determine what constructions
+make up the walls, roofs, and windows based on international
+building codes over the last several decades.  Choose from
+the following options:</p>
+<blockquote class="last">
+<div>Pre1980s
+1980sPresent
+NewConstruction</div></blockquote>
+</dd>
+<dt>floor_to_floor: A number that represents the average distance between</dt>
+<dd>floors for the building typology.  The default is set to 3.05 meters.</dd>
+<dt>floor_area: A number that represents the floor area of the buiding in</dt>
+<dd>square meteres. The default is auto-calculated using the
+footprint_area, average_height, and floor_to_floor.</dd>
+<dt>glz_ratio: An optional number from 0 to 1 that represents the fraction</dt>
+<dd>of the walls of the building typology that are glazed. If no value
+is input here, a default will be used that comes from the DoE building
+template from the bldg_program and bldg_era.</dd>
+<dt>uwg_parameters: Optional UWG TypologyPar to set the properties of a</dt>
+<dd>building typology that specifically relate to the UWG
+(ie. roof / wall albedo, fraction of bldg heat to canyon)</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.typology.Typology.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/typology.html#Typology.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.typology.Typology.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.average_height">
+<code class="descname">average_height</code><a class="headerlink" href="#dragonfly.typology.Typology.average_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the average height of the buildings in meters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.bldg_era">
+<code class="descname">bldg_era</code><a class="headerlink" href="#dragonfly.typology.Typology.bldg_era" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the construction era of buildings in the typology.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.bldg_program">
+<code class="descname">bldg_program</code><a class="headerlink" href="#dragonfly.typology.Typology.bldg_program" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the program of the buildings in the typology.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.typology.Typology.create_merged_typology">
+<em class="property">classmethod </em><code class="descname">create_merged_typology</code><span class="sig-paren">(</span><em>typ_one</em>, <em>typ_two</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/typology.html#Typology.create_merged_typology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.typology.Typology.create_merged_typology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a merged typology between two typologies of the same building type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>typ_one</strong> – The first Dragonfly building typology.</li>
+<li><strong>typ_two</strong> – The second Dragonfly building typology.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Returs:</dt>
+<dd><dl class="first last docutils">
+<dt>merged_typology: A Dragonfly typology representing the</dt>
+<dd>merged previous typologies.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.facade_area">
+<code class="descname">facade_area</code><a class="headerlink" href="#dragonfly.typology.Typology.facade_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the facade area of the buildings in square meters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.floor_area">
+<code class="descname">floor_area</code><a class="headerlink" href="#dragonfly.typology.Typology.floor_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the interior floor area of the buildings in square meters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.floor_to_floor">
+<code class="descname">floor_to_floor</code><a class="headerlink" href="#dragonfly.typology.Typology.floor_to_floor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the facade area of the buildings in square meters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.footprint_area">
+<code class="descname">footprint_area</code><a class="headerlink" href="#dragonfly.typology.Typology.footprint_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the footprint of the buildings in square meters.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.typology.Typology.from_footprint_geo_and_stories">
+<em class="property">classmethod </em><code class="descname">from_footprint_geo_and_stories</code><span class="sig-paren">(</span><em>bldg_footprint_breps</em>, <em>num_stories</em>, <em>bldg_program</em>, <em>bldg_era</em>, <em>floor_to_floor=None</em>, <em>glz_ratio=None</em>, <em>uwg_parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/typology.html#Typology.from_footprint_geo_and_stories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.typology.Typology.from_footprint_geo_and_stories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize typology from building footprints and list of building stories.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bldg_footprint_breps</strong> – A list of surface rhino breps representing
+the building footprints of the typology.</li>
+<li><strong>num_stories</strong> – A list of integer values (all greater than or equal
+to 1) that represent the number of stories for each of the
+surfaces in the bldg_footprint_breps.</li>
+<li><strong>bldg_program</strong> – A text string representing one of the 16 DOE building
+program types to be used as a template for this typology.</li>
+<li><strong>bldg_era</strong> – A text string that sets the age of the buildings
+represented by this typology.</li>
+<li><strong>floor_to_floor</strong> – A number that represents the average distance
+between floors. Default is set to 3.05 meters.</li>
+<li><strong>glz_ratio</strong> – An optional number from 0 to 1 that represents the
+fraction of the walls of the building typology that are glazed.
+Default will come from the DoE building template from the
+bldg_program and bldg_era.</li>
+<li><strong>uwg_parameters</strong> – Optional UWG TypologyPar to set the properties of a
+building typology that specifically relate to the UWG
+(ie. roof / wall albedo, fraction of bldg heat to canyon)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The dragonfly typology object
+perimeter_curves: The exterior-exposed curves of the footprints.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">typology</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.typology.Typology.from_footprint_geometry">
+<em class="property">classmethod </em><code class="descname">from_footprint_geometry</code><span class="sig-paren">(</span><em>bldg_footprint_breps</em>, <em>avg_num_stories</em>, <em>bldg_program</em>, <em>bldg_era</em>, <em>floor_to_floor=None</em>, <em>glz_ratio=None</em>, <em>uwg_parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/typology.html#Typology.from_footprint_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.typology.Typology.from_footprint_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize typology from building footprints and an average number of stories.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bldg_footprint_breps</strong> – A list of surface rhino breps representing
+the building footprints of the typology.</li>
+<li><strong>avg_num_stories</strong> – A float value (greater than or equal to 1) that represents
+the average number of stories of the buildings in the typology.</li>
+<li><strong>bldg_program</strong> – A text string representing one of the 16 DOE building
+program types to be used as a template for this typology.</li>
+<li><strong>bldg_era</strong> – A text string that sets the age of the buildings represented
+by this typology.</li>
+<li><strong>floor_to_floor</strong> – A number that represents the average distance
+between floors. Default is set to 3.05 meters.</li>
+<li><strong>glz_ratio</strong> – An optional number from 0 to 1 that represents the
+fraction of the walls of the building typology that are
+glazed. Default will come from the DoE building template from
+the bldg_program and bldg_era.</li>
+<li><strong>uwg_parameters</strong> – Optional UWG TypologyPar to set the properties of a
+building typology that specifically relate to the UWG
+(ie. roof / wall albedo, fraction of bldg heat to canyon)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The dragonfly typology object
+perimeter_curves: The exterior-exposed curves of the footprints.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">typology</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.typology.Typology.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/typology.html#Typology.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.typology.Typology.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a typology object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>average_height: float
+footprint_area: float
+facade_area: float
+bldg_program: string
+bldg_era: string
+floor_to_floor: float
+floor_area: float
+glz_ratio: float between 0 and 1
+uwg_parameters: uwg_parameters json</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.typology.Typology.from_solid_geometry">
+<em class="property">classmethod </em><code class="descname">from_solid_geometry</code><span class="sig-paren">(</span><em>bldg_breps</em>, <em>bldg_program</em>, <em>bldg_era</em>, <em>floor_to_floor=None</em>, <em>glz_ratio=None</em>, <em>uwg_parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/typology.html#Typology.from_solid_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.typology.Typology.from_solid_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a building typology from closed building brep geometry</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bldg_breps</strong> – A list of closed rhino breps representing
+buildings of the typology.</li>
+<li><strong>bldg_program</strong> – A text string representing one of the 16 DOE building
+program types to be used as a template for this typology.</li>
+<li><strong>bldg_era</strong> – A text string that sets the age of the buildings represented
+by this typology.</li>
+<li><strong>floor_to_floor</strong> – A number that represents the average distance between
+floors. Default is set to 3.05 meters.</li>
+<li><strong>glz_ratio</strong> – An optional number from 0 to 1 that represents the fraction
+of the walls of the building typology that are glazed. Default will
+come from the DoE building template from the bldg_program and bldg_era.</li>
+<li><strong>uwg_parameters</strong> – Optional UWG TypologyPar to set the properties of a
+building typology that specifically relate to the UWG
+(ie. roof / wall albedo, fraction of bldg heat to canyon)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The dragonfly typology object
+footprint_breps: Breps representing the footprints of the buildings.
+floor_breps: Breps representing the floors of the buildings in the typology.
+facade_breps: Breps representing the exposed facade surfaces of the typology.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">typology</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.glz_ratio">
+<code class="descname">glz_ratio</code><a class="headerlink" href="#dragonfly.typology.Typology.glz_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the glazing ratio of the buildings in the typology.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.has_parent_district">
+<code class="descname">has_parent_district</code><a class="headerlink" href="#dragonfly.typology.Typology.has_parent_district" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.isTypology">
+<code class="descname">isTypology</code><a class="headerlink" href="#dragonfly.typology.Typology.isTypology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for Typology.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.number_of_stories">
+<code class="descname">number_of_stories</code><a class="headerlink" href="#dragonfly.typology.Typology.number_of_stories" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer representing the average number of stories of the buildings.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.parent_district">
+<code class="descname">parent_district</code><a class="headerlink" href="#dragonfly.typology.Typology.parent_district" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.typology.Typology.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/typology.html#Typology.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.typology.Typology.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a typology dictionary
+Results:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>average_height: float
+footprint_area: float
+facade_area: float
+bldg_program: string
+bldg_era: string
+floor_to_floor: float
+floor_area: float
+glz_ratio: float between 0 and 1
+uwg_parameters: uwg_parameters json</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.typology.Typology.uwg_parameters">
+<code class="descname">uwg_parameters</code><a class="headerlink" href="#dragonfly.typology.Typology.uwg_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the uwg parameters (ie. wall/roof albedo, fract heat to canyon).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.utilities">
+<span id="dragonfly-utilities-module"></span><h2>dragonfly.utilities module<a class="headerlink" href="#module-dragonfly.utilities" title="Permalink to this headline">¶</a></h2>
+<p>A collection of auxiliary funtions for checking inputs.</p>
+<dl class="function">
+<dt id="dragonfly.utilities.fixRange">
+<code class="descclassname">dragonfly.utilities.</code><code class="descname">fixRange</code><span class="sig-paren">(</span><em>val</em>, <em>low</em>, <em>high</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/utilities.html#fixRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.utilities.fixRange" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="dragonfly.utilities.in_range">
+<code class="descclassname">dragonfly.utilities.</code><code class="descname">in_range</code><span class="sig-paren">(</span><em>val</em>, <em>low</em>, <em>high</em>, <em>param_name='parameter'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/utilities.html#in_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.utilities.in_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly.vegetation">
+<span id="dragonfly-vegetation-module"></span><h2>dragonfly.vegetation module<a class="headerlink" href="#module-dragonfly.vegetation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dragonfly.vegetation.Vegetation">
+<em class="property">class </em><code class="descclassname">dragonfly.vegetation.</code><code class="descname">Vegetation</code><span class="sig-paren">(</span><em>area</em>, <em>is_trees=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/vegetation.html#Vegetation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.vegetation.Vegetation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dragonfly.dfobject.DFObject" title="dragonfly.dfobject.DFObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">dragonfly.dfobject.DFObject</span></code></a></p>
+<p>Represents vegetation (either grass or trees) within an urban area.</p>
+<dl class="docutils">
+<dt>Properties:</dt>
+<dd><dl class="first last docutils">
+<dt>area: The area of the urban terrain covered by the vegetation in square meters</dt>
+<dd>(projected into the XY plane).</dd>
+<dt>is_trees: A boolean value that denotes whether the vegetation object represents</dt>
+<dd>trees (True) or grass (False).</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="dragonfly.vegetation.Vegetation.ToString">
+<code class="descname">ToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/vegetation.html#Vegetation.ToString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.vegetation.Vegetation.ToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite .NET ToString method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.vegetation.Vegetation.area">
+<code class="descname">area</code><a class="headerlink" href="#dragonfly.vegetation.Vegetation.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the area of the vegetation in the XY plane.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.vegetation.Vegetation.computeCoverage">
+<code class="descname">computeCoverage</code><span class="sig-paren">(</span><em>terrain</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/vegetation.html#Vegetation.computeCoverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.vegetation.Vegetation.computeCoverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the coverage of the vegetation over a terrain surface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>terrain</strong> – A dragonfly terrin object with which to compute coverage.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A number between 0 and 1 representing the fraction of</dt>
+<dd>the terrain covered by the vegetation.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">coverage</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.vegetation.Vegetation.from_geometry">
+<em class="property">classmethod </em><code class="descname">from_geometry</code><span class="sig-paren">(</span><em>veg_breps</em>, <em>is_trees=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/vegetation.html#Vegetation.from_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.vegetation.Vegetation.from_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a dragonfly tree object from a list of closed tree breps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>veg_breps</strong> – A list of closed Rhino breps representing the tree canopy.</li>
+<li><strong>is_trees</strong> – A boolean value that denotes whether the vegetation object
+represents trees (True) or grass (False).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The dragonfly vegetation object.
+projected_breps: The veg_breps projected into the XY plane.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">vegetation</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dragonfly.vegetation.Vegetation.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/vegetation.html#Vegetation.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.vegetation.Vegetation.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a vegetation object from a dictionary
+:param data: {</p>
+<blockquote>
+<div>area: float
+is_trees: boolean</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>}</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.vegetation.Vegetation.isVegetation">
+<code class="descname">isVegetation</code><a class="headerlink" href="#dragonfly.vegetation.Vegetation.isVegetation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True for Vegetation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dragonfly.vegetation.Vegetation.is_trees">
+<code class="descname">is_trees</code><a class="headerlink" href="#dragonfly.vegetation.Vegetation.is_trees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set whether vegetation represents trees (True) or grass (False).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dragonfly.vegetation.Vegetation.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dragonfly/vegetation.html#Vegetation.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dragonfly.vegetation.Vegetation.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a vegetation dictionary
+Results:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd>area: float
+is_trees: boolean</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dragonfly">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dragonfly" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/dragonfly.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A python library for urban climate + urban energy modeling.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=dragonfly&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">dragonfly package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dragonfly.uwg.html">dragonfly.uwg package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dragonfly.bldgtypes">dragonfly.bldgtypes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dragonfly.dfobject">dragonfly.dfobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dragonfly.district">dragonfly.district module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dragonfly.terrain">dragonfly.terrain module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dragonfly.typology">dragonfly.typology module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dragonfly.utilities">dragonfly.utilities module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dragonfly.vegetation">dragonfly.vegetation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dragonfly">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to dragonfly’s documentation!</a></li>
+      <li>Next: <a href="dragonfly.uwg.html" title="next chapter">dragonfly.uwg package</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/dragonfly.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

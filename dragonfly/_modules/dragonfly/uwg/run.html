@@ -1,0 +1,661 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dragonfly.uwg.run &#8212; Dragonfly 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dragonfly.uwg.run</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># import dragonfly dependencies</span>
+<span class="kn">from</span> <span class="nn">..bldgtypes</span> <span class="k">import</span> <span class="n">BuildingTypes</span>
+<span class="kn">from</span> <span class="nn">.regionpar</span> <span class="k">import</span> <span class="n">RefEPWSitePar</span><span class="p">,</span> <span class="n">BoundaryLayerPar</span>
+<span class="kn">from</span> <span class="nn">..district</span> <span class="k">import</span> <span class="n">District</span>
+
+<span class="c1"># import ladybug dependency</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">ladybug.analysisperiod</span> <span class="k">import</span> <span class="n">AnalysisPeriod</span>
+    <span class="kn">from</span> <span class="nn">ladybug.epw</span> <span class="k">import</span> <span class="n">EPW</span>
+    <span class="kn">from</span> <span class="nn">ladybug.futil</span> <span class="k">import</span> <span class="n">write_to_file_by_name</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Failed to import ladybug:</span><span class="se">\n\t</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+<span class="c1"># imort uwg dependency</span>
+<span class="n">uwg_installed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">uwg</span> <span class="k">import</span> <span class="n">uwg</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">uwg_installed</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="RunManager"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.run.RunManager">[docs]</a><span class="k">class</span> <span class="nc">RunManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Object to interface between dragonfly and the uwg.</span>
+
+<span class="sd">    Properties:</span>
+<span class="sd">        epw_file: An .epw file path on your system.</span>
+<span class="sd">            This is the rural or airport file that will be morphed to</span>
+<span class="sd">            reflect the climate conditions within an urban canyon.</span>
+<span class="sd">        district: A dragonfly District object representing the urban area.</span>
+<span class="sd">        epw_site_par: Optional dragonfly RefEPWSitePar object.</span>
+<span class="sd">        boundary_layer_par: Optional dragonfly BoundaryLayerPar object.</span>
+<span class="sd">        analysis_period: A ladybug AnalysisPeriod indicating the time period</span>
+<span class="sd">            of the epw_file to be morphed.  The default is set to run the</span>
+<span class="sd">            entire year</span>
+<span class="sd">        sim_timestep: The timestep at which the simulation is run in seconds.</span>
+<span class="sd">            The default is set to 300 seconds (5 minutes).</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        run: Directly run the UWG to generate a morphed EPW.</span>
+<span class="sd">            This method will only work if you have the uwg Python library installed.</span>
+<span class="sd">        save_uwg_file: Save all of the properties of the RunManager to a .uwg file.</span>
+<span class="sd">            These .uwg files can be parsed by the UWG engine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epw_file</span><span class="p">,</span> <span class="n">district</span><span class="p">,</span> <span class="n">epw_site_par</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">boundary_layer_par</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">analysis_period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_timestep</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the dragonfly uwg RunManager&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epw_file</span> <span class="o">=</span> <span class="n">epw_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">district</span> <span class="o">=</span> <span class="n">district</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epw_site_par</span> <span class="o">=</span> <span class="n">epw_site_par</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_layer_par</span> <span class="o">=</span> <span class="n">boundary_layer_par</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span> <span class="o">=</span> <span class="n">analysis_period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim_timestep</span> <span class="o">=</span> <span class="n">sim_timestep</span>
+
+<div class="viewcode-block" id="RunManager.from_json"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.run.RunManager.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a RunManager object from a dictionary</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data: {</span>
+<span class="sd">                epw_file: list of Typology objects</span>
+<span class="sd">                district: dragonfly district disct</span>
+<span class="sd">                epw_site_par: epw site parameter dict</span>
+<span class="sd">                boundary_layer_par: boundary layer parameter dict</span>
+<span class="sd">                analysis_period: ladybug analysis period dict</span>
+<span class="sd">                sim_timestep: simulation timestep in seconds</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">required_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;epw_file&#39;</span><span class="p">,</span> <span class="s1">&#39;district&#39;</span><span class="p">)</span>
+        <span class="n">nullable_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;epw_site_par&#39;</span><span class="p">,</span> <span class="s1">&#39;boundary_layer_par&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;analysis_period&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_timestep&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is a required value&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nullable_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">epw_file</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;epw_file&#39;</span><span class="p">],</span>
+                   <span class="n">district</span><span class="o">=</span><span class="n">District</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                       <span class="n">data</span><span class="p">[</span><span class="s1">&#39;district&#39;</span><span class="p">]),</span>
+                   <span class="n">epw_site_par</span><span class="o">=</span><span class="n">RefEPWSitePar</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                       <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epw_site_par&#39;</span><span class="p">]),</span>
+                   <span class="n">boundary_layer_par</span><span class="o">=</span><span class="n">BoundaryLayerPar</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                       <span class="n">data</span><span class="p">[</span><span class="s1">&#39;boundary_layer_par&#39;</span><span class="p">]),</span>
+                   <span class="n">analysis_period</span><span class="o">=</span><span class="n">AnalysisPeriod</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                       <span class="n">data</span><span class="p">[</span><span class="s1">&#39;analysis_period&#39;</span><span class="p">]),</span>
+                   <span class="n">sim_timestep</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;sim_timestep&#39;</span><span class="p">]</span>
+                   <span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">epw_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the EPW file path&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epw_file</span>
+
+    <span class="nd">@epw_file</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">epw_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epw_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epw_file</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Cannot find an epw file at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epw_file</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epw_file</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;epw&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not an .epw file.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epw_file</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">district</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the District object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span>
+
+    <span class="nd">@district</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">district</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="s1">&#39;isDistrict&#39;</span><span class="p">),</span> \
+            <span class="s1">&#39;district is not a dragonfly district object. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">dist</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_district</span> <span class="o">=</span> <span class="n">dist</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">epw_site_par</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the RefEPWSitePar object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span>
+
+    <span class="nd">@epw_site_par</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">epw_site_par</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">par</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">par</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="s1">&#39;isRefEPWSitePar&#39;</span><span class="p">),</span> \
+                <span class="s1">&#39;epw_site_par is not a RefEPWSitePar object. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">par</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span> <span class="o">=</span> <span class="n">par</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span> <span class="o">=</span> <span class="n">RefEPWSitePar</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">boundary_layer_par</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the BoundaryLayerPar object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span>
+
+    <span class="nd">@boundary_layer_par</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">boundary_layer_par</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">par</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">par</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="s1">&#39;isBoundaryLayerPar&#39;</span><span class="p">),</span> \
+                <span class="s1">&#39;boundary_layer_par is not a BoundaryLayerPar object. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">par</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span> <span class="o">=</span> <span class="n">par</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span> <span class="o">=</span> <span class="n">BoundaryLayerPar</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">analysis_period</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the AnalysisPeriod over which the simulation runs.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analysis_period</span>
+
+    <span class="nd">@analysis_period</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">analysis_period</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;isAnalysisPeriod&#39;</span><span class="p">),</span> \
+                <span class="s1">&#39;analysis_period is not a AnalysisPeriod object. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">period</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_analysis_period</span> <span class="o">=</span> <span class="n">period</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_analysis_period</span> <span class="o">=</span> <span class="n">AnalysisPeriod</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sim_timestep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the simulation timestep in seconds.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sim_timestep</span>
+
+    <span class="nd">@sim_timestep</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">sim_timestep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;sim_timestep must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">timestep</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="n">timestep</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> \
+                <span class="s1">&#39;sim_timestep must be greater than 0. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timestep</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sim_timestep</span> <span class="o">=</span> <span class="n">timestep</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sim_timestep</span> <span class="o">=</span> <span class="mi">300</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">uwg_file_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a string that can be written to a .uwg file.&quot;&quot;&quot;</span>
+        <span class="c1"># extract certain values from the obects</span>
+        <span class="n">veg_start</span><span class="p">,</span> <span class="n">veg_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_start_end_vegetation</span><span class="p">()</span>
+        <span class="n">traffic_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">traffic_parameters</span><span class="o">.</span><span class="n">get_uwg_matrix</span><span class="p">()</span>
+        <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">n_day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_ladybug_analysis_period</span><span class="p">()</span>
+
+        <span class="c1"># get a commented matrix showing the ratios of building types</span>
+        <span class="n">programs</span> <span class="o">=</span> <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">get_program_list</span><span class="p">()</span>
+        <span class="n">bldg_type_str_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                              <span class="o">+</span> <span class="s1">&#39;  #&#39;</span> <span class="o">+</span> <span class="n">programs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                              <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">typ</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">get_uwg_matrix</span><span class="p">())]</span>
+        <span class="n">bldg_type_mtx</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bldg_type_str_list</span><span class="p">)</span>
+
+        <span class="c1"># build the text string</span>
+        <span class="k">return</span> <span class="s1">&#39;# =================================================&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"># UWG INPUT PARAMETERS&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"># =================================================</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"># Urban characteristics&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">bldHeight,</span><span class="si">{}</span><span class="s1">,     # average building height (m)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">bldDensity,</span><span class="si">{}</span><span class="s1">,   # urban area building plan density (0-1)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">verToHor,</span><span class="si">{}</span><span class="s1">,     # urban area vertical to horizontal ratio&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">h_mix,</span><span class="si">{}</span><span class="s1">,       # fraction of building HVAC heat output to street canyon&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">charLength,</span><span class="si">{}</span><span class="s1">, # dimension of a square that encompasses the district (m)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">albRoad,</span><span class="si">{}</span><span class="s1">,      # road albedo (0 - 1)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">dRoad,</span><span class="si">{}</span><span class="s1">,        # road pavement thickness (m)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">kRoad,</span><span class="si">{}</span><span class="s1">,          # road pavement conductivity (W/m K)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">cRoad,</span><span class="si">{}</span><span class="s1">,    # road volumetric heat capacity (J/m^3 K)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">sensAnth,</span><span class="si">{}</span><span class="s1">,  # non-building sensible heat at street level (W/m^2)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">latAnth,0,   # non-building latent heat (W/m^2) (not used)</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">zone,</span><span class="si">{}</span><span class="s1">,    # Climate zone index (ie. 4=3A, 11=5A, 16=8)</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"># Vegetation parameters&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">vegCover,</span><span class="si">{}</span><span class="s1">,     # Fraction of the district covered in grass/shrub (0-1)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">treeCoverage,</span><span class="si">{}</span><span class="s1">, # Fraction of the district covered in trees (0-1)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">vegStart,</span><span class="si">{}</span><span class="s1">,    # The month in which vegetation starts to evapotranspire&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">vegEnd,</span><span class="si">{}</span><span class="s1">,        # The month in which vegetation stops evapotranspiring&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">albVeg,</span><span class="si">{}</span><span class="s1">,      # Vegetation albedo&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">rurVegCover,</span><span class="si">{}</span><span class="s1">,  # Fraction of the rural ground covered by vegetation&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">latGrss,</span><span class="si">{}</span><span class="s1">,    # Fraction of the heat absorbed by grass as latent&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">latTree,</span><span class="si">{}</span><span class="s1">,    # Fraction of the heat absorbed by trees as latent</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"># Traffic schedule [1 to 24 hour]&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">SchTraffic,&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{}</span><span class="s1">, # weekday&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{}</span><span class="s1">, # saturday&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{}</span><span class="s1">, # sunday</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"># Fraction of building stock for each era (Pre80, Pst80, new)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"># Note that sum(bld) must be equal to 1&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"># Simulation parameters,&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Month,</span><span class="si">{}</span><span class="s1">,        # starting month (1-12)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Day,</span><span class="si">{}</span><span class="s1">,          # starting day (1-31)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">nDay,</span><span class="si">{}</span><span class="s1">,        # number of days to run simultion&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">dtSim,</span><span class="si">{}</span><span class="s1">,      # simulation time step (s)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">dtWeather,3600.0, # weather time step (s)</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"># HVAC system and internal loads&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">autosize,0,     # autosize HVAC (1 for yes; 0 for no)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">sensOcc,100.0,    # Sensible heat per occupant (W)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">LatFOcc,0.3,    # Latent heat fraction from occupant (normally 0.3)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">RadFOcc,0.2,    # Radiant heat fraction from occupant (normally 0.2)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">RadFEquip,0.5,  # Radiant heat fraction from equipment (normally 0.5)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">RadFLight,0.7,  # Radiant heat fraction from light (normally 0.7)</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">#Urban climate parameters&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">h_ubl1,</span><span class="si">{}</span><span class="s1">,    # ubl height - day (m)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">h_ubl2,</span><span class="si">{}</span><span class="s1">,      # ubl height - night (m)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">h_ref,</span><span class="si">{}</span><span class="s1">,      # inversion height (m)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">h_temp,</span><span class="si">{}</span><span class="s1">,       # temperature height (m)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">h_wind,</span><span class="si">{}</span><span class="s1">,      # wind height (m)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">c_circ,</span><span class="si">{}</span><span class="s1">,     # circulation coefficient (default = 1.2; Bruno (2012))&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">c_exch,</span><span class="si">{}</span><span class="s1">,       # exchange coefficient (default = 1; Bruno (2014))&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">maxDay,150,     # max day threshold (W/m^2)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">maxNight,20,    # max night threshold (W/m^2)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">windMin,1,      # min wind speed (m/s)&#39;</span>\
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">h_obs,</span><span class="si">{}</span><span class="s1">,      # rural average obstacle height (m)&#39;</span>\
+            <span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">average_bldg_height</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">site_coverage_ratio</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">facade_to_site_ratio</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">fract_heat_to_canyon</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">characteristic_length</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">pavement_parameters</span><span class="o">.</span><span class="n">albedo</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">pavement_parameters</span><span class="o">.</span><span class="n">thickness</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">pavement_parameters</span><span class="o">.</span><span class="n">conductivity</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">pavement_parameters</span><span class="o">.</span><span class="n">volumetric_heat_capacity</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">traffic_parameters</span><span class="o">.</span><span class="n">sensible_heat</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">_climate_zone</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">grass_coverage_ratio</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">tree_coverage_ratio</span><span class="p">,</span>
+                <span class="n">veg_start</span><span class="p">,</span>
+                <span class="n">veg_end</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">vegetation_albedo</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span><span class="o">.</span><span class="n">vegetation_coverage</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">grass_latent_fraction</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">tree_latent_fraction</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">traffic_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">traffic_matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">traffic_matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="n">bldg_type_mtx</span><span class="p">,</span>
+                <span class="n">month</span><span class="p">,</span>
+                <span class="n">day</span><span class="p">,</span>
+                <span class="n">n_day</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sim_timestep</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">day_boundary_layer_height</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">night_boundary_layer_height</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">inversion_height</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span><span class="o">.</span><span class="n">temp_measure_height</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span><span class="o">.</span><span class="n">wind_measure_height</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">circulation_coefficient</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">exchange_coefficient</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span><span class="o">.</span><span class="n">average_obstacle_height</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="RunManager.save_uwg_file"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.run.RunManager.save_uwg_file">[docs]</a>    <span class="k">def</span> <span class="nf">save_uwg_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uwg_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write the properties of the RunManager to a .uwg file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uwg_file_path: Full file path to the .uwg file that you want to write.</span>
+<span class="sd">                The default is set to go to an URBAN folder in the same</span>
+<span class="sd">                directory as the existing rural EPW.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            uwg_file_path: The file path to the .uwg file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_folder</span><span class="p">,</span> <span class="n">epw_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epw_file</span><span class="p">)</span>
+        <span class="n">epw_name</span> <span class="o">=</span> <span class="n">epw_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.epw&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">uwg_file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">end_folder</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="se">\\</span><span class="s1">URBAN</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">start_folder</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_URBAN.uwg&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epw_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">end_folder</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">uwg_file_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.uwg&#39;</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.uwg&#39;</span>
+        <span class="n">write_to_file_by_name</span><span class="p">(</span><span class="n">end_folder</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">uwg_file_string</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">uwg_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">end_folder</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;.uwg file successfully written to: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uwg_file_path</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">uwg_file_path</span></div>
+
+<div class="viewcode-block" id="RunManager.run"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.run.RunManager.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">urban_epw_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the UWG using the inputs to the RunManager.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            urban_epw_path: Full file path to the morphed epw.</span>
+<span class="sd">                The default is set to go to an URBAN folder in the same</span>
+<span class="sd">                directory as the existing rural EPW.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            urban_epw_path: The file path to the morphed epw.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check to see if UWG is installed</span>
+        <span class="k">assert</span> <span class="n">uwg_installed</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">,</span> \
+            <span class="s1">&#39;UWG must be installed to use the uwg.Runmanager.run() method. &#39;</span>\
+            <span class="s1">&#39;Use &quot;pip install uwg&quot; to install.&#39;</span>
+
+        <span class="c1"># create a uwg_object from the dragonfly objects.</span>
+        <span class="n">uwg_object</span><span class="p">,</span> <span class="n">urban_epw_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_uwg</span><span class="p">(</span><span class="n">urban_epw_path</span><span class="p">)</span>
+        <span class="n">uwg_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_uwg_input</span><span class="p">(</span><span class="n">uwg_object</span><span class="p">)</span>
+        <span class="n">uwg_object</span><span class="o">.</span><span class="n">init_BEM_obj</span><span class="p">()</span>
+        <span class="n">uwg_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_individual_typologies</span><span class="p">(</span><span class="n">uwg_object</span><span class="p">)</span>
+        <span class="n">uwg_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_global_facade_props</span><span class="p">(</span><span class="n">uwg_object</span><span class="p">)</span>
+
+        <span class="c1"># get the object ready to simulate</span>
+        <span class="n">uwg_object</span><span class="o">.</span><span class="n">read_epw</span><span class="p">()</span>
+        <span class="n">uwg_object</span><span class="o">.</span><span class="n">init_input_obj</span><span class="p">()</span>
+        <span class="n">uwg_object</span><span class="o">.</span><span class="n">hvac_autosize</span><span class="p">()</span>
+
+        <span class="c1"># run the UWG object.</span>
+        <span class="n">uwg_object</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+        <span class="n">uwg_object</span><span class="o">.</span><span class="n">write_epw</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">urban_epw_path</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_uwg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">end_file_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a UWG object using the urban weather generator.&quot;&quot;&quot;</span>
+        <span class="n">start_folder</span><span class="p">,</span> <span class="n">epw_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epw_file</span><span class="p">)</span>
+        <span class="n">epw_name</span> <span class="o">=</span> <span class="n">epw_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.epw&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">end_file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">end_folder</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="se">\\</span><span class="s1">URBAN</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">start_folder</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_URBAN.epw&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epw_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">end_folder</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">end_file_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">end_folder</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">end_folder</span><span class="p">)</span>
+        <span class="n">uwg_obj</span> <span class="o">=</span> <span class="n">uwg</span><span class="p">(</span><span class="n">epw_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">start_folder</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end_folder</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">uwg_obj</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">end_folder</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_uwg_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uwg_obj</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Assign all inputs to the uwg &quot;&quot;&quot;</span>
+            <span class="c1"># define simulation and weather parameters</span>
+            <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">n_day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_ladybug_analysis_period</span><span class="p">()</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">Month</span> <span class="o">=</span> <span class="n">month</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">Day</span> <span class="o">=</span> <span class="n">day</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">nDay</span> <span class="o">=</span> <span class="n">n_day</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">dtSim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sim_timestep</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">dtWeather</span> <span class="o">=</span> <span class="mf">3600.0</span>
+
+            <span class="c1"># HVAC system and internal laod (not currently exposed in API)</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">autosize</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">sensOcc</span> <span class="o">=</span> <span class="mf">100.0</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">LatFOcc</span> <span class="o">=</span> <span class="mf">0.3</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">RadFOcc</span> <span class="o">=</span> <span class="mf">0.2</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">RadFEquip</span> <span class="o">=</span> <span class="mf">0.5</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">RadFLight</span> <span class="o">=</span> <span class="mf">0.7</span>
+
+            <span class="c1"># define urban microclimate parameters</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">h_ubl1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">day_boundary_layer_height</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">h_ubl2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">night_boundary_layer_height</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">h_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">inversion_height</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">c_circ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">circulation_coefficient</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">c_exch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_boundary_layer_par</span><span class="o">.</span><span class="n">exchange_coefficient</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">h_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span><span class="o">.</span><span class="n">temp_measure_height</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">h_wind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span><span class="o">.</span><span class="n">wind_measure_height</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">maxDay</span> <span class="o">=</span> <span class="mf">150.</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">maxNight</span> <span class="o">=</span> <span class="mf">20.</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">windMin</span> <span class="o">=</span> <span class="mf">1.</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">h_obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span><span class="o">.</span><span class="n">average_obstacle_height</span>
+
+            <span class="c1"># Urban characteristics</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">bldHeight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">average_bldg_height</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">h_mix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">fract_heat_to_canyon</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">bldDensity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">site_coverage_ratio</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">verToHor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">facade_to_site_ratio</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">charLength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">characteristic_length</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">sensAnth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">traffic_parameters</span><span class="o">.</span><span class="n">sensible_heat</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">SchTraffic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">traffic_parameters</span><span class="o">.</span><span class="n">get_uwg_matrix</span><span class="p">()</span>
+
+            <span class="c1"># Define optional Building characteristics</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">bld</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">get_uwg_matrix</span><span class="p">()</span>
+
+            <span class="c1"># climate Zone</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">_climate_zone</span>
+
+            <span class="c1"># Vegetation parameters</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">vegCover</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">grass_coverage_ratio</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">treeCoverage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">tree_coverage_ratio</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">albVeg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">vegetation_albedo</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">latTree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">tree_latent_fraction</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">latGrss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">grass_latent_fraction</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">rurVegCover</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epw_site_par</span><span class="o">.</span><span class="n">vegetation_coverage</span>
+            <span class="n">veg_start</span><span class="p">,</span> <span class="n">veg_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_start_end_vegetation</span><span class="p">()</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">vegStart</span> <span class="o">=</span> <span class="n">veg_start</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">vegEnd</span> <span class="o">=</span> <span class="n">veg_end</span>
+
+            <span class="c1"># Define road</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">alb_road</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">pavement_parameters</span><span class="o">.</span><span class="n">albedo</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">d_road</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">pavement_parameters</span><span class="o">.</span><span class="n">thickness</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">kRoad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">pavement_parameters</span><span class="o">.</span><span class="n">conductivity</span>
+            <span class="n">uwg_obj</span><span class="o">.</span><span class="n">cRoad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">pavement_parameters</span><span class="o">.</span><span class="n">volumetric_heat_capacity</span>
+
+            <span class="k">return</span> <span class="n">uwg_obj</span>
+
+    <span class="k">def</span> <span class="nf">_set_individual_typologies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uwg_obj</span><span class="p">):</span>
+        <span class="c1"># create a dictonary to convert between the dragonfly and uwg typologies</span>
+        <span class="n">district_typologies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">building_typologies</span>
+        <span class="n">district_typ_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">typ</span><span class="o">.</span><span class="n">bldg_program</span><span class="p">,</span> <span class="n">typ</span><span class="o">.</span><span class="n">bldg_era</span><span class="p">])</span>
+                              <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="n">district_typologies</span><span class="p">]</span>
+        <span class="n">typology_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">district_typ_names</span><span class="p">,</span> <span class="n">district_typologies</span><span class="p">))</span>
+
+        <span class="c1"># update each typology</span>
+        <span class="k">for</span> <span class="n">uwg_typology</span> <span class="ow">in</span> <span class="n">uwg_obj</span><span class="o">.</span><span class="n">BEM</span><span class="p">:</span>
+            <span class="n">df_typology</span> <span class="o">=</span> <span class="n">typology_dict</span><span class="p">[</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">uwg_typology</span><span class="o">.</span><span class="n">building</span><span class="o">.</span><span class="n">Type</span><span class="p">,</span>
+                 <span class="n">BuildingTypes</span><span class="o">.</span><span class="n">get_uwg_era_index</span><span class="p">(</span><span class="n">uwg_typology</span><span class="o">.</span><span class="n">building</span><span class="o">.</span><span class="n">Era</span><span class="p">)])]</span>
+            <span class="n">uwg_typology</span><span class="o">.</span><span class="n">floorHeight</span> <span class="o">=</span> <span class="n">df_typology</span><span class="o">.</span><span class="n">floor_to_floor</span>
+            <span class="n">uwg_typology</span><span class="o">.</span><span class="n">building</span><span class="o">.</span><span class="n">glazingRatio</span> <span class="o">=</span> <span class="n">df_typology</span><span class="o">.</span><span class="n">glz_ratio</span>
+            <span class="n">uwg_typology</span><span class="o">.</span><span class="n">building</span><span class="o">.</span><span class="n">canyon_fraction</span> <span class="o">=</span> \
+                <span class="n">df_typology</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">fract_heat_to_canyon</span>
+            <span class="n">uwg_typology</span><span class="o">.</span><span class="n">building</span><span class="o">.</span><span class="n">shgc</span> <span class="o">=</span> \
+                <span class="n">df_typology</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">shgc</span>
+            <span class="n">uwg_typology</span><span class="o">.</span><span class="n">wall</span><span class="o">.</span><span class="n">albedo</span> <span class="o">=</span> \
+                <span class="n">df_typology</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">wall_albedo</span>
+            <span class="n">uwg_typology</span><span class="o">.</span><span class="n">roof</span><span class="o">.</span><span class="n">albedo</span> <span class="o">=</span> \
+                <span class="n">df_typology</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">roof_albedo</span>
+            <span class="n">uwg_typology</span><span class="o">.</span><span class="n">roof</span><span class="o">.</span><span class="n">vegCoverage</span> <span class="o">=</span> \
+                <span class="n">df_typology</span><span class="o">.</span><span class="n">uwg_parameters</span><span class="o">.</span><span class="n">roof_veg_fraction</span>
+
+        <span class="k">return</span> <span class="n">uwg_obj</span>
+
+    <span class="k">def</span> <span class="nf">_set_global_facade_props</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uwg_obj</span><span class="p">):</span>
+        <span class="c1"># parameters for the UCMdef that must be overwritten</span>
+        <span class="n">uwg_obj</span><span class="o">.</span><span class="n">r_glaze_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">glz_ratio</span>
+        <span class="n">uwg_obj</span><span class="o">.</span><span class="n">SHGC_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">shgc</span>
+        <span class="n">uwg_obj</span><span class="o">.</span><span class="n">alb_wall_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">wall_albedo</span>
+
+        <span class="c1"># parameters that are correctly by _set_individual_typologies</span>
+        <span class="n">uwg_obj</span><span class="o">.</span><span class="n">albRoof</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">roof_albedo</span>
+        <span class="n">uwg_obj</span><span class="o">.</span><span class="n">vegRoof</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">roof_veg_fraction</span>
+        <span class="n">uwg_obj</span><span class="o">.</span><span class="n">flr_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">floor_height</span>
+
+        <span class="k">return</span> <span class="n">uwg_obj</span>
+
+    <span class="k">def</span> <span class="nf">_parse_ladybug_analysis_period</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">st_month</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analysis_period</span><span class="o">.</span><span class="n">st_month</span>
+        <span class="n">st_day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analysis_period</span><span class="o">.</span><span class="n">st_day</span>
+        <span class="n">start_doy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_analysis_period</span><span class="o">.</span><span class="n">st_time</span><span class="o">.</span><span class="n">doy</span><span class="p">)</span>
+        <span class="n">end_doy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_analysis_period</span><span class="o">.</span><span class="n">end_time</span><span class="o">.</span><span class="n">doy</span><span class="p">)</span>
+        <span class="n">simDuration</span> <span class="o">=</span> <span class="n">end_doy</span> <span class="o">-</span> <span class="n">start_doy</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">st_month</span><span class="p">,</span> <span class="n">st_day</span><span class="p">,</span> <span class="n">simDuration</span>
+
+    <span class="k">def</span> <span class="nf">_get_start_end_vegetation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">vegetation_start_month</span> <span class="o">==</span> <span class="mi">0</span> \
+                <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">vegetation_end_month</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">veg_start</span><span class="p">,</span> <span class="n">veg_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_autocalc_start_end_vegetation</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">vegetation_start_month</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">veg_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">vegetation_start_month</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">vegetation_end_month</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">veg_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_district</span><span class="o">.</span><span class="n">vegetation_parameters</span><span class="o">.</span><span class="n">vegetation_end_month</span>
+        <span class="k">return</span> <span class="n">veg_start</span><span class="p">,</span> <span class="n">veg_end</span>
+
+    <span class="k">def</span> <span class="nf">_autocalc_start_end_vegetation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold_temp</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">epw_obj</span> <span class="o">=</span> <span class="n">EPW</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epw_file</span><span class="p">)</span>
+        <span class="n">temperature_data</span> <span class="o">=</span> <span class="n">epw_obj</span><span class="o">.</span><span class="n">dry_bulb_temperature</span><span class="o">.</span><span class="n">group_by_month</span><span class="p">()</span>
+        <span class="n">month_temps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">):</span>
+            <span class="n">month_temps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">temperature_data</span><span class="p">[</span><span class="n">month</span><span class="p">])</span> <span class="o">/</span>
+                               <span class="nb">len</span><span class="p">(</span><span class="n">temperature_data</span><span class="p">[</span><span class="n">month</span><span class="p">]))</span>
+        <span class="n">veg_end</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="n">veg_start</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">veg_start_set</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">month_temps</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="n">threshold_temp</span> <span class="ow">and</span> <span class="n">veg_start_set</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">veg_start</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+                <span class="n">veg_start_set</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">threshold_temp</span> <span class="ow">and</span> <span class="n">veg_start_set</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">veg_end</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+                <span class="n">veg_start_set</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">veg_start</span><span class="p">,</span> <span class="n">veg_end</span>
+
+<div class="viewcode-block" id="RunManager.to_json"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.run.RunManager.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a UWG RunManager dictionary</span>
+<span class="sd">        Results:</span>
+<span class="sd">            {</span>
+<span class="sd">                epw_file: list of Typology objects</span>
+<span class="sd">                district: dragonfly district disct</span>
+<span class="sd">                epw_site_par: epw site parameter dict</span>
+<span class="sd">                boundary_layer_par: boundary layer parameter dict</span>
+<span class="sd">                analysis_period: ladybug analysis period dict</span>
+<span class="sd">                sim_timestep: simulation timestep in seconds</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;epw_file&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">epw_file</span><span class="p">,</span>
+            <span class="s1">&#39;district&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">district</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;epw_site_par&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">epw_site_par</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;boundary_layer_par&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_layer_par</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;analysis_period&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+            <span class="s1">&#39;sim_timestep&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_timestep</span>
+            <span class="p">}</span></div>
+
+<div class="viewcode-block" id="RunManager.ToString"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.run.RunManager.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represnt UWG RunManager.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;UWG RunManager: &#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Rural EPW: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Analysis Period: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> District: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">epw_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_period</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">district</span>
+               <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/dragonfly.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A python library for urban climate + urban energy modeling.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=dragonfly&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dragonfly.html">dragonfly package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

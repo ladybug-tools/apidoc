@@ -1,0 +1,460 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dragonfly.uwg.regionpar &#8212; Dragonfly 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dragonfly.uwg.regionpar</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">..dfobject</span> <span class="k">import</span> <span class="n">DFParameter</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="k">import</span> <span class="n">in_range</span>
+
+
+<div class="viewcode-block" id="RefEPWSitePar"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.regionpar.RefEPWSitePar">[docs]</a><span class="k">class</span> <span class="nc">RefEPWSitePar</span><span class="p">(</span><span class="n">DFParameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents properties of the reference site where the original EPW was recorded.</span>
+
+<span class="sd">    Properties:</span>
+<span class="sd">        average_obstacle_height: A number that represents the height in</span>
+<span class="sd">            meters of objects that obstruct the view to the sky at the</span>
+<span class="sd">            weather station site.  This includes both trees and buildings.</span>
+<span class="sd">            The default is set to 0.1 meters.</span>
+<span class="sd">        vegetation_coverage: A number between 0 and 1 that represents</span>
+<span class="sd">            that fraction of the reference EPW site that is covered in grass.</span>
+<span class="sd">            If nothing is input here, a defailt of 0.9 will be used.</span>
+<span class="sd">        temp_measure_height: A number that represents the height in meters</span>
+<span class="sd">            at which temperature is measured on the weather station.</span>
+<span class="sd">            The default is set to 10 meters as this is the standard</span>
+<span class="sd">            measurement height for US Department of Energy EPW files.</span>
+<span class="sd">        wind_measure_height: A number that represents the height in meters</span>
+<span class="sd">            at which wind speed is measured on the weather station.</span>
+<span class="sd">            The default is set to 10 meters as this is the standard</span>
+<span class="sd">            measurement height for US Department of Energy EPW files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">average_obstacle_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vegetation_coverage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">temp_measure_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wind_measure_height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize RefEPWSitePar parameters&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">average_obstacle_height</span> <span class="o">=</span> <span class="n">average_obstacle_height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vegetation_coverage</span> <span class="o">=</span> <span class="n">vegetation_coverage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp_measure_height</span> <span class="o">=</span> <span class="n">temp_measure_height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wind_measure_height</span> <span class="o">=</span> <span class="n">wind_measure_height</span>
+
+<div class="viewcode-block" id="RefEPWSitePar.from_json"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.regionpar.RefEPWSitePar.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a reference epw parameter object from a dictionary</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data: {</span>
+<span class="sd">                average_obstacle_height: float</span>
+<span class="sd">                vegetation_coverage: float between 0 and 1</span>
+<span class="sd">                temp_measure_height: float between 0 and 1</span>
+<span class="sd">                wind_measure_height: float</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">required_keys</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="n">nullable_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;average_obstacle_height&quot;</span><span class="p">,</span> <span class="s2">&quot;vegetation_coverage&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;temp_measure_height&quot;</span><span class="p">,</span> <span class="s2">&quot;wind_measure_height&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is a required value&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nullable_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">average_obstacle_height</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;average_obstacle_height&quot;</span><span class="p">],</span>
+                   <span class="n">vegetation_coverage</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;vegetation_coverage&quot;</span><span class="p">],</span>
+                   <span class="n">temp_measure_height</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;temp_measure_height&quot;</span><span class="p">],</span>
+                   <span class="n">wind_measure_height</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;wind_measure_height&quot;</span><span class="p">])</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">average_obstacle_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the average obstacle height.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_average_obstacle_height</span>
+
+    <span class="nd">@average_obstacle_height</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">average_obstacle_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;average_obstacle_height must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;average_obstacle_height must be greater than 0&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_average_obstacle_height</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_average_obstacle_height</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vegetation_coverage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the vegetation coverage.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vegetation_coverage</span>
+
+    <span class="nd">@vegetation_coverage</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">vegetation_coverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;vegetation_coverage must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vegetation_coverage</span> <span class="o">=</span> <span class="n">in_range</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;vegetation_coverage&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vegetation_coverage</span> <span class="o">=</span> <span class="mf">0.9</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">temp_measure_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the temperature measurement height.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_temp_measure_height</span>
+
+    <span class="nd">@temp_measure_height</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">temp_measure_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;temp_measure_height must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;temp_measure_height must be greater than 0&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_temp_measure_height</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_temp_measure_height</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">wind_measure_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the wind measurement height.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wind_measure_height</span>
+
+    <span class="nd">@wind_measure_height</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">wind_measure_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;wind_measure_height must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;wind_measure_height must be greater than 0&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wind_measure_height</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wind_measure_height</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isRefEPWSitePar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True for isRefEPWSitePar.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="RefEPWSitePar.to_json"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.regionpar.RefEPWSitePar.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a reference epw parameter dictionary</span>
+<span class="sd">        Results:</span>
+<span class="sd">            {</span>
+<span class="sd">                average_obstacle_height: float</span>
+<span class="sd">                vegetation_coverage: float between 0 and 1</span>
+<span class="sd">                temp_measure_height: float between 0 and 1</span>
+<span class="sd">                wind_measure_height: float</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;average_obstacle_height&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">average_obstacle_height</span><span class="p">,</span>
+            <span class="s2">&quot;vegetation_coverage&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vegetation_coverage</span><span class="p">,</span>
+            <span class="s2">&quot;temp_measure_height&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_measure_height</span><span class="p">,</span>
+            <span class="s2">&quot;wind_measure_height&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wind_measure_height</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="RefEPWSitePar.ToString"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.regionpar.RefEPWSitePar.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represnt Dragonfly reference EPW site parameters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;Reference EPW Site Parameters:&#39;</span> \
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Obstacle Height: </span><span class="si">{}</span><span class="s1"> m&#39;</span> \
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Vegetation Coverage: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Measurement Height (Temp | Wind): </span><span class="si">{}</span><span class="s1"> m | </span><span class="si">{}</span><span class="s1"> m&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_average_obstacle_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vegetation_coverage</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_temp_measure_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wind_measure_height</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BoundaryLayerPar"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.regionpar.BoundaryLayerPar">[docs]</a><span class="k">class</span> <span class="nc">BoundaryLayerPar</span><span class="p">(</span><span class="n">DFParameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents the properties of the urban boundary layer.</span>
+
+<span class="sd">    Properties:</span>
+<span class="sd">        day_boundary_layer_height: A number that represents the height</span>
+<span class="sd">            in meters of the urban boundary layer during the daytime.</span>
+<span class="sd">            This is the height to which the urban meterorological conditions</span>
+<span class="sd">            are stable and representative of the overall urban area.</span>
+<span class="sd">            Typically, this boundary layer height increases with the</span>
+<span class="sd">            height of the buildings.  The default is set to 1000 meters.</span>
+<span class="sd">        night_boundary_layer_height: A number that represents the height</span>
+<span class="sd">            in meters of the urban boundary layer during the nighttime.</span>
+<span class="sd">            This is the height to which the urban meterorological</span>
+<span class="sd">            conditions are stable and representative of the overall</span>
+<span class="sd">            urban area. Typically, this boundary layer height increases with</span>
+<span class="sd">            the height of the buildings.  The default is set to 80 meters.</span>
+<span class="sd">        inversion_height: A number that represents the height at which</span>
+<span class="sd">            the vertical profile of potential temperature becomes stable.</span>
+<span class="sd">            It is the height at which the profile of air temperature becomes</span>
+<span class="sd">            stable. Can be determined by flying helium balloons equipped</span>
+<span class="sd">            with temperature sensors and recording the air temperatures</span>
+<span class="sd">            at different heights.  The default is set to 150 meters.</span>
+<span class="sd">        circulation_coefficient: A number representing the circulation coefficient.</span>
+<span class="sd">            The default is 1.2 per Bueno, Bruno (2012).</span>
+<span class="sd">        exchange_coefficient: A number representing the exchange coefficient.</span>
+<span class="sd">            The default is 1.0 per Bueno, Bruno (2014).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day_boundary_layer_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">night_boundary_layer_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">inversion_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">circulation_coefficient</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exchange_coefficient</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize Boundary Layer parameters&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day_boundary_layer_height</span> <span class="o">=</span> <span class="n">day_boundary_layer_height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">night_boundary_layer_height</span> <span class="o">=</span> <span class="n">night_boundary_layer_height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inversion_height</span> <span class="o">=</span> <span class="n">inversion_height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">circulation_coefficient</span> <span class="o">=</span> <span class="n">circulation_coefficient</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exchange_coefficient</span> <span class="o">=</span> <span class="n">exchange_coefficient</span>
+
+<div class="viewcode-block" id="BoundaryLayerPar.from_json"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.regionpar.BoundaryLayerPar.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a boundary layer parameter object from a dictionary</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data: {</span>
+<span class="sd">                day_boundary_layer_height: float positive</span>
+<span class="sd">                night_boundary_layer_height: float positive</span>
+<span class="sd">                inversion_height: float positive</span>
+<span class="sd">                circulation_coefficient: float positive</span>
+<span class="sd">                exchange_coefficient: float positive</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">required_keys</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="n">nullable_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;day_boundary_layer_height&quot;</span><span class="p">,</span> <span class="s2">&quot;night_boundary_layer_height&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;inversion_height&quot;</span><span class="p">,</span> <span class="s2">&quot;circulation_coefficient&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;exchange_coefficient&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is a required value&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nullable_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">day_boundary_layer_height</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;day_boundary_layer_height&quot;</span><span class="p">],</span>
+                   <span class="n">night_boundary_layer_height</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;night_boundary_layer_height&quot;</span><span class="p">],</span>
+                   <span class="n">inversion_height</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;inversion_height&quot;</span><span class="p">],</span>
+                   <span class="n">circulation_coefficient</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;circulation_coefficient&quot;</span><span class="p">],</span>
+                   <span class="n">exchange_coefficient</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;exchange_coefficient&quot;</span><span class="p">])</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">day_boundary_layer_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the daytime boundary layer height.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_day_boundary_layer_height</span>
+
+    <span class="nd">@day_boundary_layer_height</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">day_boundary_layer_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;day_boundary_layer_height must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;day_boundary_layer_height must be greater than 0&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_day_boundary_layer_height</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_day_boundary_layer_height</span> <span class="o">=</span> <span class="mi">1000</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">night_boundary_layer_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the nighttime boundary layer height.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_night_boundary_layer_height</span>
+
+    <span class="nd">@night_boundary_layer_height</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">night_boundary_layer_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;night_boundary_layer_height must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;night_boundary_layer_height must be greater than 0&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_night_boundary_layer_height</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_night_boundary_layer_height</span> <span class="o">=</span> <span class="mi">80</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inversion_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the inversion height.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inversion_height</span>
+
+    <span class="nd">@inversion_height</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">inversion_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;inversion_height must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;inversion_height must be greater than 0&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inversion_height</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inversion_height</span> <span class="o">=</span> <span class="mi">150</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">circulation_coefficient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the circulation coefficient.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circulation_coefficient</span>
+
+    <span class="nd">@circulation_coefficient</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">circulation_coefficient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;circulation_coefficient must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_circulation_coefficient</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_circulation_coefficient</span> <span class="o">=</span> <span class="mf">1.2</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">exchange_coefficient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the exchange coefficient.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exchange_coefficient</span>
+
+    <span class="nd">@exchange_coefficient</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">exchange_coefficient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+                <span class="s1">&#39;exchange_coefficient must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_exchange_coefficient</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_exchange_coefficient</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isBoundaryLayerPar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True for isBoundaryLayerPar.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="BoundaryLayerPar.to_json"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.regionpar.BoundaryLayerPar.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a boundary layer parameter dictionary</span>
+<span class="sd">        Results:</span>
+<span class="sd">            {</span>
+<span class="sd">                day_boundary_layer_height: float positive</span>
+<span class="sd">                night_boundary_layer_height: float positive</span>
+<span class="sd">                inversion_height: float positive</span>
+<span class="sd">                circulation_coefficient: float positive</span>
+<span class="sd">                exchange_coefficient: float positive</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;day_boundary_layer_height&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_boundary_layer_height</span><span class="p">,</span>
+            <span class="s2">&quot;night_boundary_layer_height&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">night_boundary_layer_height</span><span class="p">,</span>
+            <span class="s2">&quot;inversion_height&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inversion_height</span><span class="p">,</span>
+            <span class="s2">&quot;circulation_coefficient&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">circulation_coefficient</span><span class="p">,</span>
+            <span class="s2">&quot;exchange_coefficient&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange_coefficient</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="BoundaryLayerPar.ToString"><a class="viewcode-back" href="../../../dragonfly.uwg.html#dragonfly.uwg.regionpar.BoundaryLayerPar.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represnt Dragonfly boundary layer parameters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;Boundary Layer Parameters: &#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Boundary Height (Day | Night): </span><span class="si">{}</span><span class="s1"> m | </span><span class="si">{}</span><span class="s1"> m&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Inversion Height: </span><span class="si">{}</span><span class="s1"> m&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Circulation Coefficient: </span><span class="si">{}</span><span class="s1">&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Exchange Coefficient: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">day_boundary_layer_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">night_boundary_layer_height</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">inversion_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">circulation_coefficient</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">exchange_coefficient</span>
+                  <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/dragonfly.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A python library for urban climate + urban energy modeling.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=dragonfly&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dragonfly.html">dragonfly package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

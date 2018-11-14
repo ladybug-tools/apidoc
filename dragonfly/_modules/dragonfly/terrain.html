@@ -1,0 +1,245 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dragonfly.terrain &#8212; Dragonfly 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dragonfly.terrain</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">from</span> <span class="nn">.dfobject</span> <span class="k">import</span> <span class="n">DFObject</span>
+<span class="kn">import</span> <span class="nn">dragonfly</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">plus</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">dragonfly</span><span class="o">.</span><span class="n">isplus</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<div class="viewcode-block" id="Terrain"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.terrain.Terrain">[docs]</a><span class="k">class</span> <span class="nc">Terrain</span><span class="p">(</span><span class="n">DFObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents the terrain on which an urban area sits.</span>
+
+<span class="sd">    Properties:</span>
+<span class="sd">        area: The area of the urban terrain surface in square meters</span>
+<span class="sd">            (projected into the XY plane).</span>
+<span class="sd">        characteristic_length:  A number representing the linear dimension</span>
+<span class="sd">            of the side of a square that encompasses the neighborhood in meters.</span>
+
+<span class="sd">            The default is set to 500 m, which was found to be the recomendation</span>
+<span class="sd">            for a typical mid-density urban area.</span>
+<span class="sd">            Street, Michael A. (2013). Comparison of simplified models of urban</span>
+<span class="sd">            climate for improved prediction of building energy use in cities.</span>
+<span class="sd">            Thesis (S.M. in Building Technology)--Massachusetts Institute of</span>
+<span class="sd">            Technology, Dept. of Architecture,</span>
+<span class="sd">            http://hdl.handle.net/1721.1/82284</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">characteristic_length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a dragonfly terrain surface&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">characteristic_length</span> <span class="o">=</span> <span class="n">characteristic_length</span>
+
+<div class="viewcode-block" id="Terrain.from_json"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.terrain.Terrain.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a terrain object from a dictionary</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data: {</span>
+<span class="sd">                area: float</span>
+<span class="sd">                characteristic_length: float</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">required_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;area&quot;</span><span class="p">,)</span>
+        <span class="n">nullable_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;characteristic_length&quot;</span><span class="p">,)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is a required value&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nullable_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">],</span>
+                   <span class="n">characteristic_length</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;characteristic_length&quot;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Terrain.from_geometry"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.terrain.Terrain.from_geometry">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_geometry</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">terrainSrfs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a dragonfly terrain surface from a list of terrain breps</span>
+<span class="sd">        Args:</span>
+<span class="sd">            terrainSrfs: A list of Rhino surfaces representing the terrian.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            terrain: The dragonfly terrain object.</span>
+<span class="sd">            surfaceBreps: The srfBreps representing the terrain</span>
+<span class="sd">                (projected into the XY plane).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">surfaceArea</span><span class="p">,</span> <span class="n">surfaceBreps</span> <span class="o">=</span> <span class="n">plus</span><span class="o">.</span><span class="n">calculateFootprints</span><span class="p">(</span><span class="n">terrainSrfs</span><span class="p">)</span>
+        <span class="n">terrain</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">surfaceArea</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">terrain</span><span class="p">,</span> <span class="n">surfaceBreps</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get or set the area of the terrain surface in the XY plane.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_area</span>
+
+    <span class="nd">@area</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span> \
+            <span class="s1">&#39;area must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;area must be greater than 0&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_area</span> <span class="o">=</span> <span class="n">a</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">characteristic_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the characteristic length.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_characteristic_length</span>
+
+    <span class="nd">@characteristic_length</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">characteristic_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cl</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cl</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_characteristic_length</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span>\
+                <span class="s1">&#39;characteristic length must be a number got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">cl</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">cl</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;characteristic length must be greater than 0&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_characteristic_length</span> <span class="o">=</span> <span class="n">cl</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isTerrain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True for Terrain.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Terrain.to_json"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.terrain.Terrain.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a terrain dictionary</span>
+<span class="sd">        Results:</span>
+<span class="sd">            {</span>
+<span class="sd">                area: float</span>
+<span class="sd">                characteristic_length: float</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span>
+            <span class="s2">&quot;characteristic_length&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">characteristic_length</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Terrain.ToString"><a class="viewcode-back" href="../../dragonfly.html#dragonfly.terrain.Terrain.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwrite .NET ToString method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represnt Dragonfly terrain.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;Terrain:</span><span class="se">\n</span><span class="s1">  Area: </span><span class="si">{}</span><span class="s1"> m2&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_area</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/dragonfly.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A python library for urban climate + urban energy modeling.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ladybug-tools&repo=dragonfly&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly.html">dragonfly package</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://discourse.ladybug.tools">Discussion Forum</a></li>
+    
+    <li class="toctree-l1"><a href="http://www.ladybug.tools">Ladybug Tools</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ladybug Tools.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
